@@ -10,9 +10,18 @@ describe('homepage', () => {
     expect(markup).toMatch(/<h1[^>]*>[\s\S]*20–40 Гц[\s\S]*<\/h1>/);
   });
 
-  it('leads with the device photo, not the interactive panel', () => {
+  it('leads with the device photos, not the interactive panel', () => {
     expect(markup).toContain('/assets/img/bms-m-front.webp');
+    expect(markup).toContain('/assets/img/case-backdrop.webp');
     expect(markup).not.toMatch(/class="instrument/);
+  });
+
+  it('links every hero photo to its product page', () => {
+    const hero = markup.match(/<div class="collage[\s\S]*?<\/div>/)![0];
+    for (const slug of ['bms-m', 'bms-nexus', 'bms-quadro']) {
+      expect(hero, slug).toContain(`href="/bms-pro/products/${slug}/"`);
+    }
+    expect(hero.match(/<img/g)).toHaveLength(3);
   });
 
   it('defines biomechanical stimulation above the comparison', () => {
