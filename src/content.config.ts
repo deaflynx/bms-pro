@@ -17,6 +17,7 @@ const products = defineCollection({
     usage: z.string(),
     image: z.string(),
     gallery: z.array(z.string()).default([]),
+    benefits: z.array(z.string()).default([]),
     specs: z.record(z.string(), z.string()).default({}),
     included: z.array(z.object({ item: z.string(), qty: z.number().int() })).default([]),
     documents: z.array(z.enum(DOC_TYPES)).default([]),

@@ -3,6 +3,7 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import ComparisonMatrix from '../../components/ComparisonMatrix.astro';
 import Disclaimer from '../../components/Disclaimer.astro';
+import Gallery from '../../components/Gallery.astro';
 import Instrument from '../../components/Instrument.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import SpecTiles from '../../components/SpecTiles.astro';
@@ -25,6 +26,7 @@ const d = product.data;
 
 const all = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
 const panel = instrumentFor(d.indicator);
+const gallery = d.gallery.length > 0 ? d.gallery : [d.image];
 
 const path = `/products/${product.id}/`;
 const abs = new URL(url(path), Astro.site).href;
@@ -73,26 +75,7 @@ const { Content } = await render(product);
 
   <div class="hero">
     <div class="wrap hero-grid">
-      <div class="gallery">
-        <figure class="shot">
-          <img
-            src={url(d.gallery[0] ?? d.image)}
-            alt={`Прилад ${d.name}`}
-            width="900"
-            height="675"
-            fetchpriority="high"
-          />
-        </figure>
-        {
-          d.gallery.length > 1 && (
-            <div class="thumbs">
-              {d.gallery.slice(1).map((g, i) => (
-                <img src={url(g)} alt={`${d.name} — вигляд ${i + 2}`} width="300" height="225" loading="lazy" />
-              ))}
-            </div>
-          )
-        }
-      </div>
+      <Gallery images={gallery} name={d.name} />
 
       <div>
         <p class="eyebrow">{d.zones.join(' · ')}</p>
@@ -122,6 +105,24 @@ const { Content } = await render(product);
       </div>
     </div>
   </div>
+
+  {
+    d.benefits.length > 0 && (
+      <section class="alt">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="eyebrow">Чому саме цей прилад</p>
+            <h2>Переваги {d.name}</h2>
+          </div>
+          <ul class="benefits">
+            {d.benefits.map((b) => (
+              <li>{b}</li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
 
   <section class="panel-sec">
     <div class="wrap">
@@ -260,31 +261,6 @@ const { Content } = await render(product);
       grid-template-columns: 1fr;
     }
   }
-  .shot {
-    margin: 0;
-    border-radius: var(--r);
-    overflow: hidden;
-    background: #0a1013;
-    border: 1px solid var(--rule);
-  }
-  .shot img {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-  }
-  .thumbs {
-    display: flex;
-    gap: 0.6rem;
-    margin-top: 0.6rem;
-  }
-  .thumbs img {
-    width: 100%;
-    max-width: 140px;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid var(--rule);
-  }
   h1 {
     margin-top: 0.8rem;
     font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem);
@@ -332,6 +308,30 @@ const { Content } = await render(product);
     margin-top: 1.1rem;
     font-size: 0.78rem;
     color: var(--steel-2);
+  }
+
+  .benefits {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1rem;
+  }
+  .benefits li {
+    display: flex;
+    gap: 0.8rem;
+    padding: 1.05rem 1.2rem;
+    background: var(--panel-2);
+    border: 1px solid var(--rule);
+    border-radius: 9px;
+    font-size: 0.94rem;
+    color: var(--body-soft);
+  }
+  .benefits li::before {
+    content: '';
+    flex: none;
+    width: 14px;
+    height: 1px;
+    margin-top: 0.72em;
+    background: var(--led);
   }
 
   .panel-wrap {

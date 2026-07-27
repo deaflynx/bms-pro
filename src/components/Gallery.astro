@@ -1,0 +1,205 @@
+---
+import { url } from '../lib/site';
+
+interface Props {
+  images: string[];
+  name: string;
+}
+const { images, name } = Astro.props;
+
+const id = `g-${name.toLowerCase().replace(/\s+/g, '-')}`;
+const many = images.length > 1;
+---
+
+<div class="gallery" data-gallery>
+  <div
+    class="track"
+    data-track
+    tabindex="0"
+    role="group"
+    aria-label={`Фотографії — ${name}`}
+  >
+    {
+      images.map((src, i) => (
+        <figure class="slide" id={`${id}-${i + 1}`}>
+          <img
+            src={url(src)}
+            alt={i === 0 ? `Прилад ${name}` : `${name} — вигляд ${i + 1}`}
+            width="960"
+            height="640"
+            loading={i === 0 ? undefined : 'lazy'}
+            fetchpriority={i === 0 ? 'high' : undefined}
+          />
+        </figure>
+      ))
+    }
+  </div>
+
+  {
+    many && (
+      <>
+        {/* Unhidden by the script: without JS the track is still swipeable and the
+            thumbnails work as plain anchors, but the arrows would do nothing. */}
+        <button class="nav prev" type="button" data-step="-1" aria-label="Попереднє фото" hidden>
+          <span aria-hidden="true">‹</span>
+        </button>
+        <button class="nav next" type="button" data-step="1" aria-label="Наступне фото" hidden>
+          <span aria-hidden="true">›</span>
+        </button>
+
+        <div class="thumbs">
+          {images.map((src, i) => (
+            <a class="thumb" href={`#${id}-${i + 1}`} data-thumb={i} aria-label={`Фото ${i + 1}`}>
+              <img src={url(src)} alt="" width="300" height="200" loading="lazy" />
+            </a>
+          ))}
+        </div>
+      </>
+    )
+  }
+</div>
+
+<style>
+  .gallery {
+    position: relative;
+  }
+  .track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    background: #0a1013;
+  }
+  .track::-webkit-scrollbar {
+    display: none;
+  }
+  .track:focus-visible {
+    outline: 2px solid var(--led);
+    outline-offset: 2px;
+  }
+  .slide {
+    flex: 0 0 100%;
+    margin: 0;
+    scroll-snap-align: center;
+  }
+  .slide img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+
+  .nav {
+    position: absolute;
+    top: calc(50% - 20px);
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: rgba(10, 16, 19, 0.78);
+    backdrop-filter: blur(3px);
+    color: var(--paper);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      opacity 0.2s;
+  }
+  .nav:hover {
+    border-color: var(--led);
+  }
+  .nav[disabled] {
+    opacity: 0.3;
+    cursor: default;
+  }
+  .prev {
+    left: 0.6rem;
+  }
+  .next {
+    right: 0.6rem;
+  }
+  .nav span {
+    margin-top: -0.18em;
+  }
+
+  .thumbs {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 0.6rem;
+  }
+  .thumb {
+    flex: 0 1 140px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    line-height: 0;
+    transition: border-color 0.2s;
+  }
+  .thumb img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  .thumb:hover img,
+  .thumb[aria-current='true'] img {
+    opacity: 1;
+  }
+  .thumb[aria-current='true'] {
+    border-color: var(--led);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('[data-track]');
+    const thumbs = [...root.querySelectorAll<HTMLAnchorElement>('[data-thumb]')];
+    const navs = [...root.querySelectorAll<HTMLButtonElement>('.nav')];
+    const slides = track ? [...track.querySelectorAll<HTMLElement>('.slide')] : [];
+    if (!track || slides.length < 2) return;
+
+    const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const current = (): number => Math.round(track.scrollLeft / track.clientWidth);
+
+    const goTo = (i: number): void => {
+      const clamped = Math.max(0, Math.min(slides.length - 1, i));
+      track.scrollTo({ left: clamped * track.clientWidth, behavior: smooth ? 'smooth' : 'auto' });
+    };
+
+    const sync = (): void => {
+      const i = current();
+      thumbs.forEach((t, n) => t.setAttribute('aria-current', String(n === i)));
+      navs.forEach((b) => {
+        const next = i + Number(b.dataset.step);
+        b.disabled = next < 0 || next > slides.length - 1;
+      });
+    };
+
+    navs.forEach((b) => {
+      b.hidden = false;
+      b.addEventListener('click', () => goTo(current() + Number(b.dataset.step)));
+    });
+    // Anchors keep working without JS; intercepted here so the page itself never jumps.
+    thumbs.forEach((t, i) =>
+      t.addEventListener('click', (e) => {
+        e.preventDefault();
+        goTo(i);
+      }),
+    );
+
+    let queued = 0;
+    track.addEventListener('scroll', () => {
+      cancelAnimationFrame(queued);
+      queued = requestAnimationFrame(sync);
+    });
+    sync();
+  });
+</script>

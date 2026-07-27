@@ -55,6 +55,30 @@ describe('product pages', () => {
     expect(m).not.toContain('data-digits=');
   });
 
+  it('turns the BMS m photos into a slider with one thumbnail each', () => {
+    const m = markup('bms-m');
+    expect(m).toContain('data-gallery');
+    expect(m.match(/class="slide/g)).toHaveLength(3);
+    expect(m.match(/data-thumb="/g)).toHaveLength(3);
+    for (const img of ['bms-m-front.webp', 'bms-m-rear.webp', 'case-card.webp']) {
+      expect(m, img).toContain(`/assets/img/${img}`);
+    }
+  });
+
+  it('drops the slider controls when a device has a single photo', () => {
+    const m = markup('bms-pro');
+    expect(m.match(/class="slide/g)).toHaveLength(1);
+    expect(m).not.toContain('data-thumb=');
+    expect(m).not.toContain('class="nav');
+  });
+
+  it('lists the BMS m benefits under their own heading', () => {
+    const m = markup('bms-m');
+    expect(m).toContain('Переваги BMS m');
+    expect(m).toContain('Механічний принцип дії без електричного впливу на організм');
+    expect(m).toContain('Компактність і зручність у застосуванні');
+  });
+
   it('gives each device a distinct title and meta description', () => {
     const titles = new Set<string>();
     const descs = new Set<string>();

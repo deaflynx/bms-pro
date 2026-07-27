@@ -8,7 +8,14 @@ indicator: analog
 usage: Дім
 image: '/assets/img/bms-m-card.webp'
 gallery:
-  ['/assets/img/bms-m-card.webp', '/assets/img/bms-m-back-card.webp', '/assets/img/case-card.webp']
+  ['/assets/img/bms-m-front.webp', '/assets/img/bms-m-rear.webp', '/assets/img/case-card.webp']
+benefits:
+  - 'Механічний принцип дії без електричного впливу на організм'
+  - 'Локальна стимуляція окремих мʼязових груп'
+  - 'Просте керування'
+  - 'Надійна електромеханічна конструкція'
+  - 'Можливість регулярного домашнього використання'
+  - 'Компактність і зручність у застосуванні'
 specs:
   'Споживана потужність': '≤20 Вт'
   'Частота коливань насадки': '20–40 Гц'
