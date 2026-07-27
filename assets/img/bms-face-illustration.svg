@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" width="1000" height="700">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0.7" y2="1">
+    <stop offset="0" stop-color="#F6F1E9"/>
+    <stop offset="50%" stop-color="#EDE3D4"/>
+    <stop offset="100%" stop-color="#DCCAB1"/>
+  </linearGradient>
+  <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+    <stop offset="40%" stop-color="#C9A876" stop-opacity="0"/>
+    <stop offset="88%" stop-color="#B08A55" stop-opacity=".38"/>
+    <stop offset="100%" stop-color="#B08A55" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="fig" x1="0.2" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#4C3F35"/>
+    <stop offset="100%" stop-color="#2C231C"/>
+  </linearGradient>
+  <linearGradient id="wandg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFFDFA"/>
+    <stop offset="60%" stop-color="#F2EDE4"/>
+    <stop offset="100%" stop-color="#CFC7BA"/>
+  </linearGradient>
+</defs>
+
+<rect width="1000" height="700" fill="url(#bg)"/>
+<circle cx="672" cy="300" r="268" fill="url(#halo)"/>
+<circle cx="672" cy="300" r="248" fill="none" stroke="#A8814E" stroke-width="1.2" opacity=".3"/>
+
+<!-- ponytail volume behind -->
+<path fill="url(#fig)" opacity=".9" d="
+  M 828 300 C 872 322 892 372 884 424
+  C 878 468 856 496 836 502
+  C 818 508 806 492 812 470
+  C 822 434 828 386 820 344 Z"/>
+
+<!-- single silhouette: head in profile, neck, shoulder -->
+<path fill="url(#fig)" d="
+  M 690 100
+  C 640 104 606 140 598 186
+  C 596 200 600 208 604 214
+  L 606 222
+  C 596 232 576 246 570 254
+  C 566 260 572 266 582 270
+  C 592 274 590 282 584 288
+  C 578 294 580 300 588 304
+  C 598 310 602 320 600 332
+  C 598 346 606 356 620 362
+  C 650 374 676 378 700 374
+  C 704 400 700 420 694 438
+  C 680 470 640 500 600 540
+  C 570 570 552 630 548 700
+  L 1000 700
+  L 1000 560
+  C 900 520 820 496 786 470
+  C 776 462 772 450 774 430
+  L 780 404
+  C 800 400 826 384 840 352
+  C 858 312 856 240 838 190
+  C 818 132 762 100 690 100
+  Z"/>
+
+<!-- vibration: concentric arcs spreading from the wand tip into the tissue -->
+<g fill="none" stroke="#DDC094" stroke-linecap="round">
+  <path stroke-width="5"   opacity=".95" d="M 737 268 A 30 30 0 0 0 737 328"/>
+  <path stroke-width="4.5" opacity=".72" d="M 737 250 A 48 48 0 0 0 737 346"/>
+  <path stroke-width="4"   opacity=".5"  d="M 737 232 A 66 66 0 0 0 737 364"/>
+  <path stroke-width="3.5" opacity=".3"  d="M 737 214 A 84 84 0 0 0 737 382"/>
+</g>
+
+<!-- the stimulator wand, resting against the cheek -->
+<g transform="rotate(30 800 334)">
+  <rect x="712" y="320" width="272" height="28" rx="14" fill="url(#wandg)"/>
+  <rect x="712" y="320" width="272" height="28" rx="14" fill="none" stroke="#BDB4A6" stroke-width="1.4"/>
+  <rect x="712" y="320" width="30" height="28" rx="14" fill="#2E2A24"/>
+  <line x1="792" y1="321" x2="792" y2="347" stroke="#C6BEB1" stroke-width="2"/>
+  <line x1="800" y1="321" x2="800" y2="347" stroke="#C6BEB1" stroke-width="2"/>
+  <rect x="962" y="326" width="22" height="16" rx="7" fill="#2E2A24"/>
+</g>
+
+<!-- cable trailing off to the control unit -->
+<path fill="none" stroke="#2E2A24" stroke-width="4" stroke-linecap="round" opacity=".8"
+      d="M 972 452 C 976 500 950 540 906 560 C 870 576 846 604 848 640"/>
+</svg>

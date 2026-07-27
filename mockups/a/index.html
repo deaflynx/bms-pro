@@ -177,6 +177,29 @@ h2{font-family:var(--d);font-weight:500;font-size:clamp(1.6rem,1.2rem+1.7vw,2.5r
 .card:hover .more svg{transform:translateX(3px)}
 .card .more svg{transition:transform .2s}
 
+/* ---------- how it works, with diagrams ---------- */
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+@media(max-width:820px){.how-grid{grid-template-columns:1fr}}
+.how{background:var(--panel-2);border:1px solid var(--rule);border-radius:12px;padding:1.3rem 1.4rem 1.5rem}
+.dia{width:100%;height:auto;max-width:none;margin-bottom:1.1rem;color:var(--led);fill:none;stroke:currentColor;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
+.dia .faint{stroke:rgba(255,255,255,.18);stroke-width:1.6}
+.dia .fillnode{fill:var(--led);stroke:none}
+.dia .dash{stroke-dasharray:5 5}
+.how h3{font-family:var(--d);font-weight:500;font-size:1.14rem;letter-spacing:.01em}
+.how p{font-size:.88rem;color:#A7B2B8;margin-top:.45rem}
+
+/* video: click-to-load facade, keeps the page light */
+.video-block{margin-top:clamp(2rem,4vw,3rem);max-width:900px}
+.video{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#080D10;border:1px solid var(--rule)}
+.video iframe,.video .facade{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video .facade{padding:0;display:block}
+.video .facade img{width:100%;height:100%;object-fit:cover;filter:brightness(.82);transition:transform .5s cubic-bezier(.22,1,.36,1),filter .3s}
+.video .facade:hover img{transform:scale(1.03);filter:brightness(.95)}
+.play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;background:var(--led);display:grid;place-items:center;box-shadow:0 8px 30px rgba(88,182,255,.5);transition:transform .25s;pointer-events:none}
+.video .facade:hover .play{transform:translate(-50%,-50%) scale(1.08)}
+.play svg{margin-left:4px}
+.video-cap{margin-top:.85rem;font-size:.8rem;color:var(--steel-2)}
+
 /* ---------- proof ---------- */
 .proof{background:var(--panel-2);border-top:1px solid var(--rule)}
 .proof-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center}
@@ -227,7 +250,7 @@ footer{border-top:1px solid var(--rule);padding:2.2rem 0;font-size:.82rem;color:
     <a class="brand" href="#"><img src="../../assets/img/logo.webp" alt=""> BMS PRO</a>
     <nav><ul>
       <li><a href="#lineup">Прилади</a></li>
-      <li><a href="#">Як це працює</a></li>
+      <li><a href="#how">Як це працює</a></li>
       <li><a href="#docs">Документи</a></li>
       <li><a href="#">Про нас</a></li>
       <li><a href="#">Контакти</a></li>
@@ -346,6 +369,71 @@ footer{border-top:1px solid var(--rule);padding:2.2rem 0;font-size:.82rem;color:
   </div>
 </section>
 
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Принцип дії</p>
+      <h2>Що робить вібрація з мʼязом</h2>
+      <p>Механічний вплив вібраціями певної частоти та амплітуди, спрямованими вздовж мʼязових волокон. На відміну від звичайного масажу, прилад імітує природну роботу мʼяза під час навантаження.</p>
+    </div>
+
+    <div class="how-grid">
+
+      <div class="how">
+        <svg class="dia" viewBox="0 0 210 96" role="img" aria-label="Схема: вібрація прискорює рух крові та лімфи в судині">
+          <path d="M8 30C58 16 152 16 202 30"/>
+          <path d="M8 70C58 84 152 84 202 70"/>
+          <path class="faint" d="M8 50h194"/>
+          <path d="M56 42l11 8-11 8"/>
+          <path d="M96 42l11 8-11 8"/>
+          <path d="M136 42l11 8-11 8"/>
+          <circle class="fillnode" cx="34" cy="50" r="4"/>
+          <circle class="fillnode" cx="176" cy="50" r="4" opacity=".45"/>
+        </svg>
+        <h3>Посилення кровообігу</h3>
+        <p>Вібрація діє як «периферичне серце», стимулюючи рух крові та лімфи в опрацьованій зоні.</p>
+      </div>
+
+      <div class="how">
+        <svg class="dia" viewBox="0 0 210 96" role="img" aria-label="Схема: механічна хвиля згасає, проходячи шари тканини">
+          <path d="M8 20c12-16 24 16 36 0s24 16 36 0 24 16 36 0 24 16 36 0 24 16 22 0"/>
+          <path d="M8 48c12-10 24 10 36 0s24 10 36 0 24 10 36 0 24 10 36 0 24 10 22 0" opacity=".62"/>
+          <path d="M8 76c12-5 24 5 36 0s24 5 36 0 24 5 36 0 24 5 36 0 24 5 22 0" opacity=".34"/>
+          <path class="faint dash" d="M8 34h194M8 62h194"/>
+        </svg>
+        <h3>Метаболічна активація</h3>
+        <p>Механічні хвилі прискорюють обмін речовин у тканинах і виведення продуктів розпаду.</p>
+      </div>
+
+      <div class="how">
+        <svg class="dia" viewBox="0 0 210 96" role="img" aria-label="Схема: двосторонній звʼязок між нервовою системою та мʼязом">
+          <circle cx="34" cy="48" r="20"/>
+          <path class="faint" d="M26 40c6 4 10 4 16 0M26 50c6 4 10 4 16 0M26 60c6 3 10 3 16 0"/>
+          <path d="M154 30c22 0 34 18 34 18s-12 18-34 18-34-18-34-18 12-18 34-18z"/>
+          <path class="faint" d="M132 48h44"/>
+          <path class="dash" d="M58 38h46"/><path d="M99 33l7 5-7 5"/>
+          <path class="dash" d="M104 58H58"/><path d="M64 53l-7 5 7 5"/>
+        </svg>
+        <h3>Нейромʼязовий відгук</h3>
+        <p>Стимуляція покращує звʼязок «мозок — мʼяз», що сприяє координації та тонусу.</p>
+      </div>
+
+    </div>
+
+    <div class="video-block">
+      <div class="video" data-yt="VV3J9_Tyth4">
+        <button class="facade" aria-label="Дивитися відео про біомеханічну стимуляцію на YouTube">
+          <img src="https://i.ytimg.com/vi/VV3J9_Tyth4/maxresdefault.jpg" alt="" loading="lazy">
+          <span class="play" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="#06232F" stroke="none"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+        </button>
+      </div>
+      <p class="video-cap">Відео: біомеханічна стимуляція мʼязів — принцип роботи приладу. Тимчасове відео для макета, буде замінено на власне.</p>
+    </div>
+  </div>
+</section>
+
 <section class="proof" id="docs">
   <div class="wrap proof-grid">
     <div>
@@ -427,6 +515,20 @@ function render(hz){
 
 input.addEventListener('input',e=>render(+e.target.value));
 render(+input.value);
+
+/* YouTube facade: the real iframe costs ~1 MB, so load it only on click */
+document.querySelectorAll('.video').forEach(function(box){
+  const btn=box.querySelector('.facade');
+  if(!btn) return;
+  btn.addEventListener('click',function(){
+    const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+box.dataset.yt+'?autoplay=1&rel=0';
+    f.title='Відео про біомеханічну стимуляцію';
+    f.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    f.allowFullscreen=true;
+    btn.replaceWith(f);
+  });
+});
 </script>
 </body>
 </html>

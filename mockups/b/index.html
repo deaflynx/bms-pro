@@ -8,16 +8,17 @@
 <meta name="description" content="Апарати біомеханічної стимуляції BMS для косметології, спорту та реабілітації. Виробництво ТОВ «УКРСИСТЕМС», Київ.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,300&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --plaster:#EDE7DF; --cream:#FBF8F4; --shell:#E2D9CD;
   --clay:#3E332C; --clay-soft:#6E5F52; --clay-mute:#9B8C7E;
-  --brass:#A8814E; --brass-soft:#C9A876;
+  --brass:#A8814E; --brass-soft:#C9A876; --brass-deep:#8A6737;
   --sage:#7E9184;
   --rule:rgba(62,51,44,.16); --rule-soft:rgba(62,51,44,.08);
-  --d:'Spectral',Georgia,serif;
+  --d:'Wix Madefor Display',system-ui,sans-serif;
   --b:'Onest',system-ui,sans-serif;
+  --r:14px; --r-sm:10px;
   --wrap:1160px;
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -31,19 +32,17 @@ body{
 img{max-width:100%;display:block;height:auto}
 a{color:inherit;text-decoration:none}
 ul{list-style:none;padding:0}
-:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+button{font:inherit;border:0;background:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:3px}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 .wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:clamp(1.1rem,4vw,2.5rem)}
 
-.eyebrow{
-  font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--brass)
-}
+.eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--brass-deep)}
 
 /* ---------- header ---------- */
 header{position:sticky;top:0;z-index:50;background:rgba(251,248,244,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule-soft)}
 .bar{display:flex;align-items:center;gap:clamp(1rem,3vw,2.5rem);height:72px}
-.brand{display:flex;align-items:center;gap:.65rem;font-family:var(--d);font-weight:600;font-size:1.3rem;letter-spacing:.01em}
+.brand{display:flex;align-items:center;gap:.65rem;font-family:var(--d);font-weight:600;font-size:1.24rem;letter-spacing:-.015em}
 .brand img{width:30px;height:30px;border-radius:50%}
 .brand small{display:block;font-family:var(--b);font-size:.6rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--clay-mute);line-height:1}
 nav ul{display:flex;gap:clamp(.9rem,2vw,1.9rem)}
@@ -52,51 +51,57 @@ nav a:hover{color:var(--clay);border-color:var(--brass)}
 .tel{margin-left:auto;display:inline-flex;align-items:center;gap:.5rem;font-size:.88rem;font-weight:600;color:var(--clay);white-space:nowrap;border-bottom:1px solid var(--brass);padding-bottom:2px}
 @media(max-width:920px){nav{display:none}}
 
-/* ---------- hero: full-bleed practice room, device inset ---------- */
-.hero{position:relative;background:var(--shell)}
-.hero-media{position:relative;height:clamp(400px,58vh,600px);overflow:hidden}
-.hero-media img{width:100%;height:100%;object-fit:cover;object-position:65% 50%;filter:saturate(.82) contrast(1.03)}
-@media(max-width:700px){.hero-media img{object-position:78% 50%}}
+/* ---------- hero: illustration with the copy in its open left space ---------- */
+.hero{position:relative;background:var(--plaster);overflow:hidden}
+.hero-media{position:relative;height:clamp(430px,60vh,620px)}
+.hero-media img{width:100%;height:100%;object-fit:cover;object-position:78% 50%}
 .hero-media::after{
   content:"";position:absolute;inset:0;
-  background:linear-gradient(100deg,rgba(48,39,32,.82) 0%,rgba(48,39,32,.5) 44%,rgba(48,39,32,.08) 78%)
+  background:linear-gradient(100deg,rgba(246,241,233,.96) 0%,rgba(246,241,233,.86) 30%,rgba(246,241,233,.35) 54%,rgba(246,241,233,0) 70%)
 }
 .hero-copy{position:absolute;inset:0;display:flex;align-items:center;z-index:2}
 .hero-copy .wrap{width:100%}
-.hero-copy .eyebrow{color:var(--brass-soft)}
 h1{
-  font-family:var(--d);font-weight:300;color:var(--cream);
-  font-size:clamp(2rem,1.2rem+3.5vw,3.9rem);line-height:1.08;
-  letter-spacing:-.012em;margin:1.1rem 0 0;max-width:20ch;text-wrap:balance
+  font-family:var(--d);font-weight:500;color:var(--clay);
+  font-size:clamp(1.95rem,1.2rem+3.3vw,3.6rem);line-height:1.1;
+  letter-spacing:-.028em;margin:1.1rem 0 0;max-width:19ch;text-wrap:balance
 }
-h1 em{font-style:italic;color:var(--brass-soft)}
-.hero-copy p.lede{margin-top:1.2rem;max-width:42ch;color:rgba(251,248,244,.84)}
+h1 em{font-style:normal;font-weight:400;color:var(--brass-deep)}
+.hero-copy p.lede{margin-top:1.2rem;max-width:40ch;color:var(--clay-soft)}
 .cta-row{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2rem}
-.btn{display:inline-flex;align-items:center;gap:.55rem;padding:.95rem 1.7rem;font-size:.94rem;font-weight:600;border-radius:2px;transition:background .2s,color .2s,transform .18s}
-.btn-1{background:var(--brass);color:#231C15}
-.btn-1:hover{background:var(--brass-soft);transform:translateY(-2px)}
-.btn-2{border:1px solid rgba(251,248,244,.45);color:var(--cream)}
-.btn-2:hover{background:rgba(251,248,244,.12)}
+.btn{display:inline-flex;align-items:center;gap:.55rem;padding:.95rem 1.7rem;font-size:.94rem;font-weight:600;border-radius:99px;transition:background .2s,color .2s,transform .18s,border-color .2s}
+.btn-1{background:var(--brass);color:#FFFCF7}
+.btn-1:hover{background:var(--brass-deep);transform:translateY(-2px)}
+.btn-2{border:1px solid var(--rule);color:var(--clay);background:rgba(251,248,244,.7)}
+.btn-2:hover{background:var(--cream);border-color:var(--clay-mute)}
+@media(max-width:820px){
+  .hero{display:flex;flex-direction:column-reverse}
+  .hero-copy{position:static;padding:2.4rem 0 2.6rem}
+  .hero-media{height:auto;aspect-ratio:10/7}
+  .hero-media::after{display:none}
+  h1{max-width:none}
+}
 
 /* strip under hero */
-.strip{background:rgba(251,248,244,.14);color:var(--cream)}
-.strip ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:1px}
+.strip{background:var(--clay);color:var(--cream)}
+.strip ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:1px;background:rgba(251,248,244,.16)}
 .strip li{background:var(--clay);padding:1.4rem clamp(.95rem,3vw,2rem)}
-.strip b{display:block;font-family:var(--d);font-size:1.5rem;font-weight:400;color:var(--brass-soft)}
+.strip b{display:block;font-family:var(--d);font-size:1.4rem;font-weight:500;letter-spacing:-.02em;color:var(--brass-soft)}
 .strip span{font-size:.78rem;color:rgba(251,248,244,.64)}
 
 section{padding:clamp(3.2rem,8vw,6rem) 0}
-h2{font-family:var(--d);font-weight:300;font-size:clamp(1.75rem,1.25rem+2vw,2.9rem);line-height:1.12;letter-spacing:-.01em;margin-top:.85rem}
+h2{font-family:var(--d);font-weight:500;font-size:clamp(1.7rem,1.25rem+1.9vw,2.7rem);line-height:1.16;letter-spacing:-.028em;margin-top:.85rem}
+h3{font-family:var(--d);font-weight:500;letter-spacing:-.02em}
 .sec-head{max-width:56ch}
 .sec-head p{margin-top:1rem;color:var(--clay-soft)}
 
-/* ---------- SIGNATURE: range as a typeset menu with body-zone diagrams ---------- */
+/* ---------- range as a typeset menu with body-zone diagrams ---------- */
 .range{margin-top:clamp(2rem,5vw,3.2rem);border-top:1px solid var(--rule)}
 .row{
   display:grid;grid-template-columns:74px 1fr 210px auto;
   gap:clamp(1rem,3vw,2.2rem);align-items:center;
-  padding:clamp(1.4rem,3vw,2rem) 0;border-bottom:1px solid var(--rule);
-  transition:background .25s
+  padding:clamp(1.4rem,3vw,2rem) clamp(.6rem,2vw,1.2rem);border-bottom:1px solid var(--rule);
+  border-radius:var(--r);transition:background .25s
 }
 .row:hover{background:var(--plaster)}
 @media(max-width:880px){
@@ -106,44 +111,60 @@ h2{font-family:var(--d);font-weight:300;font-size:clamp(1.75rem,1.25rem+2vw,2.9r
 }
 .figure-wrap{display:flex;justify-content:center}
 .figure-wrap svg{width:60px;height:auto}
-.silhouette .base{fill:var(--rule)}
 .silhouette .z{fill:var(--rule);transition:fill .3s}
 .silhouette .z.on{fill:var(--brass)}
-.row-main h3{font-family:var(--d);font-weight:400;font-size:clamp(1.3rem,1.1rem+.7vw,1.75rem);line-height:1.2}
+.silhouette .base{fill:var(--rule)}
+.row-main h3{font-size:clamp(1.28rem,1.1rem+.7vw,1.7rem);line-height:1.2}
 .row-main .zone{font-size:.74rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);margin-top:.3rem}
 .row-main p{font-size:.9rem;color:var(--clay-soft);margin-top:.55rem;max-width:52ch}
-.thumb{width:210px;aspect-ratio:4/3;overflow:hidden;border-radius:2px;background:var(--shell)}
+.thumb{width:210px;aspect-ratio:4/3;overflow:hidden;border-radius:var(--r-sm);background:var(--shell)}
 .thumb img{width:100%;height:100%;object-fit:cover;filter:saturate(.88);transition:transform .5s cubic-bezier(.22,1,.36,1)}
 .row:hover .thumb img{transform:scale(1.05)}
 @media(max-width:880px){.thumb{width:100%;max-width:210px}}
 .price{text-align:right;white-space:nowrap}
-.price b{display:block;font-family:var(--d);font-size:1.45rem;font-weight:400;font-feature-settings:"tnum"}
+.price b{display:block;font-family:var(--d);font-size:1.42rem;font-weight:600;letter-spacing:-.02em;font-feature-settings:"tnum"}
 .price span{font-size:.72rem;color:var(--clay-mute)}
-.price a{display:inline-block;margin-top:.3rem;padding:.35rem 0;font-size:.8rem;font-weight:600;color:var(--brass);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.price a{display:inline-block;margin-top:.3rem;padding:.35rem 0;font-size:.8rem;font-weight:600;color:var(--brass-deep);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
 
-/* ---------- applications ---------- */
+/* ---------- how it works / applications ---------- */
 .uses{background:var(--plaster)}
 .use-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.4rem,4vw,3rem);margin-top:clamp(2rem,5vw,3rem)}
 @media(max-width:820px){.use-grid{grid-template-columns:1fr;gap:1.8rem}}
 .use{border-top:2px solid var(--brass);padding-top:1.1rem}
-.use h3{font-family:var(--d);font-weight:400;font-size:1.32rem}
+.use h3{font-size:1.3rem}
 .use p{font-size:.9rem;color:var(--clay-soft);margin-top:.5rem}
+
+/* ---------- video: click-to-load facade, keeps the page light ---------- */
+.video-block{margin-top:clamp(2.2rem,5vw,3.2rem);max-width:900px}
+.video{position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:var(--clay);box-shadow:0 18px 44px -22px rgba(62,51,44,.55)}
+.video iframe,.video .facade{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video .facade{padding:0;display:block}
+.video .facade img{width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.86);transition:transform .5s cubic-bezier(.22,1,.36,1),filter .3s}
+.video .facade:hover img{transform:scale(1.03);filter:saturate(1) brightness(.95)}
+.play{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:74px;height:74px;border-radius:50%;background:rgba(251,248,244,.94);
+  display:grid;place-items:center;box-shadow:0 8px 26px rgba(0,0,0,.4);transition:transform .25s,background .2s;pointer-events:none
+}
+.video .facade:hover .play{transform:translate(-50%,-50%) scale(1.08);background:var(--cream)}
+.play svg{margin-left:4px}
+.video-cap{margin-top:.85rem;font-size:.82rem;color:var(--clay-mute)}
 
 /* ---------- founder quote ---------- */
 .quote-sec{background:var(--clay);color:var(--cream)}
 .quote-grid{display:grid;grid-template-columns:auto 1fr;gap:clamp(1.5rem,4vw,3rem);align-items:start;max-width:900px}
 @media(max-width:700px){.quote-grid{grid-template-columns:1fr}}
 .quote-grid img{width:88px;height:88px;border-radius:50%;object-fit:cover;border:1px solid rgba(251,248,244,.3)}
-blockquote{font-family:var(--d);font-weight:300;font-style:italic;font-size:clamp(1.15rem,1rem+1vw,1.6rem);line-height:1.45}
+blockquote{font-family:var(--d);font-weight:400;font-size:clamp(1.14rem,1rem+1vw,1.58rem);line-height:1.42;letter-spacing:-.02em}
 .quote-grid cite{display:block;margin-top:1.2rem;font-family:var(--b);font-style:normal;font-size:.85rem;color:var(--brass-soft);letter-spacing:.04em}
 
 /* ---------- docs ---------- */
 .doc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:clamp(1.8rem,4vw,2.6rem)}
 @media(max-width:760px){.doc-grid{grid-template-columns:1fr}}
-.doc{display:block;padding:1.4rem;background:var(--plaster);border:1px solid var(--rule-soft);border-radius:2px;transition:border-color .2s,transform .2s}
+.doc{display:block;padding:1.4rem;background:var(--plaster);border:1px solid var(--rule-soft);border-radius:var(--r);transition:border-color .2s,transform .2s}
 .doc:hover{border-color:var(--brass);transform:translateY(-3px)}
-.doc .tag{font-size:.62rem;font-weight:600;letter-spacing:.14em;color:var(--brass)}
-.doc b{display:block;font-family:var(--d);font-weight:400;font-size:1.16rem;margin-top:.5rem}
+.doc .tag{font-size:.62rem;font-weight:600;letter-spacing:.14em;color:var(--brass-deep)}
+.doc b{display:block;font-family:var(--d);font-weight:500;font-size:1.14rem;letter-spacing:-.02em;margin-top:.5rem}
 .doc span{display:block;font-size:.82rem;color:var(--clay-mute);margin-top:.3rem}
 .decl{margin-top:1.6rem;font-size:.86rem;color:var(--clay-soft)}
 .decl b{font-weight:600;color:var(--clay)}
@@ -152,9 +173,7 @@ blockquote{font-family:var(--d);font-weight:300;font-style:italic;font-size:clam
 .final{background:var(--plaster);text-align:center}
 .final h2{max-width:24ch;margin-inline:auto}
 .final .cta-row{justify-content:center}
-.final .btn-2{border-color:var(--rule);color:var(--clay)}
-.final .btn-2:hover{background:var(--cream)}
-.warn{margin:clamp(2rem,5vw,3rem) auto 0;max-width:70ch;text-align:left;padding:1.1rem 1.3rem;background:var(--cream);border-left:2px solid var(--brass);font-size:.82rem;color:var(--clay-soft)}
+.warn{margin:clamp(2rem,5vw,3rem) auto 0;max-width:70ch;text-align:left;padding:1.1rem 1.3rem;background:var(--cream);border-left:2px solid var(--brass);border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:.82rem;color:var(--clay-soft)}
 footer{background:var(--clay);color:rgba(251,248,244,.66);padding:2.6rem 0;font-size:.83rem}
 .foot-grid{display:flex;flex-wrap:wrap;gap:1.6rem;justify-content:space-between}
 
@@ -162,9 +181,9 @@ footer{background:var(--clay);color:rgba(251,248,244,.66);padding:2.6rem 0;font-
 @media(max-width:700px){
   .callbar{display:grid;grid-template-columns:1fr 1fr;position:fixed;bottom:0;left:0;right:0;z-index:60}
   .callbar a{padding:1rem;text-align:center;font-weight:600;font-size:.9rem;background:var(--clay);color:var(--cream)}
-  .callbar a:first-child{background:var(--brass);color:#231C15}
+  .callbar a:first-child{background:var(--brass);color:#FFFCF7}
   body{padding-bottom:56px}
-  .tel{display:none} /* the fixed call bar covers this on mobile */
+  .tel{display:none}
 }
 </style>
 </head>
@@ -186,7 +205,9 @@ footer{background:var(--clay);color:rgba(251,248,244,.66);padding:2.6rem 0;font-
 </header>
 
 <div class="hero">
-  <div class="hero-media"><img src="../../assets/img/room-wide.webp" alt="Кабінет косметології з кушеткою" fetchpriority="high"></div>
+  <div class="hero-media">
+    <img src="../../assets/img/bms-face-illustration.svg" alt="Стимуляція мʼязів обличчя приладом BMS" fetchpriority="high">
+  </div>
   <div class="hero-copy"><div class="wrap">
     <p class="eyebrow">Косметологія · Спорт · Реабілітація</p>
     <h1>Апарати біомеханічної стимуляції для <em>вашої практики</em></h1>
@@ -290,7 +311,7 @@ footer{background:var(--clay);color:rgba(251,248,244,.66);padding:2.6rem 0;font-
 <section class="uses" id="uses">
   <div class="wrap">
     <div class="sec-head">
-      <p class="eyebrow">Сфери застосування</p>
+      <p class="eyebrow">Як це працює</p>
       <h2>Де використовують прилади BMS</h2>
       <p>Біомеханічна стимуляція — механічний вплив на мʼязи вібраціями певної частоти й амплітуди, спрямованими вздовж мʼязових волокон.</p>
     </div>
@@ -298,6 +319,18 @@ footer{background:var(--clay);color:rgba(251,248,244,.66);padding:2.6rem 0;font-
       <div class="use"><h3>Косметологія</h3><p>Підтримка тонусу шкіри та мʼязів обличчя, процедури догляду й омолодження.</p></div>
       <div class="use"><h3>Спорт та фітнес</h3><p>Розминка й відновлення мʼязів до та після фізичних навантажень.</p></div>
       <div class="use"><h3>Реабілітація</h3><p>Підтримка мʼязового тонусу за умов малорухливого способу життя.</p></div>
+    </div>
+
+    <div class="video-block">
+      <div class="video" data-yt="VV3J9_Tyth4">
+        <button class="facade" aria-label="Дивитися відео про біомеханічну стимуляцію на YouTube">
+          <img src="https://i.ytimg.com/vi/VV3J9_Tyth4/maxresdefault.jpg" alt="" loading="lazy">
+          <span class="play" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="#3E332C"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+        </button>
+      </div>
+      <p class="video-cap">Відео: біомеханічна стимуляція мʼязів — принцип роботи приладу. Тимчасове відео для макета, буде замінено на власне.</p>
     </div>
   </div>
 </section>
@@ -352,5 +385,19 @@ footer{background:var(--clay);color:rgba(251,248,244,.66);padding:2.6rem 0;font-
   <a href="#range">Прилади</a>
 </div>
 
+<script>
+document.querySelectorAll('.video').forEach(function(box){
+  var btn=box.querySelector('.facade');
+  if(!btn) return;
+  btn.addEventListener('click',function(){
+    var f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+box.dataset.yt+'?autoplay=1&rel=0';
+    f.title='Відео про біомеханічну стимуляцію';
+    f.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    f.allowFullscreen=true;
+    btn.replaceWith(f);
+  });
+});
+</script>
 </body>
 </html>
