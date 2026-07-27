@@ -1,0 +1,190 @@
+---
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import JsonLd from '../components/JsonLd.astro';
+import Base from '../layouts/Base.astro';
+import { breadcrumbSchema, localBusinessSchema } from '../lib/schema';
+import { SITE, url } from '../lib/site';
+
+const path = '/contacts/';
+const trail = [
+  { name: 'Головна', href: '/' },
+  { name: 'Контакти', href: path },
+];
+const abs = (p: string) => new URL(url(p), Astro.site).href;
+
+const mapQuery = encodeURIComponent(
+  `${SITE.address.postalCode}, ${SITE.address.city}, ${SITE.address.street}`,
+);
+---
+
+<Base
+  title="Контакти — BMS Pro, Київ | ТОВ «УКРСИСТЕМС»"
+  description="Телефони +380 50 546 00 77 і +380 68 546 00 77, email stymulation.kyiv@gmail.com, адреса 02099, Київ, вул. Бориспільська 11а, оф. 206."
+  canonicalPath={path}
+>
+  <Fragment slot="head">
+    <JsonLd data={localBusinessSchema()} />
+    <JsonLd data={breadcrumbSchema(trail.map((c) => ({ name: c.name, url: abs(c.href) })))} />
+  </Fragment>
+
+  <div class="wrap"><Breadcrumbs trail={trail} /></div>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Контакти</p>
+        <h1>Зателефонуйте нам</h1>
+        <p>
+          Замовлення оформлюються телефоном — онлайн-кошика на сайті немає. Розкажемо, чим
+          відрізняються моделі, підтвердимо вартість і терміни виготовлення.
+        </p>
+      </div>
+
+      <div class="cards">
+        <a class="card call" href={`tel:${SITE.phonePrimary}`}>
+          <span class="label">Основний телефон</span>
+          <b>{SITE.phonePrimaryDisplay}</b>
+          <span class="hint">Натисніть, щоб зателефонувати</span>
+        </a>
+        <a class="card" href={`tel:${SITE.phoneSecondary}`}>
+          <span class="label">Додатковий телефон</span>
+          <b>{SITE.phoneSecondaryDisplay}</b>
+        </a>
+        <a class="card" href={`mailto:${SITE.email}`}>
+          <span class="label">Email</span>
+          <b>{SITE.email}</b>
+        </a>
+        <div class="card">
+          <span class="label">Адреса</span>
+          <b>{SITE.address.postalCode}, м. {SITE.address.city}</b>
+          <span class="hint">{SITE.address.street}</span>
+          <a
+            class="maplink"
+            href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`}
+            target="_blank"
+            rel="noopener"
+          >
+            Відкрити на карті
+          </a>
+        </div>
+      </div>
+
+      <div class="entity">
+        <h2>Виробник</h2>
+        <dl>
+          <dt>Юридична особа</dt><dd>{SITE.legalName}</dd>
+          <dt>Декларація</dt><dd>{SITE.declaration} · {SITE.declarationDateDisplay}</dd>
+          <dt>Технічні умови</dt><dd>{SITE.tu}</dd>
+        </dl>
+      </div>
+
+      <Disclaimer />
+    </div>
+  </section>
+</Base>
+
+<style>
+  h1 {
+    margin-top: 0.9rem;
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem);
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 1.3rem 1.4rem;
+    background: var(--panel-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    transition:
+      border-color 0.2s,
+      transform 0.2s;
+  }
+  a.card:hover {
+    border-color: var(--led);
+    transform: translateY(-3px);
+  }
+  .card.call {
+    background: var(--led-dim);
+    border-color: rgba(88, 182, 255, 0.4);
+  }
+  .label {
+    font-family: var(--m);
+    font-size: 0.64rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--steel-2);
+  }
+  .card b {
+    font-family: var(--m);
+    font-size: 1.06rem;
+    font-weight: 700;
+    word-break: break-word;
+  }
+  .card.call b {
+    color: var(--led-glow);
+    font-size: 1.16rem;
+  }
+  .hint {
+    font-size: 0.78rem;
+    color: var(--steel-2);
+  }
+  .maplink {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--led);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    align-self: flex-start;
+  }
+
+  .entity {
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    max-width: 640px;
+  }
+  .entity h2 {
+    font-size: clamp(1.3rem, 1.15rem + 0.8vw, 1.7rem);
+    margin-bottom: 1rem;
+  }
+  dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+    padding: 1.2rem;
+    background: var(--panel-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+  }
+  @media (max-width: 560px) {
+    dl {
+      grid-template-columns: 1fr;
+      gap: 0.15rem;
+    }
+    dd {
+      margin-bottom: 0.6rem;
+    }
+  }
+  dt {
+    font-family: var(--m);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--steel-2);
+    padding-top: 0.25rem;
+  }
+  dd {
+    margin: 0;
+  }
+  section :global(.warn) {
+    margin-top: clamp(2rem, 5vw, 3rem);
+    margin-inline: 0;
+  }
+</style>

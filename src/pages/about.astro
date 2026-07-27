@@ -1,0 +1,174 @@
+---
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import JsonLd from '../components/JsonLd.astro';
+import Base from '../layouts/Base.astro';
+import { breadcrumbSchema } from '../lib/schema';
+import { SITE, url } from '../lib/site';
+
+const path = '/about/';
+const trail = [
+  { name: 'Головна', href: '/' },
+  { name: 'Про нас', href: path },
+];
+const abs = (p: string) => new URL(url(p), Astro.site).href;
+---
+
+<Base
+  title="Про нас — ТОВ «УКРСИСТЕМС», виробник приладів BMS | BMS Pro"
+  description="Прилади біомеханічної стимуляції BMS виготовляє ТОВ «УКРСИСТЕМС» у Києві. Декларація UA.TR.D.00159-25, ТУ У 27.9-2294811615-001:2025."
+  canonicalPath={path}
+>
+  <Fragment slot="head">
+    <JsonLd data={breadcrumbSchema(trail.map((c) => ({ name: c.name, url: abs(c.href) })))} />
+  </Fragment>
+
+  <div class="wrap"><Breadcrumbs trail={trail} /></div>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Виробник</p>
+        <h1>Власне виробництво в Києві</h1>
+        <p>
+          Прилади біомеханічної стимуляції BMS виготовляє {SITE.legalName}. Виробництво,
+          складання й обслуговування — у Києві.
+        </p>
+      </div>
+
+      <div class="quote-grid">
+        <img src={url('/assets/img/babak.webp')} alt="Олександр Бабак" width="147" height="147" />
+        <div>
+          <blockquote>
+            «На відміну від звичайного масажу, прилад BMS імітує природну роботу мʼязів під час
+            фізичних навантажень — і дозволяє активувати глибокі процеси в організмі без
+            виснажливих тренувань.»
+          </blockquote>
+          <cite>Олександр Бабак · BMS Pro, {SITE.legalName}</cite>
+        </div>
+      </div>
+
+      <div class="facts">
+        <h2>Реєстраційні дані</h2>
+        <dl>
+          <dt>Виробник</dt><dd>{SITE.legalName}</dd>
+          <dt>Декларація відповідності</dt><dd>{SITE.declaration}</dd>
+          <dt>Дата реєстрації</dt><dd>{SITE.declarationDateDisplay}</dd>
+          <dt>Технічні умови</dt><dd>{SITE.tu}</dd>
+          <dt>Код ДКПП</dt><dd>27.90.1</dd>
+          <dt>Адреса</dt>
+          <dd>{SITE.address.postalCode}, м. {SITE.address.city}, {SITE.address.street}</dd>
+        </dl>
+        <p class="more">
+          Повний текст паспорта, декларації та технічних умов —
+          <a href={url('/documents/')}>у розділі «Документи»</a>.
+        </p>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn btn-1" href={`tel:${SITE.phonePrimary}`}>☎ {SITE.phonePrimaryDisplay}</a>
+        <a class="btn btn-2" href={url('/products/')}>Переглянути прилади</a>
+      </div>
+
+      <Disclaimer />
+    </div>
+  </section>
+</Base>
+
+<style>
+  h1 {
+    margin-top: 0.9rem;
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem);
+  }
+  .quote-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(1.3rem, 3vw, 2.4rem);
+    align-items: start;
+    max-width: 860px;
+    padding: clamp(1.4rem, 3vw, 2rem);
+    background: var(--panel-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+  }
+  @media (max-width: 700px) {
+    .quote-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .quote-grid img {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--rule);
+  }
+  blockquote {
+    font-family: var(--d);
+    font-weight: 400;
+    font-size: clamp(1.05rem, 0.98rem + 0.6vw, 1.4rem);
+    line-height: 1.45;
+  }
+  cite {
+    display: block;
+    margin-top: 1.1rem;
+    font-family: var(--m);
+    font-style: normal;
+    font-size: 0.76rem;
+    color: var(--led);
+    letter-spacing: 0.04em;
+  }
+
+  .facts {
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    max-width: 700px;
+  }
+  .facts h2 {
+    font-size: clamp(1.4rem, 1.2rem + 1vw, 1.9rem);
+    margin-bottom: 1.2rem;
+  }
+  dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.7rem 1.6rem;
+    font-size: 0.92rem;
+    padding: 1.2rem;
+    background: var(--panel-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+  }
+  @media (max-width: 560px) {
+    dl {
+      grid-template-columns: 1fr;
+      gap: 0.15rem;
+    }
+    dd {
+      margin-bottom: 0.7rem;
+    }
+  }
+  dt {
+    font-family: var(--m);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--steel-2);
+    padding-top: 0.25rem;
+  }
+  dd {
+    margin: 0;
+  }
+  .more {
+    margin-top: 1rem;
+    font-size: 0.88rem;
+    color: var(--body-soft);
+  }
+  .more a {
+    color: var(--led);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  section :global(.warn) {
+    margin-top: clamp(2rem, 5vw, 3rem);
+    margin-inline: 0;
+  }
+</style>

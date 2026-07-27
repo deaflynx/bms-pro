@@ -1,0 +1,114 @@
+---
+import { getCollection } from 'astro:content';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import JsonLd from '../components/JsonLd.astro';
+import Base from '../layouts/Base.astro';
+import { breadcrumbSchema, faqSchema } from '../lib/schema';
+import { SITE, url } from '../lib/site';
+
+const faq = (await getCollection('faq')).sort((a, b) => a.data.order - b.data.order);
+const path = '/faq/';
+
+const trail = [
+  { name: 'Головна', href: '/' },
+  { name: 'Питання та відповіді', href: path },
+];
+const abs = (p: string) => new URL(url(p), Astro.site).href;
+---
+
+<Base
+  title="Питання та відповіді про прилади BMS | BMS Pro"
+  description="Чи є прилади BMS медичними виробами, які протипоказання, скільки триває сеанс, яка гарантія, як замовити — відповіді на найчастіші питання."
+  canonicalPath={path}
+>
+  <Fragment slot="head">
+    <JsonLd
+      data={faqSchema(faq.map((q) => ({ question: q.data.question, answer: q.body ?? '' })))}
+    />
+    <JsonLd data={breadcrumbSchema(trail.map((c) => ({ name: c.name, url: abs(c.href) })))} />
+  </Fragment>
+
+  <div class="wrap"><Breadcrumbs trail={trail} /></div>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Питання та відповіді</p>
+        <h1>Часті питання</h1>
+        <p>
+          Якщо потрібної відповіді тут немає — зателефонуйте {SITE.phonePrimaryDisplay}, з
+          задоволенням відповімо.
+        </p>
+      </div>
+
+      <div class="faq">
+        {
+          faq.map((q, i) => (
+            <details open={i === 0}>
+              <summary>{q.data.question}</summary>
+              <div class="answer">{q.body}</div>
+            </details>
+          ))
+        }
+      </div>
+
+      <div class="cta-row">
+        <a class="btn btn-1" href={`tel:${SITE.phonePrimary}`}>☎ {SITE.phonePrimaryDisplay}</a>
+        <a class="btn btn-2" href={url('/products/')}>Переглянути прилади</a>
+      </div>
+
+      <Disclaimer />
+    </div>
+  </section>
+</Base>
+
+<style>
+  h1 {
+    margin-top: 0.9rem;
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem);
+  }
+  .faq {
+    max-width: 76ch;
+    border-top: 1px solid var(--rule);
+  }
+  details {
+    border-bottom: 1px solid var(--rule);
+  }
+  summary {
+    cursor: pointer;
+    padding: 1.15rem 0;
+    font-family: var(--d);
+    font-weight: 500;
+    font-size: clamp(1.02rem, 0.98rem + 0.3vw, 1.18rem);
+    list-style: none;
+    display: flex;
+    gap: 0.9rem;
+    align-items: baseline;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::before {
+    content: '+';
+    font-family: var(--m);
+    color: var(--led);
+    flex: none;
+  }
+  details[open] summary::before {
+    content: '−';
+  }
+  summary:hover {
+    color: var(--led);
+  }
+  .answer {
+    padding: 0 0 1.3rem 1.8rem;
+    color: var(--body-soft);
+    font-size: 0.93rem;
+    max-width: 66ch;
+  }
+  section :global(.warn) {
+    margin-top: clamp(2rem, 5vw, 3rem);
+    margin-inline: 0;
+  }
+</style>
