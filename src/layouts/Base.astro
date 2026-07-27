@@ -3,6 +3,9 @@ import '../styles/global.css';
 import CallBar from '../components/CallBar.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import JsonLd from '../components/JsonLd.astro';
+import Seo from '../components/Seo.astro';
+import { organizationSchema } from '../lib/schema';
 
 interface Props {
   title: string;
@@ -20,6 +23,13 @@ const { title, description, canonicalPath, ogImage } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <Seo
+      title={title}
+      description={description}
+      canonicalPath={canonicalPath}
+      ogImage={ogImage}
+    />
+    <JsonLd data={organizationSchema()} />
     <link rel="icon" href={`${import.meta.env.BASE_URL}assets/img/logo.webp`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

@@ -1,0 +1,30 @@
+---
+import { SITE, url } from '../lib/site';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath: string;
+  ogImage?: string;
+}
+const { title, description, canonicalPath, ogImage } = Astro.props;
+
+// Astro.site is the origin only — it does NOT include `base`, so the path must
+// go through url() first or every canonical drops the /bms-pro/ prefix.
+// Absolute URLs are required: scrapers ignore a relative og:image.
+const canonical = new URL(url(canonicalPath), Astro.site).href;
+const image = new URL(url(ogImage ?? '/og/default.png'), Astro.site).href;
+---
+
+<link rel="canonical" href={canonical} />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:locale" content="uk_UA" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={image} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
