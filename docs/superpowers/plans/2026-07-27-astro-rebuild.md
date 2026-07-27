@@ -16,7 +16,7 @@ Every task's requirements implicitly include this section.
 
 - **Language:** Ukrainian only. `<html lang="uk">`. No locale prefix, no hreflang, no English strings in user-facing copy.
 - **TypeScript must be `^5.9.3`.** `@astrojs/check` declares `peerDependencies: { typescript: "^5.0.0 || ^6.0.0" }` — TypeScript 7 is incompatible. Do not upgrade.
-- **Zod comes from `astro:content`,** not a direct dependency. Astro 7 bundles `zod@^4.3.6`; importing a second copy breaks schema identity.
+- **Zod comes from `astro/zod`,** not a direct dependency and not `astro:content`. Astro 7 bundles zod and re-exports it at `astro/zod`; `import { z } from 'astro:content'` is deprecated and removed in Astro 8, and a separately installed copy breaks schema identity.
 - **Base path is configurable.** `base: process.env.BASE_PATH ?? '/bms-pro/'`. GitHub Pages needs `/bms-pro/`; production root needs `/`. Never hardcode either. All internal links go through the `url()` helper from Task 3.
 - **Primary phone is `+380505460077`** on every CTA. Display format `+380 50 546 00 77`. Secondary `+380685460077`.
 - **Canonical organisation is ТОВ «УКРСИСТЕМС».** Declaration `UA.TR.D.00159-25`, registered 24.07.2025. ТУ `ТУ У 27.9-2294811615-001:2025`.
