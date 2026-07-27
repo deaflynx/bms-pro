@@ -139,9 +139,8 @@ describe('contacts', () => {
 describe('about', () => {
   const html = read('about');
 
-  it('names the manufacturer and the founder', () => {
+  it('names the manufacturer', () => {
     expect(html).toContain('ТОВ «УКРСИСТЕМС»');
-    expect(html).toContain('Олександр Бабак');
   });
   it('states the declaration facts', () => {
     expect(html).toContain('UA.TR.D.00159-25');

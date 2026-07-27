@@ -36,18 +36,6 @@ const abs = (p: string) => new URL(url(p), Astro.site).href;
         </p>
       </div>
 
-      <div class="quote-grid">
-        <img src={url('/assets/img/babak.webp')} alt="Олександр Бабак" width="147" height="147" />
-        <div>
-          <blockquote>
-            «На відміну від звичайного масажу, прилад BMS імітує природну роботу мʼязів під час
-            фізичних навантажень — і дозволяє активувати глибокі процеси в організмі без
-            виснажливих тренувань.»
-          </blockquote>
-          <cite>Олександр Бабак · BMS Pro, {SITE.legalName}</cite>
-        </div>
-      </div>
-
       <div class="facts">
         <h2>Реєстраційні дані</h2>
         <dl>
@@ -61,7 +49,7 @@ const abs = (p: string) => new URL(url(p), Astro.site).href;
         </dl>
         <p class="more">
           Повний текст паспорта, декларації та технічних умов —
-          <a href={url('/documents/')}>у розділі «Документи»</a>.
+          <a href={url('/documents/')}>у розділі «Технічна документація»</a>.
         </p>
       </div>
 
@@ -80,47 +68,7 @@ const abs = (p: string) => new URL(url(p), Astro.site).href;
     margin-top: 0.9rem;
     font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem);
   }
-  .quote-grid {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: clamp(1.3rem, 3vw, 2.4rem);
-    align-items: start;
-    max-width: 860px;
-    padding: clamp(1.4rem, 3vw, 2rem);
-    background: var(--panel-2);
-    border: 1px solid var(--rule);
-    border-radius: var(--r);
-  }
-  @media (max-width: 700px) {
-    .quote-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-  .quote-grid img {
-    width: 88px;
-    height: 88px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid var(--rule);
-  }
-  blockquote {
-    font-family: var(--d);
-    font-weight: 400;
-    font-size: clamp(1.05rem, 0.98rem + 0.6vw, 1.4rem);
-    line-height: 1.45;
-  }
-  cite {
-    display: block;
-    margin-top: 1.1rem;
-    font-family: var(--m);
-    font-style: normal;
-    font-size: 0.76rem;
-    color: var(--led);
-    letter-spacing: 0.04em;
-  }
-
   .facts {
-    margin-top: clamp(2.5rem, 6vw, 4rem);
     max-width: 700px;
   }
   .facts h2 {

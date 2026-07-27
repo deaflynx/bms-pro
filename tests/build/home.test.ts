@@ -15,12 +15,17 @@ describe('homepage', () => {
     expect(markup).not.toMatch(/class="instrument/);
   });
 
-  it('defines biomechanical stimulation above the lineup', () => {
+  it('defines biomechanical stimulation above the comparison', () => {
     expect(markup).toContain('Що таке біомеханічна стимуляція');
     expect(markup).toContain('уздовж мʼязових волокон');
     expect(markup.indexOf('Що таке біомеханічна стимуляція')).toBeLessThan(
-      markup.indexOf('id="lineup"'),
+      markup.indexOf('id="compare"'),
     );
+  });
+
+  it('presents the lineup once, through the matrix', () => {
+    expect(markup.match(/Який прилад вам потрібен/g)).toHaveLength(1);
+    expect(markup).not.toContain('id="lineup"');
   });
 
   it('renders all four product cards linking to their pages', () => {

@@ -41,7 +41,7 @@ export const SITE = {
 export const NAV = [
   { href: '/products/', label: 'Прилади' },
   { href: '/how-it-works/', label: 'Як це працює' },
-  { href: '/documents/', label: 'Документи' },
+  { href: '/documents/', label: 'Технічна документація' },
   { href: '/about/', label: 'Про нас' },
   { href: '/contacts/', label: 'Контакти' },
 ] as const;

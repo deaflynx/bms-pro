@@ -22,13 +22,13 @@ function docFor(model: string, type: string) {
 
 const trail = [
   { name: 'Головна', href: '/' },
-  { name: 'Документи', href: '/documents/' },
+  { name: 'Технічна документація', href: '/documents/' },
 ];
 const abs = (p: string) => new URL(url(p), Astro.site).href;
 ---
 
 <Base
-  title="Документи на прилади BMS — паспорт, декларація, технічні умови | BMS Pro"
+  title="Технічна документація на прилади BMS — паспорт, декларація, ТУ | BMS Pro"
   description="Паспорт, декларація відповідності UA.TR.D.00159-25 та технічні умови ТУ У 27.9-2294811615-001:2025. Повний текст і PDF."
   canonicalPath="/documents/"
 >
@@ -41,7 +41,7 @@ const abs = (p: string) => new URL(url(p), Astro.site).href;
   <section>
     <div class="wrap">
       <div class="sec-head">
-        <p class="eyebrow">Документи</p>
+        <p class="eyebrow">Технічна документація</p>
         <h1>Документація на прилади BMS</h1>
         <p>
           Повний текст кожного документа опублікований на сайті, PDF доступний для
