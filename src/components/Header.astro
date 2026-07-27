@@ -1,0 +1,110 @@
+---
+import { NAV, SITE, url } from '../lib/site';
+
+interface Props {
+  path: string;
+}
+const { path } = Astro.props;
+---
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href={url('/')}>
+      <img src={url('/assets/img/logo.webp')} alt="" width="26" height="26" /> BMS PRO
+    </a>
+    <nav aria-label="Головна навігація">
+      <ul>
+        {
+          NAV.map((item) => (
+            <li>
+              <a href={url(item.href)} aria-current={path === item.href ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <a class="tel" href={`tel:${SITE.phonePrimary}`}>☎ {SITE.phonePrimaryDisplay}</a>
+  </div>
+</header>
+
+<style>
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(14, 20, 23, 0.82);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    height: 66px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--d);
+    font-weight: 600;
+    font-size: 1.16rem;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .brand img {
+    border-radius: 5px;
+  }
+  nav ul {
+    display: flex;
+    gap: clamp(0.9rem, 2vw, 1.8rem);
+  }
+  nav a {
+    font-size: 0.85rem;
+    color: #c7d1d6;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid transparent;
+    transition:
+      color 0.2s,
+      border-color 0.2s;
+  }
+  nav a:hover,
+  nav a[aria-current='page'] {
+    color: var(--paper);
+    border-color: var(--led);
+  }
+  .tel {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--m);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 0.6rem 1rem;
+    border: 1px solid rgba(88, 182, 255, 0.4);
+    border-radius: 6px;
+    color: var(--led-glow);
+    background: var(--led-dim);
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .tel:hover {
+    background: rgba(88, 182, 255, 0.22);
+  }
+  @media (max-width: 900px) {
+    nav {
+      display: none;
+    }
+  }
+  /* Below 700px the fixed call bar covers calling, and this button would
+     otherwise overflow the viewport. */
+  @media (max-width: 700px) {
+    .tel {
+      display: none;
+    }
+  }
+</style>

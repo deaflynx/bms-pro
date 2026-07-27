@@ -1,0 +1,29 @@
+/* Design tokens for direction A «Частота».
+   The accent is the blue of the device's own 7-segment indicator, and the
+   amber is its potentiometer — the palette comes from the hardware. */
+:root {
+  --panel: #0e1417;
+  --panel-2: #151e23;
+  --panel-3: #1d282e;
+
+  --led: #58b6ff;
+  --led-dim: rgba(88, 182, 255, 0.13);
+  --led-glow: #a9deff;
+  --amber: #f0a93b;
+
+  --steel: #8a98a0;
+  --steel-2: #5c686e;
+  --paper: #f2f0eb;
+  --body-soft: #b0bbc1;
+  --body-mute: #a7b2b8;
+
+  --rule: rgba(255, 255, 255, 0.1);
+
+  --d: 'Oswald', system-ui, sans-serif;
+  --b: 'Onest', system-ui, sans-serif;
+  --m: 'JetBrains Mono', ui-monospace, monospace;
+
+  --wrap: 1200px;
+  --r: 12px;
+  --r-lg: 14px;
+}

@@ -1,16 +1,24 @@
 ---
-const title = 'BMS Pro — системи біомеханічної стимуляції';
+import Disclaimer from '../components/Disclaimer.astro';
+import Base from '../layouts/Base.astro';
+import { SITE } from '../lib/site';
 ---
 
-<!doctype html>
-<html lang="uk">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-  </head>
-  <body>
-    <h1>{title}</h1>
-    <p>Сайт у розробці.</p>
-  </body>
-</html>
+<Base
+  title="BMS Pro — системи біомеханічної стимуляції"
+  description="Прилади BMS для механічної стимуляції мʼязів у діапазоні 20–40 Гц. Виробництво ТОВ «УКРСИСТЕМС», Київ."
+  canonicalPath="/"
+>
+  <section class="wrap">
+    <p class="eyebrow">Біомеханічна стимуляція · Київ</p>
+    <h1>Механічна стимуляція мʼязів на частоті <em>20–40 Гц</em></h1>
+    <p class="lede">
+      Прилади BMS передають вібрацію вздовж мʼязового волокна. Частоту ви обираєте самі —
+      регулятором на панелі, як на справжньому приладі.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-1" href={`tel:${SITE.phonePrimary}`}>Зателефонувати</a>
+    </div>
+    <div style="margin-top:3rem"><Disclaimer /></div>
+  </section>
+</Base>
