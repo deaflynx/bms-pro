@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>BMS Pro — макет Б «Практика»</title>
+<meta name="description" content="Апарати біомеханічної стимуляції BMS для косметології, спорту та реабілітації. Виробництво ТОВ «УКРСИСТЕМС», Київ.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,300&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --plaster:#EDE7DF; --cream:#FBF8F4; --shell:#E2D9CD;
+  --clay:#3E332C; --clay-soft:#6E5F52; --clay-mute:#9B8C7E;
+  --brass:#A8814E; --brass-soft:#C9A876;
+  --sage:#7E9184;
+  --rule:rgba(62,51,44,.16); --rule-soft:rgba(62,51,44,.08);
+  --d:'Spectral',Georgia,serif;
+  --b:'Onest',system-ui,sans-serif;
+  --wrap:1160px;
+}
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--cream);color:var(--clay);font-family:var(--b);
+  line-height:1.68;font-size:clamp(.97rem,.94rem+.15vw,1.06rem);
+  -webkit-font-smoothing:antialiased
+}
+img{max-width:100%;display:block;height:auto}
+a{color:inherit;text-decoration:none}
+ul{list-style:none;padding:0}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:clamp(1.1rem,4vw,2.5rem)}
+
+.eyebrow{
+  font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--brass)
+}
+
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:50;background:rgba(251,248,244,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule-soft)}
+.bar{display:flex;align-items:center;gap:clamp(1rem,3vw,2.5rem);height:72px}
+.brand{display:flex;align-items:center;gap:.65rem;font-family:var(--d);font-weight:600;font-size:1.3rem;letter-spacing:.01em}
+.brand img{width:30px;height:30px;border-radius:50%}
+.brand small{display:block;font-family:var(--b);font-size:.6rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--clay-mute);line-height:1}
+nav ul{display:flex;gap:clamp(.9rem,2vw,1.9rem)}
+nav a{font-size:.88rem;color:var(--clay-soft);padding-bottom:2px;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+nav a:hover{color:var(--clay);border-color:var(--brass)}
+.tel{margin-left:auto;display:inline-flex;align-items:center;gap:.5rem;font-size:.88rem;font-weight:600;color:var(--clay);white-space:nowrap;border-bottom:1px solid var(--brass);padding-bottom:2px}
+@media(max-width:920px){nav{display:none}}
+
+/* ---------- hero: full-bleed practice room, device inset ---------- */
+.hero{position:relative;background:var(--shell)}
+.hero-media{position:relative;height:clamp(400px,58vh,600px);overflow:hidden}
+.hero-media img{width:100%;height:100%;object-fit:cover;filter:saturate(.82) contrast(1.03)}
+.hero-media::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(100deg,rgba(48,39,32,.82) 0%,rgba(48,39,32,.5) 44%,rgba(48,39,32,.08) 78%)
+}
+.hero-copy{position:absolute;inset:0;display:flex;align-items:center;z-index:2}
+.hero-copy .wrap{width:100%}
+.hero-copy .eyebrow{color:var(--brass-soft)}
+h1{
+  font-family:var(--d);font-weight:300;color:var(--cream);
+  font-size:clamp(2rem,1.2rem+3.5vw,3.9rem);line-height:1.08;
+  letter-spacing:-.012em;margin:1.1rem 0 0;max-width:20ch;text-wrap:balance
+}
+h1 em{font-style:italic;color:var(--brass-soft)}
+.hero-copy p.lede{margin-top:1.2rem;max-width:42ch;color:rgba(251,248,244,.84)}
+.cta-row{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2rem}
+.btn{display:inline-flex;align-items:center;gap:.55rem;padding:.95rem 1.7rem;font-size:.94rem;font-weight:600;border-radius:2px;transition:background .2s,color .2s,transform .18s}
+.btn-1{background:var(--brass);color:#231C15}
+.btn-1:hover{background:var(--brass-soft);transform:translateY(-2px)}
+.btn-2{border:1px solid rgba(251,248,244,.45);color:var(--cream)}
+.btn-2:hover{background:rgba(251,248,244,.12)}
+
+/* strip under hero */
+.strip{background:var(--clay);color:var(--cream)}
+.strip ul{display:flex;flex-wrap:wrap}
+.strip li{flex:1 1 auto;min-width:170px;padding:1.4rem clamp(1.1rem,3vw,2rem);border-right:1px solid rgba(251,248,244,.14)}
+.strip li:last-child{border-right:0}
+.strip b{display:block;font-family:var(--d);font-size:1.5rem;font-weight:400;color:var(--brass-soft)}
+.strip span{font-size:.78rem;color:rgba(251,248,244,.64)}
+
+section{padding:clamp(3.2rem,8vw,6rem) 0}
+h2{font-family:var(--d);font-weight:300;font-size:clamp(1.75rem,1.25rem+2vw,2.9rem);line-height:1.12;letter-spacing:-.01em;margin-top:.85rem}
+.sec-head{max-width:56ch}
+.sec-head p{margin-top:1rem;color:var(--clay-soft)}
+
+/* ---------- SIGNATURE: range as a typeset menu with body-zone diagrams ---------- */
+.range{margin-top:clamp(2rem,5vw,3.2rem);border-top:1px solid var(--rule)}
+.row{
+  display:grid;grid-template-columns:74px 1fr 210px auto;
+  gap:clamp(1rem,3vw,2.2rem);align-items:center;
+  padding:clamp(1.4rem,3vw,2rem) 0;border-bottom:1px solid var(--rule);
+  transition:background .25s
+}
+.row:hover{background:var(--plaster)}
+@media(max-width:880px){
+  .row{grid-template-columns:64px 1fr;gap:1rem 1.3rem}
+  .row .thumb{grid-column:1/2;grid-row:2}
+  .row .price{grid-column:2/3;grid-row:2;text-align:left;align-self:end}
+}
+.figure-wrap{display:flex;justify-content:center}
+.figure-wrap svg{width:60px;height:auto}
+.silhouette .base{fill:var(--rule)}
+.silhouette .z{fill:var(--rule);transition:fill .3s}
+.silhouette .z.on{fill:var(--brass)}
+.row-main h3{font-family:var(--d);font-weight:400;font-size:clamp(1.3rem,1.1rem+.7vw,1.75rem);line-height:1.2}
+.row-main .zone{font-size:.74rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);margin-top:.3rem}
+.row-main p{font-size:.9rem;color:var(--clay-soft);margin-top:.55rem;max-width:52ch}
+.thumb{width:210px;aspect-ratio:4/3;overflow:hidden;border-radius:2px;background:var(--shell)}
+.thumb img{width:100%;height:100%;object-fit:cover;filter:saturate(.88);transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.row:hover .thumb img{transform:scale(1.05)}
+@media(max-width:880px){.thumb{width:100%;max-width:210px}}
+.price{text-align:right;white-space:nowrap}
+.price b{display:block;font-family:var(--d);font-size:1.45rem;font-weight:400;font-feature-settings:"tnum"}
+.price span{font-size:.72rem;color:var(--clay-mute)}
+.price a{display:inline-block;margin-top:.5rem;font-size:.8rem;font-weight:600;color:var(--brass);border-bottom:1px solid currentColor}
+
+/* ---------- applications ---------- */
+.uses{background:var(--plaster)}
+.use-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.4rem,4vw,3rem);margin-top:clamp(2rem,5vw,3rem)}
+@media(max-width:820px){.use-grid{grid-template-columns:1fr;gap:1.8rem}}
+.use{border-top:2px solid var(--brass);padding-top:1.1rem}
+.use h3{font-family:var(--d);font-weight:400;font-size:1.32rem}
+.use p{font-size:.9rem;color:var(--clay-soft);margin-top:.5rem}
+
+/* ---------- founder quote ---------- */
+.quote-sec{background:var(--clay);color:var(--cream)}
+.quote-grid{display:grid;grid-template-columns:auto 1fr;gap:clamp(1.5rem,4vw,3rem);align-items:start;max-width:900px}
+@media(max-width:700px){.quote-grid{grid-template-columns:1fr}}
+.quote-grid img{width:88px;height:88px;border-radius:50%;object-fit:cover;border:1px solid rgba(251,248,244,.3)}
+blockquote{font-family:var(--d);font-weight:300;font-style:italic;font-size:clamp(1.15rem,1rem+1vw,1.6rem);line-height:1.45}
+.quote-grid cite{display:block;margin-top:1.2rem;font-family:var(--b);font-style:normal;font-size:.85rem;color:var(--brass-soft);letter-spacing:.04em}
+
+/* ---------- docs ---------- */
+.doc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:clamp(1.8rem,4vw,2.6rem)}
+@media(max-width:760px){.doc-grid{grid-template-columns:1fr}}
+.doc{display:block;padding:1.4rem;background:var(--plaster);border:1px solid var(--rule-soft);border-radius:2px;transition:border-color .2s,transform .2s}
+.doc:hover{border-color:var(--brass);transform:translateY(-3px)}
+.doc .tag{font-size:.62rem;font-weight:600;letter-spacing:.14em;color:var(--brass)}
+.doc b{display:block;font-family:var(--d);font-weight:400;font-size:1.16rem;margin-top:.5rem}
+.doc span{display:block;font-size:.82rem;color:var(--clay-mute);margin-top:.3rem}
+.decl{margin-top:1.6rem;font-size:.86rem;color:var(--clay-soft)}
+.decl b{font-weight:600;color:var(--clay)}
+
+/* ---------- final ---------- */
+.final{background:var(--plaster);text-align:center}
+.final h2{max-width:24ch;margin-inline:auto}
+.final .cta-row{justify-content:center}
+.final .btn-2{border-color:var(--rule);color:var(--clay)}
+.final .btn-2:hover{background:var(--cream)}
+.warn{margin:clamp(2rem,5vw,3rem) auto 0;max-width:70ch;text-align:left;padding:1.1rem 1.3rem;background:var(--cream);border-left:2px solid var(--brass);font-size:.82rem;color:var(--clay-soft)}
+footer{background:var(--clay);color:rgba(251,248,244,.66);padding:2.6rem 0;font-size:.83rem}
+.foot-grid{display:flex;flex-wrap:wrap;gap:1.6rem;justify-content:space-between}
+
+.callbar{display:none}
+@media(max-width:700px){
+  .callbar{display:grid;grid-template-columns:1fr 1fr;position:fixed;bottom:0;left:0;right:0;z-index:60}
+  .callbar a{padding:1rem;text-align:center;font-weight:600;font-size:.9rem;background:var(--clay);color:var(--cream)}
+  .callbar a:first-child{background:var(--brass);color:#231C15}
+  body{padding-bottom:56px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#"><img src="../../assets/img/logo.webp" alt="">
+      <span>BMS Pro<small>Укрсистемс</small></span></a>
+    <nav><ul>
+      <li><a href="#range">Прилади</a></li>
+      <li><a href="#uses">Як це працює</a></li>
+      <li><a href="#docs">Документи</a></li>
+      <li><a href="#about">Про нас</a></li>
+      <li><a href="#">Контакти</a></li>
+    </ul></nav>
+    <a class="tel" href="tel:+380505460077">+380 50 546 00 77</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-media"><img src="../../assets/img/room-wide.webp" alt="Кабінет косметології з кушеткою" fetchpriority="high"></div>
+  <div class="hero-copy"><div class="wrap">
+    <p class="eyebrow">Косметологія · Спорт · Реабілітація</p>
+    <h1>Апарати біомеханічної стимуляції для <em>вашої практики</em></h1>
+    <p class="lede">Чотири моделі — від компактної для обличчя до професійного роликового вузла для спини. Власне виробництво в Києві.</p>
+    <div class="cta-row">
+      <a class="btn btn-1" href="#range">Переглянути прилади</a>
+      <a class="btn btn-2" href="tel:+380505460077">Зателефонувати</a>
+    </div>
+  </div></div>
+</div>
+
+<div class="strip"><div class="wrap"><ul>
+  <li><b>4 моделі</b><span>Від 24 000 до 83 000 ₴</span></li>
+  <li><b>20–40 Гц</b><span>Регульована частота</span></li>
+  <li><b>12 місяців</b><span>Гарантія виробника</span></li>
+  <li><b>Київ</b><span>Власне виробництво</span></li>
+</ul></div></div>
+
+<section id="range">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Модельний ряд</p>
+      <h2>Чотири прилади, одна технологія</h2>
+      <p>Моделі відрізняються зоною впливу та кількістю каналів. Позначення на схемі показує, з якими ділянками працює кожен прилад.</p>
+    </div>
+
+    <div class="range">
+
+      <article class="row">
+        <div class="figure-wrap">
+          <svg class="silhouette" viewBox="0 0 60 104" aria-label="Зона: обличчя та шия">
+            <ellipse class="z on" cx="30" cy="15" rx="11" ry="13"/>
+            <rect class="z on" x="25" y="28" width="10" height="8" rx="3"/>
+            <path class="base" d="M13 37h34l-4 50a4 4 0 0 1-4 4H21a4 4 0 0 1-4-4z"/>
+          </svg>
+        </div>
+        <div class="row-main">
+          <h3>BMS m</h3>
+          <p class="zone">Обличчя, шия</p>
+          <p>Одна насадка й аналоговий регулятор частоти. Базова модель для щоденного домашнього застосування.</p>
+        </div>
+        <div class="thumb"><img src="../../assets/img/bms-m-card.webp" alt="Прилад BMS m" loading="lazy"></div>
+        <div class="price"><b>24 000 ₴</b><span>орієнтовна ціна</span><br><a href="#">Детальніше</a></div>
+      </article>
+
+      <article class="row">
+        <div class="figure-wrap">
+          <svg class="silhouette" viewBox="0 0 60 104" aria-label="Зона: шия та спина">
+            <ellipse class="z" cx="30" cy="15" rx="11" ry="13"/>
+            <rect class="z on" x="25" y="28" width="10" height="8" rx="3"/>
+            <path class="z on" d="M13 37h34l-4 50a4 4 0 0 1-4 4H21a4 4 0 0 1-4-4z"/>
+          </svg>
+        </div>
+        <div class="row-main">
+          <h3>BMS pro</h3>
+          <p class="zone">Шия, спина</p>
+          <p>Цифровий індикатор частоти на панелі — точне встановлення режиму для великих мʼязових груп.</p>
+        </div>
+        <div class="thumb"><img src="../../assets/img/bms-pro-card.webp" alt="Прилад BMS pro" loading="lazy"></div>
+        <div class="price"><b>32 000 ₴</b><span>орієнтовна ціна</span><br><a href="#">Детальніше</a></div>
+      </article>
+
+      <article class="row">
+        <div class="figure-wrap">
+          <svg class="silhouette" viewBox="0 0 60 104" aria-label="Зона: обличчя, шия та спина">
+            <ellipse class="z on" cx="30" cy="15" rx="11" ry="13"/>
+            <rect class="z on" x="25" y="28" width="10" height="8" rx="3"/>
+            <path class="z on" d="M13 37h34l-4 50a4 4 0 0 1-4 4H21a4 4 0 0 1-4-4z"/>
+          </svg>
+        </div>
+        <div class="row-main">
+          <h3>BMS Nexus</h3>
+          <p class="zone">Обличчя, шия, спина</p>
+          <p>Два незалежні канали з окремими індикаторами — можливості BMS m і BMS pro в одному корпусі.</p>
+        </div>
+        <div class="thumb"><img src="../../assets/img/bms-nexus-card.webp" alt="Прилад BMS Nexus" loading="lazy"></div>
+        <div class="price"><b>48 000 ₴</b><span>орієнтовна ціна</span><br><a href="#">Детальніше</a></div>
+      </article>
+
+      <article class="row">
+        <div class="figure-wrap">
+          <svg class="silhouette" viewBox="0 0 60 104" aria-label="Зона: спина">
+            <ellipse class="z" cx="30" cy="15" rx="11" ry="13"/>
+            <rect class="z" x="25" y="28" width="10" height="8" rx="3"/>
+            <path class="z on" d="M13 37h34l-4 50a4 4 0 0 1-4 4H21a4 4 0 0 1-4-4z"/>
+          </svg>
+        </div>
+        <div class="row-main">
+          <h3>BMS Quadro</h3>
+          <p class="zone">Спина</p>
+          <p>Роликовий вузол для опрацювання спини. Найпотужніша модель ряду, для професійного застосування.</p>
+        </div>
+        <div class="thumb"><img src="../../assets/img/bms-quadro-card.webp" alt="Прилад BMS Quadro" loading="lazy"></div>
+        <div class="price"><b>83 000 ₴</b><span>орієнтовна ціна</span><br><a href="#">Детальніше</a></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="uses" id="uses">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Сфери застосування</p>
+      <h2>Де використовують прилади BMS</h2>
+      <p>Біомеханічна стимуляція — механічний вплив на мʼязи вібраціями певної частоти й амплітуди, спрямованими вздовж мʼязових волокон.</p>
+    </div>
+    <div class="use-grid">
+      <div class="use"><h3>Косметологія</h3><p>Підтримка тонусу шкіри та мʼязів обличчя, процедури догляду й омолодження.</p></div>
+      <div class="use"><h3>Спорт та фітнес</h3><p>Розминка й відновлення мʼязів до та після фізичних навантажень.</p></div>
+      <div class="use"><h3>Реабілітація</h3><p>Підтримка мʼязового тонусу за умов малорухливого способу життя.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote-sec" id="about">
+  <div class="wrap quote-grid">
+    <img src="../../assets/img/babak.webp" alt="Олександр Бабак">
+    <div>
+      <blockquote>«На відміну від звичайного масажу, прилад BMS імітує природну роботу мʼязів під час фізичних навантажень — і дозволяє активувати глибокі процеси в організмі без виснажливих тренувань.»</blockquote>
+      <cite>Олександр Бабак · BMS Pro, ТОВ «УКРСИСТЕМС»</cite>
+    </div>
+  </div>
+</section>
+
+<section id="docs">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Документи</p>
+      <h2>Документація на прилади</h2>
+      <p>Повний комплект документації доступний для перегляду й завантаження.</p>
+    </div>
+    <div class="doc-grid">
+      <a class="doc" href="#"><span class="tag">PDF</span><b>Паспорт</b><span>Технічні дані та комплектація приладу</span></a>
+      <a class="doc" href="#"><span class="tag">PDF</span><b>Декларація відповідності</b><span>UA.TR.D.00159-25 · 24.07.2025</span></a>
+      <a class="doc" href="#"><span class="tag">PDF</span><b>Технічні умови</b><span>Формальні вимоги до виготовлення</span></a>
+    </div>
+    <p class="decl">Декларацію про відповідність зареєстровано на <b>ТОВ «УКРСИСТЕМС»</b>, реєстраційний номер <b>UA.TR.D.00159-25</b>, дата реєстрації 24 липня 2025 року.</p>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <p class="eyebrow">Замовлення</p>
+    <h2>Підберемо прилад під ваше завдання</h2>
+    <p style="margin:1rem auto 0;max-width:48ch;color:var(--clay-soft)">Зателефонуйте — розкажемо, чим відрізняються моделі, та узгодимо доставку.</p>
+    <div class="cta-row">
+      <a class="btn btn-1" href="tel:+380505460077">+380 50 546 00 77</a>
+      <a class="btn btn-2" href="tel:+380685460077">+380 68 546 00 77</a>
+    </div>
+    <p class="warn">⚠️ Прилади BMS не є медичними виробами. Вони не призначені для діагностики, лікування або профілактики захворювань і не замінюють консультацію лікаря чи призначене лікування. Перед застосуванням ознайомтеся з інструкцією користувача.</p>
+  </div>
+</section>
+
+<footer><div class="wrap foot-grid">
+  <span>© 2026 BMS Pro · ТОВ «УКРСИСТЕМС»</span>
+  <span>02099, Київ, вул. Бориспільська 11а, оф. 206</span>
+  <span>stymulation.kyiv@gmail.com</span>
+</div></footer>
+
+<div class="callbar">
+  <a href="tel:+380505460077">Зателефонувати</a>
+  <a href="#range">Прилади</a>
+</div>
+
+</body>
+</html>

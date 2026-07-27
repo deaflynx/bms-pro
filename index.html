@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>BMS Pro — макети нового сайту</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Golos+Text:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#101315;--panel:#191E21;--ink:#F2F3F1;--ink-2:#9AA4A9;--rule:rgba(255,255,255,.11);--accent:#58B6FF}
+*,*::before,*::after{box-sizing:border-box}*{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Golos Text',system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1080px;margin-inline:auto;padding:clamp(2.5rem,7vw,5rem) clamp(1.1rem,4vw,2rem)}
+.label{font-family:ui-monospace,monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2)}
+h1{font-family:'Manrope',sans-serif;font-weight:800;letter-spacing:-.035em;font-size:clamp(1.8rem,1.3rem+2.4vw,2.9rem);line-height:1.05;margin-top:.8rem}
+.lede{color:var(--ink-2);margin-top:1rem;max-width:56ch}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:clamp(2rem,5vw,3rem)}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+.card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--rule);border-radius:11px;padding:1.4rem;transition:border-color .2s,transform .2s}
+.card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.card .k{font-family:ui-monospace,monospace;font-size:.7rem;letter-spacing:.14em;color:var(--accent)}
+.card h2{font-family:'Manrope',sans-serif;font-weight:800;font-size:1.35rem;letter-spacing:-.025em;margin-top:.5rem}
+.card p{font-size:.89rem;color:var(--ink-2);margin-top:.6rem;flex:1}
+.card dl{display:grid;grid-template-columns:auto 1fr;gap:.3rem .8rem;margin-top:1rem;font-size:.78rem}
+.card dt{color:var(--ink-2)}
+.card dd{margin:0}
+.card .go{margin-top:1.2rem;font-size:.87rem;font-weight:600;color:var(--accent)}
+.note{margin-top:clamp(2rem,5vw,3rem);padding:1.1rem 1.3rem;border-left:2px solid var(--accent);background:rgba(88,182,255,.06);font-size:.86rem;color:#B6C1C7;max-width:70ch}
+.note b{color:var(--ink)}
+footer{border-top:1px solid var(--rule);margin-top:clamp(2.5rem,6vw,4rem);padding-top:1.5rem;font-size:.8rem;color:var(--ink-2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="label">bms-pro.com.ua · чернетка нового сайту</p>
+  <h1>Три напрямки дизайну</h1>
+  <p class="lede">Той самий контент і та сама структура сторінок — три різні візуальні підходи. Відкрийте кожен, зменште вікно до розміру телефона, і виберіть напрямок. Далі один із них розвинемо в повний сайт.</p>
+
+  <div class="grid">
+    <a class="card" href="mockups/a/">
+      <span class="k">A</span>
+      <h2>Частота</h2>
+      <p>Тема — прилад як інструмент. Темна панель, синій семисегментний індикатор і живий регулятор частоти 20–40 Гц, який можна покрутити просто в браузері.</p>
+      <dl>
+        <dt>Настрій</dt><dd>Інженерний, точний</dd>
+        <dt>Шрифти</dt><dd>Oswald + Onest</dd>
+        <dt>Головне</dt><dd>Інтерактивний регулятор</dd>
+      </dl>
+      <span class="go">Відкрити макет А →</span>
+    </a>
+
+    <a class="card" href="mockups/b/">
+      <span class="k">Б</span>
+      <h2>Практика</h2>
+      <p>Тема — обладнання для косметології та реабілітації. Тепла палітра, антиквенна антиква, кабінет на всю ширину, ціни як у переліку послуг, схема зон впливу на силуеті.</p>
+      <dl>
+        <dt>Настрій</dt><dd>Преміальний, спокійний</dd>
+        <dt>Шрифти</dt><dd>Spectral + Onest</dd>
+        <dt>Головне</dt><dd>Схема зон впливу</dd>
+      </dl>
+      <span class="go">Відкрити макет Б →</span>
+    </a>
+
+    <a class="card" href="mockups/c/">
+      <span class="k">В</span>
+      <h2>Каталог</h2>
+      <p>Тема — серйозне обладнання з документами. Світлий, щільний, без декору. Таблиця порівняння чотирьох моделей стоїть одразу під заголовком і відповідає на «який прилад мені потрібен».</p>
+      <dl>
+        <dt>Настрій</dt><dd>Технічний, ділoвий</dd>
+        <dt>Шрифти</dt><dd>Manrope + Golos Text</dd>
+        <dt>Головне</dt><dd>Таблиця порівняння</dd>
+      </dl>
+      <span class="go">Відкрити макет В →</span>
+    </a>
+  </div>
+
+  <p class="note"><b>Про фото.</b> У макетах використані наявні фотографії з сайту. Вони зняті на телефон на робочому столі — для приладів за 24 000–83 000 ₴ це головне, що знижує довіру. Знімки на однотонному тлі змінять вигляд сайту сильніше, ніж будь-яке рішення в дизайні.</p>
+
+  <footer>Чернетка. Не для індексації. Робочий сайт — bms-pro.com.ua</footer>
+</div>
+</body>
+</html>
