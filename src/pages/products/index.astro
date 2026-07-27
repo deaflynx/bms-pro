@@ -1,0 +1,120 @@
+---
+import { getCollection } from 'astro:content';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ComparisonMatrix from '../../components/ComparisonMatrix.astro';
+import Disclaimer from '../../components/Disclaimer.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import Base from '../../layouts/Base.astro';
+import { breadcrumbSchema, itemListSchema } from '../../lib/schema';
+import { SITE, url } from '../../lib/site';
+
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+
+const trail = [
+  { name: 'Головна', href: '/' },
+  { name: 'Прилади', href: '/products/' },
+];
+const abs = (p: string) => new URL(url(p), Astro.site).href;
+---
+
+<Base
+  title="Прилади BMS — чотири моделі біомеханічної стимуляції | BMS Pro"
+  description="Каталог приладів BMS: m, pro, Nexus, Quadro. Зона впливу, канали, характеристики та орієнтовні ціни від 24 000 до 83 000 ₴."
+  canonicalPath="/products/"
+>
+  <Fragment slot="head">
+    <JsonLd
+      data={itemListSchema(
+        products.map((p) => ({ name: p.data.name, url: abs(`/products/${p.id}/`) })),
+      )}
+    />
+    <JsonLd data={breadcrumbSchema(trail.map((c) => ({ name: c.name, url: abs(c.href) })))} />
+  </Fragment>
+
+  <div class="wrap"><Breadcrumbs trail={trail} /></div>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Модельний ряд · 4 прилади</p>
+        <h1>Прилади BMS</h1>
+        <p>
+          Чотири моделі однієї технології. Відрізняються зоною впливу та кількістю каналів — від
+          однієї насадки для обличчя до роликового вузла для спини.
+        </p>
+      </div>
+      <div class="lineup">
+        {products.map((product) => <ProductCard product={product} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Порівняння</p>
+        <h2>Який прилад вам потрібен</h2>
+        <p>Одна таблиця — зона впливу, канали, індикатор, застосування та ціна.</p>
+      </div>
+      <ComparisonMatrix products={products} />
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap">
+      <p class="eyebrow eyebrow-center">Замовлення</p>
+      <h2>Підберемо прилад під ваше завдання</h2>
+      <p class="final-lede">
+        Зателефонуйте — розкажемо, чим відрізняються моделі, та узгодимо доставку.
+      </p>
+      <div class="cta-row cta-center">
+        <a class="btn btn-1" href={`tel:${SITE.phonePrimary}`}>☎ {SITE.phonePrimaryDisplay}</a>
+        <a class="btn btn-2" href={`tel:${SITE.phoneSecondary}`}>{SITE.phoneSecondaryDisplay}</a>
+      </div>
+      <Disclaimer />
+    </div>
+  </section>
+</Base>
+
+<style>
+  h1 {
+    margin-top: 0.9rem;
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem);
+  }
+  .lineup {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 1000px) {
+    .lineup {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .lineup {
+      grid-template-columns: 1fr;
+    }
+  }
+  .alt {
+    background: #0b1114;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .final {
+    text-align: center;
+  }
+  .final h2 {
+    margin: 0.9rem auto 0;
+    max-width: 24ch;
+  }
+  .final-lede {
+    margin: 1rem auto 0;
+    max-width: 48ch;
+    color: var(--body-soft);
+  }
+  .final :global(.warn) {
+    margin-top: clamp(2rem, 5vw, 3rem);
+  }
+</style>

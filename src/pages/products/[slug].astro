@@ -1,0 +1,468 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ComparisonMatrix from '../../components/ComparisonMatrix.astro';
+import Disclaimer from '../../components/Disclaimer.astro';
+import Instrument from '../../components/Instrument.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import SpecTiles from '../../components/SpecTiles.astro';
+import Base from '../../layouts/Base.astro';
+import { PRICE_NOTE, formatPrice } from '../../lib/format';
+import { instrumentFor } from '../../lib/instrument';
+import { breadcrumbSchema, faqSchema, productSchema } from '../../lib/schema';
+import { SITE, url } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const products = await getCollection('products');
+  return products.map((product) => ({ params: { slug: product.id }, props: { product } }));
+}
+
+interface Props {
+  product: CollectionEntry<'products'>;
+}
+const { product } = Astro.props;
+const d = product.data;
+
+const all = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+const panel = instrumentFor(d.indicator);
+
+const path = `/products/${product.id}/`;
+const abs = new URL(url(path), Astro.site).href;
+
+const faqAll = await getCollection('faq');
+const faq = faqAll
+  .filter((q) => q.data.models.includes(product.id))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const DOC_LABELS: Record<string, string> = {
+  passport: 'Паспорт приладу',
+  declaration: 'Декларація відповідності',
+  'technical-conditions': 'Технічні умови',
+};
+const DOC_NOTES: Record<string, string> = {
+  passport: 'Технічні дані та комплектація',
+  declaration: SITE.declaration,
+  'technical-conditions': SITE.tu,
+};
+
+const trail = [
+  { name: 'Головна', href: '/' },
+  { name: 'Прилади', href: '/products/' },
+  { name: d.name, href: path },
+];
+const crumbSchema = breadcrumbSchema(
+  trail.map((c) => ({ name: c.name, url: new URL(url(c.href), Astro.site).href })),
+);
+
+const { Content } = await render(product);
+---
+
+<Base
+  title={`${d.name} — прилад біомеханічної стимуляції | BMS Pro`}
+  description={`${d.tagline}. Орієнтовна ціна ${formatPrice(d.price)}. Виробництво ТОВ «УКРСИСТЕМС», Київ.`}
+  canonicalPath={path}
+  ogImage={`/og/${product.id}.png`}
+>
+  <Fragment slot="head">
+    <JsonLd data={productSchema(d, abs)} />
+    <JsonLd data={crumbSchema} />
+    {faq.length > 0 && <JsonLd data={faqSchema(faq.map((q) => ({ question: q.data.question, answer: q.body ?? '' })))} />}
+  </Fragment>
+
+  <div class="wrap"><Breadcrumbs trail={trail} /></div>
+
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div class="gallery">
+        <figure class="shot">
+          <img
+            src={url(d.gallery[0] ?? d.image)}
+            alt={`Прилад ${d.name}`}
+            width="900"
+            height="675"
+            fetchpriority="high"
+          />
+        </figure>
+        {
+          d.gallery.length > 1 && (
+            <div class="thumbs">
+              {d.gallery.slice(1).map((g, i) => (
+                <img src={url(g)} alt={`${d.name} — вигляд ${i + 2}`} width="300" height="225" loading="lazy" />
+              ))}
+            </div>
+          )
+        }
+      </div>
+
+      <div>
+        <p class="eyebrow">{d.zones.join(' · ')}</p>
+        <h1>{d.name}</h1>
+        <p class="tagline">{d.tagline}</p>
+
+        <p class="price">
+          <b>{formatPrice(d.price)}</b><span>{PRICE_NOTE}</span>
+        </p>
+
+        <ul class="chips">
+          <li>{d.channels === '1' || d.channels === '2' ? `${d.channels} канал` : d.channels}</li>
+          <li>{panel.label}</li>
+          <li>20–40 Гц</li>
+          <li>II клас</li>
+        </ul>
+
+        <div class="cta-row">
+          <a class="btn btn-1" href={`tel:${SITE.phonePrimary}`}>
+            ☎ Замовити — {SITE.phonePrimaryDisplay}
+          </a>
+        </div>
+
+        <p class="trust">
+          Гарантія 12 міс · Декларація {SITE.declaration} · Виробництво {SITE.address.city}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <section class="panel-sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Панель керування</p>
+        <h2>Як виглядає керування {d.name}</h2>
+        <p>
+          {
+            panel.channels > 1
+              ? 'Два канали налаштовуються незалежно — покрутіть обидва регулятори й порівняйте.'
+              : panel.digital
+                ? 'Цифровий індикатор показує встановлену частоту в герцах.'
+                : 'Частота задається аналоговим регулятором, без цифрового індикатора.'
+          }
+        </p>
+      </div>
+      <div class="panel-wrap">
+        <Instrument indicator={d.indicator} heading={`Панель ${d.name}`} />
+      </div>
+      <div class="prose"><Content /></div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Характеристики</p>
+        <h2>Технічні дані</h2>
+      </div>
+      <SpecTiles specs={d.specs} />
+
+      {
+        d.included.length > 0 && (
+          <div class="included">
+            <p class="sub">Комплектація</p>
+            <ul>
+              {d.included.map((it) => (
+                <li>
+                  <span>{it.item}</span>
+                  <b>{it.qty} шт</b>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Документи</p>
+        <h2>Документація на {d.name}</h2>
+      </div>
+      {
+        d.documents.length > 0 ? (
+          <div class="doc-list">
+            {d.documents.map((t) => (
+              <a class="doc" href={url(`/documents/${product.id}/${t}/`)}>
+                <span class="pdf">PDF</span>
+                <b>{DOC_LABELS[t]}</b>
+                <span class="note">{DOC_NOTES[t]}</span>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <p class="pending">
+            Документи для цієї моделі готуються. Паспорт, декларацію та технічні умови надішлемо
+            на запит — зателефонуйте {SITE.phonePrimaryDisplay}.
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Порівняння</p>
+        <h2>{d.name} поруч з іншими моделями</h2>
+      </div>
+      <ComparisonMatrix products={all} highlight={product.id} />
+    </div>
+  </section>
+
+  {
+    faq.length > 0 && (
+      <section>
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="eyebrow">Питання та відповіді</p>
+            <h2>Про {d.name}</h2>
+          </div>
+          <div class="faq">
+            {faq.map((q) => (
+              <details>
+                <summary>{q.data.question}</summary>
+                <div class="answer">{q.body}</div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="final">
+    <div class="wrap">
+      <p class="eyebrow eyebrow-center">Замовлення</p>
+      <h2>Замовити {d.name}</h2>
+      <p class="final-lede">
+        Зателефонуйте — підтвердимо наявність, вартість і терміни виготовлення.
+      </p>
+      <div class="cta-row cta-center">
+        <a class="btn btn-1" href={`tel:${SITE.phonePrimary}`}>☎ {SITE.phonePrimaryDisplay}</a>
+        <a class="btn btn-2" href={`tel:${SITE.phoneSecondary}`}>{SITE.phoneSecondaryDisplay}</a>
+      </div>
+      <Disclaimer />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding: clamp(1.5rem, 4vw, 3rem) 0 clamp(2rem, 4vw, 3rem);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.6rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .shot {
+    margin: 0;
+    border-radius: var(--r);
+    overflow: hidden;
+    background: #0a1013;
+    border: 1px solid var(--rule);
+  }
+  .shot img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .thumbs {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 0.6rem;
+  }
+  .thumbs img {
+    width: 100%;
+    max-width: 140px;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--rule);
+  }
+  h1 {
+    margin-top: 0.8rem;
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem);
+  }
+  .tagline {
+    margin-top: 0.9rem;
+    color: var(--body-soft);
+    max-width: 46ch;
+  }
+  .price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--rule);
+  }
+  .price b {
+    font-family: var(--m);
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--led);
+  }
+  .price span {
+    font-size: 0.76rem;
+    color: var(--steel-2);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.1rem;
+  }
+  .chips li {
+    font-family: var(--m);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--steel);
+    border: 1px solid var(--rule);
+    border-radius: 99px;
+    padding: 0.35rem 0.75rem;
+  }
+  .trust {
+    margin-top: 1.1rem;
+    font-size: 0.78rem;
+    color: var(--steel-2);
+  }
+
+  .panel-wrap {
+    max-width: 620px;
+  }
+  .prose {
+    margin-top: 1.6rem;
+    max-width: 62ch;
+    color: var(--body-soft);
+  }
+  .alt {
+    background: #0b1114;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .sub {
+    font-family: var(--d);
+    font-weight: 500;
+    font-size: 1.05rem;
+    margin-bottom: 0.9rem;
+  }
+  .included {
+    margin-top: clamp(1.6rem, 3.5vw, 2.4rem);
+    max-width: 460px;
+  }
+  .included ul {
+    border: 1px solid var(--rule);
+    border-radius: 9px;
+    overflow: hidden;
+  }
+  .included li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.8rem 1.1rem;
+    background: var(--panel-2);
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.9rem;
+  }
+  .included li:last-child {
+    border-bottom: 0;
+  }
+  .included b {
+    font-family: var(--m);
+    font-weight: 500;
+    color: var(--steel);
+  }
+
+  .doc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    max-width: 640px;
+  }
+  .doc {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid var(--rule);
+    border-radius: 9px;
+    background: var(--panel-2);
+    transition:
+      border-color 0.2s,
+      background 0.2s;
+  }
+  .doc:hover {
+    border-color: var(--led);
+    background: var(--panel-3);
+  }
+  .doc .pdf {
+    font-family: var(--m);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--amber);
+    border: 1px solid rgba(240, 169, 59, 0.45);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    flex: none;
+  }
+  .doc b {
+    font-weight: 500;
+    font-size: 0.93rem;
+    flex: 1;
+  }
+  .doc .note {
+    font-family: var(--m);
+    font-size: 0.72rem;
+    color: var(--steel-2);
+    text-align: right;
+  }
+  .pending {
+    max-width: 60ch;
+    color: var(--body-soft);
+    font-size: 0.92rem;
+  }
+
+  .faq details {
+    border-bottom: 1px solid var(--rule);
+  }
+  .faq summary {
+    cursor: pointer;
+    padding: 1.1rem 0;
+    font-family: var(--d);
+    font-weight: 500;
+    font-size: 1.08rem;
+  }
+  .faq summary:hover {
+    color: var(--led);
+  }
+  .faq .answer {
+    padding-bottom: 1.2rem;
+    color: var(--body-soft);
+    font-size: 0.92rem;
+    max-width: 62ch;
+  }
+
+  .final {
+    text-align: center;
+  }
+  .final h2 {
+    margin: 0.9rem auto 0;
+    max-width: 24ch;
+  }
+  .final-lede {
+    margin: 1rem auto 0;
+    max-width: 48ch;
+    color: var(--body-soft);
+  }
+  .final :global(.warn) {
+    margin-top: clamp(2rem, 5vw, 3rem);
+  }
+</style>
