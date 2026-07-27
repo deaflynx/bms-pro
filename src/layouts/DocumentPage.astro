@@ -41,7 +41,6 @@ const toc = headings.filter((h) => h.depth === 2);
         </a>
       )
     }
-    <button class="btn btn-2" type="button" data-print>Друкувати</button>
   </div>
 
   <div class="doc-body">
@@ -81,12 +80,6 @@ const toc = headings.filter((h) => h.depth === 2);
 
   <Disclaimer />
 </article>
-
-<script>
-  document.querySelectorAll<HTMLButtonElement>('[data-print]').forEach((b) => {
-    b.addEventListener('click', () => window.print());
-  });
-</script>
 
 <style>
   .doc-page {

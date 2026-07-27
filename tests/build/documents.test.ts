@@ -69,8 +69,9 @@ describe('document pages', () => {
     for (const l of links) expect(ids, `#${l} has no matching h2`).toContain(l);
   });
 
-  it('offers printing', () => {
-    expect(page('passport')).toContain('Друкувати');
+  it('offers the PDF without a print button — the print stylesheet covers Ctrl+P', () => {
+    expect(page('passport')).toContain('Завантажити PDF');
+    expect(page('passport')).not.toContain('Друкувати');
   });
 
   it('carries the disclaimer', () => {
