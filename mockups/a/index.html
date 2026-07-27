@@ -143,10 +143,9 @@ h1 em{font-style:normal;color:var(--led);white-space:nowrap}
 .hint svg{flex:none;opacity:.75}
 
 /* ---------- spec ticker ---------- */
-.ticker{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--panel-2)}
-.ticker ul{display:flex;flex-wrap:wrap}
-.ticker li{flex:1 1 auto;padding:1.1rem clamp(1rem,3vw,2rem);border-right:1px solid var(--rule);min-width:150px}
-.ticker li:last-child{border-right:0}
+.ticker{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--rule)}
+.ticker ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:1px}
+.ticker li{background:var(--panel-2);padding:1.1rem clamp(.9rem,3vw,2rem)}
 .ticker b{display:block;font-family:var(--m);font-size:1.18rem;font-weight:700;color:var(--paper)}
 .ticker span{font-size:.76rem;color:var(--steel);letter-spacing:.04em}
 
@@ -217,6 +216,7 @@ footer{border-top:1px solid var(--rule);padding:2.2rem 0;font-size:.82rem;color:
   .callbar a{padding:.95rem;text-align:center;font-weight:700;font-size:.9rem;background:var(--panel-2)}
   .callbar a:first-child{background:var(--led);color:#06232F}
   body{padding-bottom:56px}
+  .tel{display:none} /* the fixed call bar covers this on mobile */
 }
 </style>
 </head>

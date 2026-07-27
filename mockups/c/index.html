@@ -54,8 +54,8 @@ h1{font-family:var(--d);font-weight:800;font-size:clamp(2rem,1.3rem+3vw,3.4rem);
 h1 span{display:block;color:var(--accent-dark)}
 .hero p{color:var(--ink-2);max-width:48ch}
 .hero-side{display:flex;flex-direction:column;gap:.85rem}
-.meta-line{display:flex;justify-content:space-between;gap:1rem;padding-bottom:.6rem;border-bottom:1px solid var(--rule-soft);font-size:.86rem}
-.meta-line b{font-family:var(--m);font-weight:500;font-size:.84rem}
+.meta-line{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.1rem 1rem;padding-bottom:.6rem;border-bottom:1px solid var(--rule-soft);font-size:.86rem}
+.meta-line b{font-family:var(--m);font-weight:500;font-size:.84rem;text-align:right}
 
 /* ---------- SIGNATURE: the comparison matrix ---------- */
 .matrix-shell{overflow-x:auto;border:1px solid var(--rule);border-radius:8px;background:var(--panel);-webkit-overflow-scrolling:touch}
@@ -141,6 +141,7 @@ footer{border-top:1px solid var(--rule);padding:2rem 0;font-size:.82rem;color:va
   .callbar a{padding:.95rem;text-align:center;font-weight:600;font-size:.9rem;background:var(--panel)}
   .callbar a:first-child{background:var(--accent);color:#fff}
   body{padding-bottom:54px}
+  .tel{display:none} /* the fixed call bar covers this on mobile */
 }
 </style>
 </head>
