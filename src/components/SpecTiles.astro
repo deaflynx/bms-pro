@@ -20,15 +20,26 @@ const entries = Object.entries(specs);
 {note && <p class="spec-note">{note}</p>}
 
 <style>
-  /* auto-fit grid, not flex with min-width — the latter overflowed below 390px */
+  /* Explicit column counts, not auto-fit: there are 8 specs, and auto-fit landed
+     on 6 columns at desktop, leaving 4 empty cells. fr units cannot overflow. */
   .spec-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 1px;
     background: var(--rule);
     border: 1px solid var(--rule);
     border-radius: var(--r);
     overflow: hidden;
+  }
+  @media (max-width: 900px) {
+    .spec-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 520px) {
+    .spec-grid {
+      grid-template-columns: 1fr;
+    }
   }
   .spec {
     background: var(--panel-2);
