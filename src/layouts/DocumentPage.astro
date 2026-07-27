@@ -1,0 +1,258 @@
+---
+import '../styles/print.css';
+import type { MarkdownHeading } from 'astro';
+import Breadcrumbs, { type Crumb } from '../components/Breadcrumbs.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import { url } from '../lib/site';
+
+interface Props {
+  title: string;
+  lead: string;
+  designation: string;
+  pdf?: string;
+  image?: string;
+  headings: MarkdownHeading[];
+  trail: Crumb[];
+}
+const { title, lead, designation, pdf, image, headings, trail } = Astro.props;
+const toc = headings.filter((h) => h.depth === 2);
+---
+
+<div class="wrap"><Breadcrumbs trail={trail} /></div>
+
+<article class="doc-page wrap">
+  <header class="doc-head">
+    <h1>{title}</h1>
+    <p class="lead">{lead}</p>
+  </header>
+
+  <div class="doc-actions">
+    {
+      pdf && (
+        <a class="btn btn-1" href={url(pdf)} download>
+          Завантажити PDF
+        </a>
+      )
+    }
+    {
+      image && (
+        <a class="btn btn-2" href={url(image)} target="_blank" rel="noopener">
+          Відкрити скан у повному розмірі
+        </a>
+      )
+    }
+    <button class="btn btn-2" type="button" data-print>Друкувати</button>
+  </div>
+
+  <div class="doc-body">
+    {
+      toc.length > 0 && (
+        <nav class="doc-toc" aria-label="Зміст документа">
+          <p class="toc-title">Зміст</p>
+          <ol>
+            {toc.map((h) => (
+              <li>
+                <a href={`#${h.slug}`}>{h.text}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+
+    <div class="prose">
+      <slot />
+      {
+        image && (
+          <figure class="scan">
+            <img src={url(image)} alt={`Скан документа: ${title}`} loading="lazy" />
+            <figcaption>Реєстраційний номер {designation}</figcaption>
+          </figure>
+        )
+      }
+    </div>
+  </div>
+
+  <Disclaimer />
+</article>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-print]').forEach((b) => {
+    b.addEventListener('click', () => window.print());
+  });
+</script>
+
+<style>
+  .doc-page {
+    padding-bottom: clamp(3rem, 7vw, 5rem);
+  }
+  .doc-head {
+    padding: clamp(1.2rem, 3vw, 2rem) 0 0;
+    max-width: 60ch;
+  }
+  h1 {
+    font-size: clamp(1.9rem, 1.4rem + 2vw, 2.9rem);
+  }
+  .lead {
+    margin-top: 0.9rem;
+    color: var(--body-soft);
+    font-family: var(--m);
+    font-size: 0.84rem;
+    line-height: 1.6;
+  }
+  .doc-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin: 1.6rem 0 clamp(1.8rem, 4vw, 2.6rem);
+  }
+  .doc-actions .btn {
+    cursor: pointer;
+  }
+
+  .doc-body {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: clamp(1.6rem, 4vw, 3rem);
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .doc-body {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .doc-toc {
+    position: sticky;
+    top: 86px;
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    background: var(--panel-2);
+    padding: 1.1rem 1.2rem;
+  }
+  @media (max-width: 900px) {
+    .doc-toc {
+      position: static;
+    }
+  }
+  .toc-title {
+    font-family: var(--m);
+    font-size: 0.64rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--steel-2);
+    margin-bottom: 0.7rem;
+  }
+  .doc-toc ol {
+    list-style: none;
+    padding: 0;
+    counter-reset: toc;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .doc-toc li {
+    counter-increment: toc;
+    font-size: 0.84rem;
+  }
+  .doc-toc li::before {
+    content: counter(toc) '. ';
+    font-family: var(--m);
+    color: var(--steel-2);
+  }
+  .doc-toc a {
+    color: var(--body-soft);
+  }
+  .doc-toc a:hover {
+    color: var(--led);
+  }
+
+  .prose {
+    max-width: 74ch;
+    color: var(--body-soft);
+  }
+  .prose :global(h2) {
+    font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.6rem);
+    color: var(--paper);
+    margin: 2.2rem 0 0.8rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--rule);
+    scroll-margin-top: 86px;
+  }
+  .prose :global(h2:first-child) {
+    margin-top: 0;
+    border-top: 0;
+  }
+  .prose :global(h3) {
+    font-size: 1.05rem;
+    color: var(--paper);
+    margin: 1.4rem 0 0.5rem;
+  }
+  .prose :global(p) {
+    margin: 0.8rem 0;
+  }
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 0.8rem 0;
+    padding-left: 1.2rem;
+    list-style: disc;
+  }
+  .prose :global(li) {
+    margin: 0.35rem 0;
+  }
+  .prose :global(strong) {
+    color: var(--paper);
+  }
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 1.4rem;
+    font-size: 0.88rem;
+    background: var(--panel-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    overflow: hidden;
+  }
+  .prose :global(th),
+  .prose :global(td) {
+    text-align: left;
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  .prose :global(th) {
+    font-family: var(--m);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--steel-2);
+    font-weight: 500;
+  }
+  .prose :global(tr:last-child td) {
+    border-bottom: 0;
+  }
+  .prose :global(td:first-child) {
+    color: var(--paper);
+  }
+
+  .scan {
+    margin: 2rem 0 0;
+  }
+  .scan img {
+    width: 100%;
+    max-width: 560px;
+    border-radius: var(--r);
+    border: 1px solid var(--rule);
+    background: #fff;
+  }
+  .scan figcaption {
+    margin-top: 0.6rem;
+    font-family: var(--m);
+    font-size: 0.74rem;
+    color: var(--steel-2);
+  }
+
+  .doc-page :global(.warn) {
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+  }
+</style>

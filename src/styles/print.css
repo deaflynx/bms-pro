@@ -1,0 +1,71 @@
+@media print {
+  header,
+  footer,
+  .callbar,
+  .doc-toc,
+  .doc-actions,
+  .crumbs,
+  .warn {
+    display: none !important;
+  }
+
+  :root {
+    --panel: #fff;
+    --panel-2: #fff;
+    --panel-3: #fff;
+    --paper: #000;
+    --steel: #333;
+    --steel-2: #555;
+    --body-soft: #222;
+    --led: #000;
+    --rule: #ccc;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 11pt;
+    line-height: 1.45;
+  }
+  main {
+    max-width: none;
+  }
+  .wrap {
+    max-width: none;
+    padding: 0;
+  }
+  section {
+    padding: 0;
+  }
+
+  h1,
+  h2,
+  h3 {
+    color: #000;
+    page-break-after: avoid;
+  }
+  h1 {
+    font-size: 20pt;
+  }
+  h2 {
+    font-size: 14pt;
+    margin-top: 14pt;
+  }
+
+  table {
+    page-break-inside: avoid;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th,
+  td {
+    border: 1px solid #999;
+    padding: 4pt 6pt;
+  }
+
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 9pt;
+    color: #555;
+  }
+}

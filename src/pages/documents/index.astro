@@ -1,0 +1,199 @@
+---
+import { getCollection } from 'astro:content';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Disclaimer from '../../components/Disclaimer.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import Base from '../../layouts/Base.astro';
+import { breadcrumbSchema } from '../../lib/schema';
+import { SITE, url } from '../../lib/site';
+
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+const docs = await getCollection('documents');
+
+const TYPES = [
+  { key: 'passport' as const, label: 'Паспорт' },
+  { key: 'declaration' as const, label: 'Декларація відповідності' },
+  { key: 'technical-conditions' as const, label: 'Технічні умови' },
+];
+
+function docFor(model: string, type: string) {
+  return docs.find((d) => d.data.model === model && d.data.type === type);
+}
+
+const trail = [
+  { name: 'Головна', href: '/' },
+  { name: 'Документи', href: '/documents/' },
+];
+const abs = (p: string) => new URL(url(p), Astro.site).href;
+---
+
+<Base
+  title="Документи на прилади BMS — паспорт, декларація, технічні умови | BMS Pro"
+  description="Паспорт, декларація відповідності UA.TR.D.00159-25 та технічні умови ТУ У 27.9-2294811615-001:2025. Повний текст і PDF."
+  canonicalPath="/documents/"
+>
+  <Fragment slot="head">
+    <JsonLd data={breadcrumbSchema(trail.map((c) => ({ name: c.name, url: abs(c.href) })))} />
+  </Fragment>
+
+  <div class="wrap"><Breadcrumbs trail={trail} /></div>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Документи</p>
+        <h1>Документація на прилади BMS</h1>
+        <p>
+          Повний текст кожного документа опублікований на сайті, PDF доступний для
+          завантаження. Декларацію зареєстровано на {SITE.legalName}, номер {SITE.declaration},
+          дата реєстрації {SITE.declarationDateDisplay}.
+        </p>
+      </div>
+
+      <p class="scroll-hint">← Таблицю можна прокручувати →</p>
+      <div class="matrix-shell">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col"><span class="hcell">Модель</span></th>
+              {TYPES.map((t) => <th scope="col"><span class="hcell">{t.label}</span></th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {
+              products.map((p) => (
+                <tr>
+                  <th scope="row">
+                    <a href={url(`/products/${p.id}/`)}>{p.data.name}</a>
+                  </th>
+                  {TYPES.map((t) => {
+                    const doc = docFor(p.id, t.key);
+                    return (
+                      <td>
+                        {doc ? (
+                          <a class="have" href={url(`/documents/${p.id}/${t.key}/`)}>
+                            Відкрити
+                            <span class="desig">{doc.data.designation}</span>
+                          </a>
+                        ) : (
+                          <span class="pending">готується</span>
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <p class="note">
+        Документи для BMS pro, BMS Nexus та BMS Quadro готуються. Надішлемо на запит —
+        зателефонуйте {SITE.phonePrimaryDisplay}.
+      </p>
+
+      <Disclaimer />
+    </div>
+  </section>
+</Base>
+
+<style>
+  h1 {
+    margin-top: 0.9rem;
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem);
+  }
+  .matrix-shell {
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    background: var(--panel-2);
+    -webkit-overflow-scrolling: touch;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 700px;
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 0.9rem 1.1rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: middle;
+  }
+  thead th {
+    background: var(--panel-3);
+  }
+  .hcell {
+    font-family: var(--m);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--steel-2);
+  }
+  tbody th {
+    font-family: var(--d);
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: var(--paper);
+    background: var(--panel-2);
+    position: sticky;
+    left: 0;
+    border-right: 1px solid var(--rule);
+    width: 180px;
+  }
+  tbody th a:hover {
+    color: var(--led);
+  }
+  tr:last-child th,
+  tr:last-child td {
+    border-bottom: 0;
+  }
+  .have {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--led);
+  }
+  .have:hover {
+    color: var(--led-glow);
+  }
+  .desig {
+    font-family: var(--m);
+    font-size: 0.68rem;
+    font-weight: 400;
+    color: var(--steel-2);
+  }
+  .pending {
+    font-family: var(--m);
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+    color: var(--steel-2);
+  }
+  .note {
+    margin-top: 1rem;
+    font-size: 0.84rem;
+    color: var(--body-soft);
+    max-width: 60ch;
+  }
+  .scroll-hint {
+    display: none;
+    font-family: var(--m);
+    font-size: 0.72rem;
+    color: var(--steel-2);
+    margin-bottom: 0.5rem;
+  }
+  @media (max-width: 760px) {
+    .scroll-hint {
+      display: block;
+    }
+  }
+  section :global(.warn) {
+    margin-top: clamp(2rem, 5vw, 3rem);
+    margin-inline: 0;
+  }
+</style>
