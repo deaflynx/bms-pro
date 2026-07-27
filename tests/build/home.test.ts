@@ -10,8 +10,17 @@ describe('homepage', () => {
     expect(markup).toMatch(/<h1[^>]*>[\s\S]*20–40 Гц[\s\S]*<\/h1>/);
   });
 
-  it('renders exactly one instrument', () => {
-    expect(markup.match(/class="instrument/g)).toHaveLength(1);
+  it('leads with the device photo, not the interactive panel', () => {
+    expect(markup).toContain('/assets/img/bms-m-front.webp');
+    expect(markup).not.toMatch(/class="instrument/);
+  });
+
+  it('defines biomechanical stimulation above the lineup', () => {
+    expect(markup).toContain('Що таке біомеханічна стимуляція');
+    expect(markup).toContain('уздовж мʼязових волокон');
+    expect(markup.indexOf('Що таке біомеханічна стимуляція')).toBeLessThan(
+      markup.indexOf('id="lineup"'),
+    );
   });
 
   it('renders all four product cards linking to their pages', () => {
