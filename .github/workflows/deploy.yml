@@ -24,10 +24,13 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run check
       - run: npm run build
         env:
           SITE_URL: https://deaflynx.github.io
           BASE_PATH: /bms-pro/
+      # build tests read dist/, so they run after the build
+      - run: npx vitest run
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

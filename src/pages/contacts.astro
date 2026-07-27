@@ -136,7 +136,9 @@ const mapQuery = encodeURIComponent(
     color: var(--steel-2);
   }
   .maplink {
-    margin-top: 0.5rem;
+    margin-top: 0.35rem;
+    /* padding keeps this above the 24px minimum tap target */
+    padding: 0.35rem 0;
     font-size: 0.8rem;
     font-weight: 700;
     color: var(--led);

@@ -65,7 +65,13 @@ const toc = headings.filter((h) => h.depth === 2);
       {
         image && (
           <figure class="scan">
-            <img src={url(image)} alt={`Скан документа: ${title}`} loading="lazy" />
+            <img
+              src={url(image)}
+              alt={`Скан документа: ${title}`}
+              width="596"
+              height="842"
+              loading="lazy"
+            />
             <figcaption>Реєстраційний номер {designation}</figcaption>
           </figure>
         )
