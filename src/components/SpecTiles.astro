@@ -1,0 +1,52 @@
+---
+interface Props {
+  specs: Record<string, string>;
+  note?: string;
+}
+const { specs, note } = Astro.props;
+const entries = Object.entries(specs);
+---
+
+<div class="spec-grid">
+  {
+    entries.map(([label, value]) => (
+      <div class="spec">
+        <b>{value}</b>
+        <span>{label}</span>
+      </div>
+    ))
+  }
+</div>
+{note && <p class="spec-note">{note}</p>}
+
+<style>
+  /* auto-fit grid, not flex with min-width — the latter overflowed below 390px */
+  .spec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    overflow: hidden;
+  }
+  .spec {
+    background: var(--panel-2);
+    padding: 1.1rem 1.2rem;
+  }
+  .spec b {
+    display: block;
+    font-family: var(--d);
+    font-weight: 500;
+    font-size: 1.28rem;
+  }
+  .spec span {
+    font-size: 0.78rem;
+    color: var(--steel);
+  }
+  .spec-note {
+    margin-top: 0.8rem;
+    font-size: 0.78rem;
+    color: var(--steel-2);
+  }
+</style>

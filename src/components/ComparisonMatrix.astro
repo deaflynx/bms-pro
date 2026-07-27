@@ -1,0 +1,275 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { PRICE_NOTE, formatPrice } from '../lib/format';
+import { instrumentFor } from '../lib/instrument';
+import { SITE, url } from '../lib/site';
+
+interface Props {
+  products: CollectionEntry<'products'>[];
+  highlight?: string;
+}
+const { products, highlight } = Astro.props;
+
+const cols = products.map((p) => ({
+  id: p.id,
+  data: p.data,
+  current: p.id === highlight,
+  // Indicator labels come from instrumentFor so they can never drift from the panel.
+  indicator: instrumentFor(p.data.indicator).label,
+}));
+---
+
+<p class="scroll-hint">← Таблицю можна прокручувати →</p>
+<div class="matrix-shell">
+  <table>
+    <caption>
+      <b>Порівняння моделей</b>
+      <span>Оберіть прилад за зоною впливу та кількістю каналів</span>
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col"><span class="col-label">Модель</span></th>
+        {
+          cols.map((c) => (
+            <td class:list={[{ current: c.current }]}>
+              <a href={url(`/products/${c.id}/`)}>
+                <img
+                  class="col-img"
+                  src={url(c.data.image)}
+                  alt={`Прилад ${c.data.name}`}
+                  width="900"
+                  height="675"
+                  loading="lazy"
+                />
+                <span class="col-name">{c.data.name}</span>
+              </a>
+              {c.current && <span class="col-here">Ця модель</span>}
+            </td>
+          ))
+        }
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="price-row">
+        <th scope="row">Орієнтовна ціна</th>
+        {
+          cols.map((c) => (
+            <td class:list={[{ current: c.current }]}>
+              <span class="num">{formatPrice(c.data.price)}</span>
+              <span class="sub">{PRICE_NOTE}</span>
+            </td>
+          ))
+        }
+      </tr>
+      <tr>
+        <th scope="row">Зона впливу</th>
+        {cols.map((c) => <td class:list={[{ current: c.current }]}>{c.data.zones.join(', ')}</td>)}
+      </tr>
+      <tr>
+        <th scope="row">Каналів стимуляції</th>
+        {
+          cols.map((c) => (
+            <td class:list={[{ current: c.current }]}>
+              <span class="num">{c.data.channels}</span>
+            </td>
+          ))
+        }
+      </tr>
+      <tr>
+        <th scope="row">Індикатор частоти</th>
+        {cols.map((c) => <td class:list={[{ current: c.current }]}>{c.indicator}</td>)}
+      </tr>
+      <tr>
+        <th scope="row">Частота коливань</th>
+        {
+          cols.map((c) => (
+            <td class:list={[{ current: c.current }]}>
+              <span class="num">20–40 Гц</span>
+            </td>
+          ))
+        }
+      </tr>
+      <tr>
+        <th scope="row">Застосування</th>
+        {cols.map((c) => <td class:list={[{ current: c.current }]}>{c.data.usage}</td>)}
+      </tr>
+      <tr>
+        <th scope="row">Гарантія</th>
+        {
+          cols.map((c) => (
+            <td class:list={[{ current: c.current }]}>
+              <span class="num">12 міс</span>
+            </td>
+          ))
+        }
+      </tr>
+      <tr class="act">
+        <th scope="row"></th>
+        {
+          cols.map((c) => (
+            <td class:list={[{ current: c.current }]}>
+              <a class="buy" href={`tel:${SITE.phonePrimary}`}>
+                Замовити
+              </a>
+            </td>
+          ))
+        }
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p class="matrix-note">
+  Ціни орієнтовні. Точну вартість і терміни виготовлення уточнюйте телефоном.
+</p>
+
+<style>
+  .matrix-shell {
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    background: var(--panel-2);
+    -webkit-overflow-scrolling: touch;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 820px;
+  }
+  caption {
+    text-align: left;
+    padding: 1.1rem 1.2rem;
+    border-bottom: 1px solid var(--rule);
+    background: var(--panel-3);
+  }
+  caption b {
+    font-family: var(--d);
+    font-weight: 500;
+    font-size: 1.1rem;
+  }
+  caption span {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--body-soft);
+    margin-top: 0.15rem;
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: middle;
+  }
+  tbody th,
+  thead th {
+    font-family: var(--m);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--steel-2);
+    width: 190px;
+    background: var(--panel-2);
+    position: sticky;
+    left: 0;
+    border-right: 1px solid var(--rule);
+  }
+  thead td {
+    padding: 1rem;
+    vertical-align: bottom;
+  }
+  .col-img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 6px;
+    background: #0a1013;
+  }
+  .col-name {
+    display: block;
+    font-family: var(--d);
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-top: 0.7rem;
+    color: var(--paper);
+  }
+  thead td a:hover .col-name {
+    color: var(--led);
+  }
+  .col-here {
+    display: inline-block;
+    margin-top: 0.3rem;
+    font-family: var(--m);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--led);
+  }
+  .col-label {
+    font: inherit;
+  }
+  td {
+    font-size: 0.9rem;
+    color: var(--paper);
+  }
+  .num {
+    font-family: var(--m);
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+  .sub {
+    display: block;
+    font-size: 0.68rem;
+    color: var(--steel-2);
+  }
+  tr.price-row td {
+    background: var(--led-dim);
+  }
+  tr.price-row .num {
+    font-family: var(--d);
+    font-weight: 500;
+    font-size: 1.16rem;
+  }
+  /* the visitor's current model, on product pages */
+  td.current {
+    background: rgba(88, 182, 255, 0.07);
+    box-shadow: inset 1px 0 0 var(--led), inset -1px 0 0 var(--led);
+  }
+  tr.price-row td.current {
+    background: rgba(88, 182, 255, 0.18);
+  }
+  tr.act td {
+    padding: 1rem;
+    border-bottom: 0;
+  }
+  .buy {
+    display: block;
+    text-align: center;
+    padding: 0.7rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 6px;
+    background: var(--led);
+    color: #06232f;
+    transition: background 0.18s;
+  }
+  .buy:hover {
+    background: var(--led-glow);
+  }
+  .matrix-note {
+    margin-top: 0.8rem;
+    font-size: 0.78rem;
+    color: var(--steel-2);
+  }
+  .scroll-hint {
+    display: none;
+    font-family: var(--m);
+    font-size: 0.72rem;
+    color: var(--steel-2);
+    margin-bottom: 0.5rem;
+  }
+  @media (max-width: 880px) {
+    .scroll-hint {
+      display: block;
+    }
+  }
+</style>

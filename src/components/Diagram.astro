@@ -1,0 +1,81 @@
+---
+interface Props {
+  kind: 'circulation' | 'metabolic' | 'neuromuscular';
+}
+const { kind } = Astro.props;
+
+const LABELS: Record<Props['kind'], string> = {
+  circulation: 'Схема: вібрація прискорює рух крові та лімфи в судині',
+  metabolic: 'Схема: механічна хвиля згасає, проходячи шари тканини',
+  neuromuscular: 'Схема: двосторонній звʼязок між нервовою системою та мʼязом',
+};
+---
+
+<svg class="dia" viewBox="0 0 210 96" role="img" aria-label={LABELS[kind]}>
+  {
+    kind === 'circulation' && (
+      <>
+        <path d="M8 30C58 16 152 16 202 30" />
+        <path d="M8 70C58 84 152 84 202 70" />
+        <path class="faint" d="M8 50h194" />
+        <path d="M56 42l11 8-11 8" />
+        <path d="M96 42l11 8-11 8" />
+        <path d="M136 42l11 8-11 8" />
+        <circle class="fillnode" cx="34" cy="50" r="4" />
+        <circle class="fillnode" cx="176" cy="50" r="4" opacity=".45" />
+      </>
+    )
+  }
+  {
+    kind === 'metabolic' && (
+      <>
+        <path d="M8 20c12-16 24 16 36 0s24 16 36 0 24 16 36 0 24 16 36 0 24 16 22 0" />
+        <path
+          d="M8 48c12-10 24 10 36 0s24 10 36 0 24 10 36 0 24 10 36 0 24 10 22 0"
+          opacity=".62"
+        />
+        <path d="M8 76c12-5 24 5 36 0s24 5 36 0 24 5 36 0 24 5 36 0 24 5 22 0" opacity=".34" />
+        <path class="faint dash" d="M8 34h194M8 62h194" />
+      </>
+    )
+  }
+  {
+    kind === 'neuromuscular' && (
+      <>
+        <circle cx="34" cy="48" r="20" />
+        <path class="faint" d="M26 40c6 4 10 4 16 0M26 50c6 4 10 4 16 0M26 60c6 3 10 3 16 0" />
+        <path d="M154 30c22 0 34 18 34 18s-12 18-34 18-34-18-34-18 12-18 34-18z" />
+        <path class="faint" d="M132 48h44" />
+        <path class="dash" d="M58 38h46" />
+        <path d="M99 33l7 5-7 5" />
+        <path class="dash" d="M104 58H58" />
+        <path d="M64 53l-7 5 7 5" />
+      </>
+    )
+  }
+</svg>
+
+<style>
+  .dia {
+    width: 100%;
+    height: auto;
+    margin-bottom: 1.1rem;
+    color: var(--led);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .dia :global(.faint) {
+    stroke: rgba(255, 255, 255, 0.18);
+    stroke-width: 1.6;
+  }
+  .dia :global(.fillnode) {
+    fill: var(--led);
+    stroke: none;
+  }
+  .dia :global(.dash) {
+    stroke-dasharray: 5 5;
+  }
+</style>

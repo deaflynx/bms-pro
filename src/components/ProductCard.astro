@@ -1,0 +1,125 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { PRICE_NOTE, formatPrice } from '../lib/format';
+import { url } from '../lib/site';
+
+interface Props {
+  product: CollectionEntry<'products'>;
+}
+const { product } = Astro.props;
+const d = product.data;
+---
+
+<article class="card">
+  <a href={url(`/products/${product.id}/`)}>
+    <figure>
+      <img src={url(d.image)} alt={`Прилад ${d.name}`} width="900" height="675" loading="lazy" />
+    </figure>
+    <div class="body">
+      <h3>{d.name}</h3>
+      <p class="zone">{d.zones.join(', ')}</p>
+      <p class="desc">{d.tagline}</p>
+      <p class="price"><b>{formatPrice(d.price)}</b><span>{PRICE_NOTE}</span></p>
+      <span class="more">
+        Детальніше
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M5 12h13M13 6l6 6-6 6" />
+        </svg>
+      </span>
+    </div>
+  </a>
+</article>
+
+<style>
+  .card {
+    background: var(--panel-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    overflow: hidden;
+    transition:
+      border-color 0.22s,
+      transform 0.22s;
+  }
+  .card:hover {
+    border-color: rgba(88, 182, 255, 0.5);
+    transform: translateY(-4px);
+  }
+  .card a {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  figure {
+    margin: 0;
+    aspect-ratio: 4 / 3;
+    background: #0a1013;
+    position: relative;
+  }
+  figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  figure::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10, 16, 19, 0.72), transparent 58%);
+  }
+  .body {
+    padding: 1.1rem 1.15rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  h3 {
+    font-size: 1.32rem;
+    letter-spacing: 0.01em;
+  }
+  .zone {
+    font-family: var(--m);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--led);
+    margin-top: 0.35rem;
+  }
+  .desc {
+    font-size: 0.87rem;
+    color: var(--body-mute);
+    margin-top: 0.7rem;
+    flex: 1;
+  }
+  .price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    margin-top: 1.1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--rule);
+  }
+  .price b {
+    font-family: var(--m);
+    font-size: 1.16rem;
+    font-weight: 700;
+  }
+  .price span {
+    font-size: 0.72rem;
+    color: var(--steel-2);
+  }
+  .more {
+    margin-top: 0.9rem;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--led);
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: center;
+  }
+  .card:hover .more svg {
+    transform: translateX(3px);
+  }
+  .more svg {
+    transition: transform 0.2s;
+  }
+</style>
