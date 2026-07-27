@@ -1,0 +1,43 @@
+User-agent: *
+Allow: /
+
+# --- AI crawlers ---
+# Ported from the WordPress site's robots.txt, which already had this right.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: claude-web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# --- SEO crawlers ---
+User-agent: AhrefsBot
+Disallow: /
+
+Sitemap: https://bms-pro.com.ua/sitemap-index.xml
