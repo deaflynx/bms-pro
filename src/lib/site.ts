@@ -21,7 +21,7 @@ export const SITE = {
   phonePrimaryDisplay: '+380 50 546 00 77',
   phoneSecondary: '+380685460077',
   phoneSecondaryDisplay: '+380 68 546 00 77',
-  email: 'indo@bms-pro.com.ua',
+  email: 'info@bms-pro.com.ua',
   address: {
     street: 'вул. Бориспільська 11а, оф. 206',
     city: 'Київ',

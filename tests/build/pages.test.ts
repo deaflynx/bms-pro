@@ -131,7 +131,7 @@ describe('contacts', () => {
   });
 
   it('links the email and the address', () => {
-    expect(html).toContain('mailto:indo@bms-pro.com.ua');
+    expect(html).toContain('mailto:info@bms-pro.com.ua');
     expect(html).toContain('Бориспільська');
   });
 });
