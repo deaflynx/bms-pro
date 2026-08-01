@@ -12,7 +12,7 @@ describe('homepage', () => {
 
   it('leads with the device photos, not the interactive panel', () => {
     expect(markup).toContain('/assets/img/bms-m-1.webp');
-    expect(markup).toContain('/assets/img/case-backdrop.webp');
+    expect(markup).toContain('/assets/img/hero-collage.webp');
     expect(markup).not.toMatch(/class="instrument/);
   });
 
