@@ -5,10 +5,11 @@ zones: ['Обличчя', 'Шия']
 price: 24000
 channels: '1'
 indicator: analog
+control: 'Аналоговий регулятор'
 usage: Дім
 image: '/assets/img/bms-m-card.webp'
 gallery:
-  ['/assets/img/bms-m-front.webp', '/assets/img/bms-m-rear.webp', '/assets/img/case-card.webp']
+  ['/assets/img/bms-m-1.webp', '/assets/img/bms-m-2.webp', '/assets/img/bms-m-3.webp']
 benefits:
   - 'Механічний принцип дії без електричного впливу на організм'
   - 'Локальна стимуляція окремих мʼязових груп'

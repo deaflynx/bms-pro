@@ -10,7 +10,12 @@ const { path } = Astro.props;
 <header>
   <div class="wrap bar">
     <a class="brand" href={url('/')}>
-      <img src={url('/assets/img/logo.webp')} alt="" width="26" height="26" /> BMS PRO
+      <img
+        src={url('/assets/img/logo-lockup.webp')}
+        alt="BMS-Pro — Системи біомеханічної стимуляції"
+        width="197"
+        height="54"
+      />
     </a>
     <nav aria-label="Головна навігація">
       <ul>
@@ -42,7 +47,7 @@ const { path } = Astro.props;
     display: flex;
     align-items: center;
     gap: clamp(1rem, 3vw, 2.5rem);
-    height: 66px;
+    height: 72px;
   }
   .brand {
     display: flex;

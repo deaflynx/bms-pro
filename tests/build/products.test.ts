@@ -28,7 +28,7 @@ describe('product pages', () => {
       expect(product.offers.priceCurrency).toBe('UAH');
       expect(product.offers.price).toBeGreaterThan(0);
       expect(product.offers.url).toContain(`/products/${s}/`);
-      expect(product.manufacturer.name).toBe('ТОВ «УКРСИСТЕМС»');
+      expect(product.manufacturer.name).toBe('Системи біомеханічної стимуляції');
     }
   });
 
@@ -60,16 +60,18 @@ describe('product pages', () => {
     expect(m).toContain('data-gallery');
     expect(m.match(/class="slide/g)).toHaveLength(3);
     expect(m.match(/data-thumb="/g)).toHaveLength(3);
-    for (const img of ['bms-m-front.webp', 'bms-m-rear.webp', 'case-card.webp']) {
+    for (const img of ['bms-m-1.webp', 'bms-m-2.webp', 'bms-m-3.webp']) {
       expect(m, img).toContain(`/assets/img/${img}`);
     }
   });
 
-  it('drops the slider controls when a device has a single photo', () => {
-    const m = markup('bms-pro');
-    expect(m.match(/class="slide/g)).toHaveLength(1);
-    expect(m).not.toContain('data-thumb=');
-    expect(m).not.toContain('class="nav');
+  it('gives every device a multi-photo slider with controls', () => {
+    for (const slug of ['bms-pro', 'bms-nexus', 'bms-quadro']) {
+      const m = markup(slug);
+      expect(m.match(/class="slide/g), slug).toHaveLength(3);
+      expect(m, slug).toContain('data-thumb=');
+      expect(m, slug).toContain('class="nav');
+    }
   });
 
   it('lists the BMS m benefits under their own heading', () => {

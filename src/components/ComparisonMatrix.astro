@@ -1,7 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { PRICE_NOTE, formatPrice } from '../lib/format';
-import { instrumentFor } from '../lib/instrument';
 import { SITE, url } from '../lib/site';
 
 interface Props {
@@ -14,8 +13,6 @@ const cols = products.map((p) => ({
   id: p.id,
   data: p.data,
   current: p.id === highlight,
-  // Indicator labels come from instrumentFor so they can never drift from the panel.
-  indicator: instrumentFor(p.data.indicator).label,
 }));
 ---
 
@@ -76,8 +73,8 @@ const cols = products.map((p) => ({
         }
       </tr>
       <tr>
-        <th scope="row">Індикатор частоти</th>
-        {cols.map((c) => <td class:list={[{ current: c.current }]}>{c.indicator}</td>)}
+        <th scope="row">Керування</th>
+        {cols.map((c) => <td class:list={[{ current: c.current }]}>{c.data.control}</td>)}
       </tr>
       <tr>
         <th scope="row">Частота коливань</th>

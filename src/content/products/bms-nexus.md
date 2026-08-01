@@ -5,9 +5,10 @@ zones: ['Обличчя', 'Шия', 'Спина']
 price: 48000
 channels: '2'
 indicator: dual-digital
+control: 'Два аналогові регулятори + цифрова індикація'
 usage: Салон, кабінет
 image: '/assets/img/bms-nexus-card.webp'
-gallery: ['/assets/img/bms-nexus-card.webp']
+gallery: ['/assets/img/bms-nexus-1.webp', '/assets/img/bms-nexus-2.webp', '/assets/img/bms-nexus-3.webp']
 specs:
   'Споживана потужність': '≤20 Вт'
   'Частота коливань насадки': '20–40 Гц'

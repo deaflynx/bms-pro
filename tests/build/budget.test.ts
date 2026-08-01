@@ -19,8 +19,12 @@ const ROUTES = [
   'privacy-policy',
 ];
 
-/** HTML + CSS + JS per page. The current WordPress homepage is 689 948 B of HTML alone. */
-const BUDGET = 60 * 1024;
+/**
+ * HTML + CSS + JS per page. The current WordPress homepage is 689 948 B of HTML alone,
+ * so even at this ceiling every page stays ~11x lighter. Raised from 60 KB when the hero
+ * gained a four-model photo slider (one tabbed gallery per device).
+ */
+const BUDGET = 64 * 1024;
 
 function read(route: string): string {
   return readFileSync(`dist/${route ? `${route}/` : ''}index.html`, 'utf8');

@@ -14,6 +14,7 @@ const products = defineCollection({
     price: z.number().int().positive(),
     channels: z.string(),
     indicator: z.enum(['analog', 'digital', 'dual-digital', 'roller']),
+    control: z.string(),
     usage: z.string(),
     image: z.string(),
     gallery: z.array(z.string()).default([]),

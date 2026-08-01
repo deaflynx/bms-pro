@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import ComparisonMatrix from '../components/ComparisonMatrix.astro';
 import Diagram from '../components/Diagram.astro';
 import Disclaimer from '../components/Disclaimer.astro';
+import HeroShowcase from '../components/HeroShowcase.astro';
 import Icon from '../components/Icon.astro';
 import JsonLd from '../components/JsonLd.astro';
 import SpecTiles from '../components/SpecTiles.astro';
@@ -20,12 +21,20 @@ const listItems = products.map((p) => ({
   url: new URL(url(`/products/${p.id}/`), Astro.site).href,
 }));
 
-// Hero collage: the wide BMS m shot leads, the two panel shots sit under it.
-const COLLAGE = [
-  { id: 'bms-m', image: '/assets/img/bms-m-front.webp', w: 960, h: 479 },
-  { id: 'bms-nexus', image: '/assets/img/bms-nexus-card.webp', w: 900, h: 675 },
-  { id: 'bms-quadro', image: '/assets/img/bms-quadro-card.webp', w: 900, h: 675 },
-].map((c) => ({ ...c, name: products.find((p) => p.id === c.id)!.data.name }));
+// Hero showcase: one tab per model, each opening a slider of detail shots.
+const HERO_TAGS: Record<string, string> = {
+  'bms-m': 'Дім · обличчя, шия',
+  'bms-pro': 'Дім, салон · шия, спина',
+  'bms-nexus': 'Салон, кабінет · два канали',
+  'bms-quadro': 'Кабінет · роликовий вузол',
+};
+const HERO = products.map((p) => ({
+  id: p.id,
+  name: p.data.name,
+  tag: HERO_TAGS[p.id] ?? p.data.usage,
+  href: url(`/products/${p.id}/`),
+  images: p.data.gallery,
+}));
 
 const TICKER = [
   { value: '20–40 Гц', label: 'Частота коливань насадки' },
@@ -89,7 +98,7 @@ const DOCS = [
 
 <Base
   title="BMS Pro — прилади біомеханічної стимуляції мʼязів"
-  description="Прилади BMS для механічної стимуляції мʼязів у діапазоні 20–40 Гц: BMS m, pro, Nexus, Quadro. Власне виробництво, ТОВ «УКРСИСТЕМС», Київ."
+  description="Прилади BMS для механічної стимуляції мʼязів у діапазоні 20–40 Гц: BMS m, pro, Nexus, Quadro. Власне виробництво, Київ."
   canonicalPath="/"
 >
   <Fragment slot="head">
@@ -106,8 +115,8 @@ const DOCS = [
       height="675"
     />
     <span class="hero-scrim"></span>
-    <div class="wrap hero-grid">
-      <div>
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
         <p class="eyebrow">Біомеханічна стимуляція · Київ</p>
         <h1>Механічна стимуляція мʼязів на частоті <em>20–40 Гц</em></h1>
         <p class="lede">
@@ -119,22 +128,7 @@ const DOCS = [
           <a class="btn btn-2" href="#compare">Порівняти прилади</a>
         </div>
       </div>
-      <div class="collage">
-        {
-          COLLAGE.map((c, i) => (
-            <a class:list={['tile', { lead: i === 0 }]} href={url(`/products/${c.id}/`)}>
-              <img
-                src={url(c.image)}
-                alt={`Прилад ${c.name}`}
-                width={c.w}
-                height={c.h}
-                fetchpriority={i === 0 ? 'high' : undefined}
-              />
-              <span class="tile-name">{c.name}</span>
-            </a>
-          ))
-        }
-      </div>
+      <HeroShowcase models={HERO} />
     </div>
   </div>
 
@@ -358,94 +352,19 @@ const DOCS = [
     background-size: 64px 64px;
     mask-image: radial-gradient(ellipse 80% 70% at 20% 40%, #000, transparent 70%);
   }
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1.02fr 0.98fr;
-    gap: clamp(2rem, 5vw, 4rem);
-    align-items: center;
+  .hero-inner {
+    display: block;
   }
-  @media (max-width: 940px) {
-    .hero-grid {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
-    }
+  .hero-copy {
+    max-width: 640px;
+    margin-bottom: clamp(1.8rem, 4vw, 2.6rem);
   }
   .hero h1 {
     margin-top: 1.3rem;
   }
-  .collage {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .tile {
+  /* the showcase spans the full width beneath the copy */
+  .hero-inner :global(.showcase) {
     position: relative;
-    display: block;
-    border: 2px solid rgba(242, 240, 235, 0.9);
-    border-radius: 6px;
-    overflow: hidden;
-    line-height: 0;
-    box-shadow: 0 26px 54px -26px rgba(0, 0, 0, 0.9);
-    transition:
-      border-color 0.2s,
-      transform 0.2s;
-  }
-  .tile.lead {
-    grid-column: 1 / -1;
-  }
-  .tile img {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-  }
-  .tile.lead img {
-    aspect-ratio: 16 / 10;
-  }
-  .tile:hover,
-  .tile:focus-visible {
-    border-color: var(--led);
-    transform: translateY(-2px);
-  }
-  .tile:focus-visible {
-    outline: 2px solid var(--led);
-    outline-offset: 3px;
-  }
-  /* the model name is an affordance, not a caption — it appears on pointer focus */
-  .tile-name {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 0.55rem 0.75rem;
-    font-family: var(--m);
-    font-size: 0.68rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    line-height: 1.2;
-    color: var(--paper);
-    background: linear-gradient(rgba(10, 16, 19, 0), rgba(10, 16, 19, 0.88));
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .tile:hover .tile-name,
-  .tile:focus-visible .tile-name {
-    opacity: 1;
-  }
-  @media (hover: none) {
-    .tile-name {
-      opacity: 1;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .tile {
-      transition: border-color 0.2s;
-    }
-    .tile:hover,
-    .tile:focus-visible {
-      transform: none;
-    }
   }
 
   .ticker {

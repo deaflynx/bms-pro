@@ -5,9 +5,10 @@ zones: ['Шия', 'Спина']
 price: 32000
 channels: '1'
 indicator: digital
+control: 'Аналоговий регулятор + цифрова індикація'
 usage: Дім, салон
 image: '/assets/img/bms-pro-card.webp'
-gallery: ['/assets/img/bms-pro-card.webp']
+gallery: ['/assets/img/bms-pro-1.webp', '/assets/img/bms-pro-2.webp', '/assets/img/bms-pro-3.webp']
 specs:
   'Споживана потужність': '≤20 Вт'
   'Частота коливань насадки': '20–40 Гц'

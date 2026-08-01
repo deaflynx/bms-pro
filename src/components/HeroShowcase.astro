@@ -1,0 +1,119 @@
+---
+import Gallery from './Gallery.astro';
+
+export interface HeroModel {
+  id: string;
+  name: string;
+  tag: string;
+  href: string;
+  images: string[];
+}
+interface Props {
+  models: HeroModel[];
+}
+const { models } = Astro.props;
+---
+
+<div class="showcase">
+  {/* CSS-only tabs: the radios drive which panel shows, so it works without JS. */}
+  {
+    models.map((m, i) => (
+      <input type="radio" name="hero-model" id={`hm-${m.id}`} class="tabin" checked={i === 0} />
+    ))
+  }
+  <div class="tablist" role="tablist">
+    {
+      models.map((m) => (
+        <label class="tab" for={`hm-${m.id}`}>
+          {m.name}
+        </label>
+      ))
+    }
+  </div>
+  <div class="panels">
+    {
+      models.map((m) => (
+        <div class={`panel panel-${m.id}`}>
+          <Gallery images={m.images} name={m.name} thumbs={false} />
+          <p class="detail">
+            <span>{m.tag}</span>
+            <a href={m.href}>Детальніше про {m.name} →</a>
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .showcase {
+    position: relative;
+  }
+  .tabin {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .tablist {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .tab {
+    font-family: var(--d);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.5rem 1.05rem;
+    border-radius: 8px;
+    border: 1px solid var(--rule);
+    color: var(--body-soft);
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      color 0.2s,
+      border-color 0.2s,
+      background 0.2s;
+  }
+  .tab:hover {
+    color: var(--paper);
+  }
+  /* keyboard focus on the radio lands a ring on its label */
+  .tabin:focus-visible + .tablist .tab {
+    outline: 2px solid var(--led);
+    outline-offset: 2px;
+  }
+  .panel {
+    display: none;
+  }
+  .detail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+    align-items: baseline;
+    margin-top: 0.7rem;
+    font-size: 0.86rem;
+    color: var(--body-soft);
+  }
+  .detail a {
+    color: var(--led);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* The four homepage models: each checked radio lights its tab and shows its panel. */
+  #hm-bms-m:checked ~ .tablist .tab[for='hm-bms-m'],
+  #hm-bms-pro:checked ~ .tablist .tab[for='hm-bms-pro'],
+  #hm-bms-nexus:checked ~ .tablist .tab[for='hm-bms-nexus'],
+  #hm-bms-quadro:checked ~ .tablist .tab[for='hm-bms-quadro'] {
+    color: var(--paper);
+    border-color: var(--led);
+    background: var(--led-dim);
+  }
+  #hm-bms-m:checked ~ .panels .panel-bms-m,
+  #hm-bms-pro:checked ~ .panels .panel-bms-pro,
+  #hm-bms-nexus:checked ~ .panels .panel-bms-nexus,
+  #hm-bms-quadro:checked ~ .panels .panel-bms-quadro {
+    display: block;
+  }
+</style>

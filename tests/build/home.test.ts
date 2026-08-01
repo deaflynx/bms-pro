@@ -11,17 +11,21 @@ describe('homepage', () => {
   });
 
   it('leads with the device photos, not the interactive panel', () => {
-    expect(markup).toContain('/assets/img/bms-m-front.webp');
+    expect(markup).toContain('/assets/img/bms-m-1.webp');
     expect(markup).toContain('/assets/img/case-backdrop.webp');
     expect(markup).not.toMatch(/class="instrument/);
   });
 
-  it('links every hero photo to its product page', () => {
-    const hero = markup.match(/<div class="collage[\s\S]*?<\/div>/)![0];
-    for (const slug of ['bms-m', 'bms-nexus', 'bms-quadro']) {
-      expect(hero, slug).toContain(`href="/bms-pro/products/${slug}/"`);
+  it('showcases every model with its own slider linking to the product page', () => {
+    // one tabbed gallery per model, each with three detail shots
+    expect(markup.match(/data-gallery/g)).toHaveLength(4);
+    expect(markup.match(/class="slide/g)).toHaveLength(12);
+    for (const name of ['BMS m', 'BMS pro', 'BMS Nexus', 'BMS Quadro']) {
+      expect(markup, name).toContain(`Детальніше про ${name}`);
     }
-    expect(hero.match(/<img/g)).toHaveLength(3);
+    for (const slug of ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro']) {
+      expect(markup, slug).toContain(`href="/bms-pro/products/${slug}/"`);
+    }
   });
 
   it('defines biomechanical stimulation above the comparison', () => {
@@ -86,7 +90,7 @@ describe('homepage', () => {
   });
 
   it('names the manufacturer and the registered declaration', () => {
-    expect(markup).toContain('ТОВ «УКРСИСТЕМС»');
+    expect(markup).toContain('Системи біомеханічної стимуляції');
     expect(markup).toContain('UA.TR.D.00159-25');
   });
 

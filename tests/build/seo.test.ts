@@ -39,12 +39,12 @@ describe('canonical and Open Graph URLs', () => {
 });
 
 describe('sitewide JSON-LD', () => {
-  it('emits Organization schema naming the canonical legal entity', () => {
+  it('emits Organization schema naming the configured manufacturer', () => {
     const blocks = [
       ...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g),
     ].map((m) => JSON.parse(m[1]));
     const org = blocks.find((b) => b['@type'] === 'Organization');
     expect(org).toBeDefined();
-    expect(org.legalName).toBe('ТОВ «УКРСИСТЕМС»');
+    expect(org.legalName).toBe('Системи біомеханічної стимуляції');
   });
 });

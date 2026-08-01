@@ -4,8 +4,10 @@ import { url } from '../lib/site';
 interface Props {
   images: string[];
   name: string;
+  /** Thumbnail rail under the slider. Off in the compact hero, on for product pages. */
+  thumbs?: boolean;
 }
-const { images, name } = Astro.props;
+const { images, name, thumbs = true } = Astro.props;
 
 const id = `g-${name.toLowerCase().replace(/\s+/g, '-')}`;
 const many = images.length > 1;
@@ -47,13 +49,15 @@ const many = images.length > 1;
           <span aria-hidden="true">›</span>
         </button>
 
-        <div class="thumbs">
-          {images.map((src, i) => (
-            <a class="thumb" href={`#${id}-${i + 1}`} data-thumb={i} aria-label={`Фото ${i + 1}`}>
-              <img src={url(src)} alt="" width="300" height="200" loading="lazy" />
-            </a>
-          ))}
-        </div>
+        {thumbs && (
+          <div class="thumbs">
+            {images.map((src, i) => (
+              <a class="thumb" href={`#${id}-${i + 1}`} data-thumb={i} aria-label={`Фото ${i + 1}`}>
+                <img src={url(src)} alt="" width="300" height="200" loading="lazy" />
+              </a>
+            ))}
+          </div>
+        )}
       </>
     )
   }

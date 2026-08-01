@@ -26,8 +26,8 @@ describe('joinBase()', () => {
 });
 
 describe('SITE', () => {
-  it('uses the canonical legal entity', () => {
-    expect(SITE.legalName).toBe('ТОВ «УКРСИСТЕМС»');
+  it('uses the configured manufacturer name', () => {
+    expect(SITE.legalName).toBe('Системи біомеханічної стимуляції');
   });
   it('exposes the primary phone in dialable and display form', () => {
     expect(SITE.phonePrimary).toBe('+380505460077');

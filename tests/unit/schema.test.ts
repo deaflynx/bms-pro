@@ -14,9 +14,9 @@ const CTX = 'https://schema.org';
 
 describe('organizationSchema', () => {
   const s = organizationSchema();
-  it('names the canonical legal entity', () => {
+  it('names the configured manufacturer', () => {
     expect(s['@type']).toBe('Organization');
-    expect(s.legalName).toBe('ТОВ «УКРСИСТЕМС»');
+    expect(s.legalName).toBe('Системи біомеханічної стимуляції');
   });
   it('carries the postal address', () => {
     expect(s.address.postalCode).toBe('02099');
@@ -53,7 +53,7 @@ describe('productSchema', () => {
 
   it('attributes manufacture to the canonical entity', () => {
     const s = productSchema(p, 'https://example.com/');
-    expect(s.manufacturer.name).toBe('ТОВ «УКРСИСТЕМС»');
+    expect(s.manufacturer.name).toBe('Системи біомеханічної стимуляції');
     expect(s.brand.name).toBe('BMS Pro');
   });
 

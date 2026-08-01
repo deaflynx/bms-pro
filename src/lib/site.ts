@@ -15,13 +15,13 @@ export function url(path: string): string {
 
 export const SITE = {
   name: 'BMS Pro',
-  legalName: 'ТОВ «УКРСИСТЕМС»',
+  legalName: 'Системи біомеханічної стимуляції',
   tagline: 'Системи біомеханічної стимуляції',
   phonePrimary: '+380505460077',
   phonePrimaryDisplay: '+380 50 546 00 77',
   phoneSecondary: '+380685460077',
   phoneSecondaryDisplay: '+380 68 546 00 77',
-  email: 'stymulation.kyiv@gmail.com',
+  email: 'indo@bms-pro.com.ua',
   address: {
     street: 'вул. Бориспільська 11а, оф. 206',
     city: 'Київ',

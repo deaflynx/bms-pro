@@ -131,7 +131,7 @@ describe('contacts', () => {
   });
 
   it('links the email and the address', () => {
-    expect(html).toContain('mailto:stymulation.kyiv@gmail.com');
+    expect(html).toContain('mailto:indo@bms-pro.com.ua');
     expect(html).toContain('Бориспільська');
   });
 });
@@ -140,7 +140,7 @@ describe('about', () => {
   const html = read('about');
 
   it('names the manufacturer', () => {
-    expect(html).toContain('ТОВ «УКРСИСТЕМС»');
+    expect(html).toContain('Системи біомеханічної стимуляції');
   });
   it('states the declaration facts', () => {
     expect(html).toContain('UA.TR.D.00159-25');
