@@ -88,6 +88,16 @@ const cols = products.map((p) => ({
         }
       </tr>
       <tr>
+        <th scope="row">Споживана потужність</th>
+        {
+          cols.map((c) => (
+            <td class:list={[{ current: c.current }]}>
+              <span class="num">{c.data.specs['Споживана потужність'] ?? '—'}</span>
+            </td>
+          ))
+        }
+      </tr>
+      <tr>
         <th scope="row">Застосування</th>
         {cols.map((c) => <td class:list={[{ current: c.current }]}>{c.data.usage}</td>)}
       </tr>

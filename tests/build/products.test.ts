@@ -151,4 +151,9 @@ describe('products catalogue', () => {
   it('links to all five product pages', () => {
     for (const s of SLUGS) expect(html).toContain(`/bms-pro/products/${s}/`);
   });
+
+  it('compares power consumption per model in the matrix', () => {
+    expect(html).toContain('Споживана потужність');
+    for (const w of ['≤20 Вт', '36 Вт', '≤15 ВА', '80 Вт']) expect(html, w).toContain(w);
+  });
 });

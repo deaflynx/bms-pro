@@ -25,11 +25,12 @@ const ROUTES = [
 ];
 
 /**
- * HTML + CSS + JS per page. The current WordPress homepage is 689 948 B of HTML alone,
- * so even at this ceiling every page stays ~11x lighter. Raised from 60 KB when the hero
- * gained a four-model photo slider (one tabbed gallery per device).
+ * HTML + CSS + JS per page. The old WordPress homepage was 689 948 B of HTML alone,
+ * so even at this ceiling every page stays ~10x lighter. Raised from 60 KB when the hero
+ * gained a photo slider per device, and to 68 KB when the line-up grew to five models
+ * and the matrix gained a power row.
  */
-const BUDGET = 64 * 1024;
+const BUDGET = 68 * 1024;
 
 function read(route: string): string {
   return readFileSync(`dist/${route ? `${route}/` : ''}index.html`, 'utf8');
@@ -46,7 +47,7 @@ function pageWeight(route: string): number {
 }
 
 describe('page weight budget', () => {
-  it.each(ROUTES)('/%s/ stays under 60 KB of HTML+CSS+JS', (route) => {
+  it.each(ROUTES)('/%s/ stays under the HTML+CSS+JS budget', (route) => {
     const bytes = pageWeight(route);
     expect(bytes, `/${route}/ is ${(bytes / 1024).toFixed(1)} KB`).toBeLessThan(BUDGET);
   });
