@@ -82,53 +82,25 @@ describe('document pages', () => {
 describe('documents hub', () => {
   const hub = readFileSync('dist/documents/index.html', 'utf8');
 
-  it('links BMS m to its three documents', () => {
+  it('lists the four existing documents as links to their own pages, and nothing else', () => {
     for (const t of TYPES) expect(hub).toContain(`/bms-pro/documents/bms-m/${t}/`);
-  });
-
-  it('links BMS pro to the shared BMS (m, Pro) documents and Quadro to its passport', () => {
-    for (const t of TYPES) expect(hub).toContain(`/bms-pro/documents/bms-pro/${t}/`);
     expect(hub).toContain('/bms-pro/documents/bms-quadro/passport/');
+    const links = [...hub.matchAll(/href="\/bms-pro\/documents\/[^"]+"/g)];
+    expect(links).toHaveLength(4);
   });
 
-  it('marks the missing documents as pending rather than linking to empty pages', () => {
-    expect(hub).toContain('готується');
-    for (const slug of ['bms-nexus', 'bms-magnus']) {
-      expect(hub, slug).not.toContain(`/bms-pro/documents/${slug}/`);
-    }
-    for (const t of ['declaration', 'technical-conditions']) {
-      expect(hub, t).not.toContain(`/bms-pro/documents/bms-quadro/${t}/`);
-    }
+  it('says the BMS m documents also cover BMS pro', () => {
+    expect(hub).toContain('Стосується також BMS pro');
   });
 
-  it('lists all five models in the matrix', () => {
-    for (const n of ['BMS m', 'BMS pro', 'BMS Nexus', 'BMS Quadro', 'BMS Magnus']) {
-      expect(hub).toContain(n);
-    }
-  });
-});
-
-describe('BMS pro documents', () => {
-  it('reuse the BMS m documents under the pro model, naming pro in the title', () => {
-    const designation = {
-      passport: 'ТУ У 27.9-2294811615-001:2025',
-      declaration: 'UA.TR.D.00159-25',
-      'technical-conditions': 'ТУ У 27.9-2294811615-001:2025',
-    };
-    for (const t of TYPES) {
-      const html = readFileSync(`dist/documents/bms-pro/${t}/index.html`, 'utf8');
-      expect(html, t).toMatch(/<title>Паспорт приладу BMS pro|<title>Декларація відповідності BMS pro|<title>Технічні умови BMS pro/);
-      expect(html, t).toContain(designation[t]);
-    }
+  it('shows no matrix of pending cells any more', () => {
+    expect(hub).not.toContain('<table');
+    expect(hub).not.toContain('готується');
   });
 
-  it('point their canonical at the BMS m page, so the copies do not compete in search', () => {
-    for (const t of TYPES) {
-      const html = readFileSync(`dist/documents/bms-pro/${t}/index.html`, 'utf8');
-      expect(html.match(/<link rel="canonical" href="([^"]+)"/)![1], t).toContain(
-        `/documents/bms-m/${t}/`,
-      );
-    }
+  it('points everyone else to the phone', () => {
+    expect(hub).toContain('на запит');
+    expect(hub).toContain('tel:+380505460077');
   });
 });
 

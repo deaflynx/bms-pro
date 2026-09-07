@@ -36,17 +36,6 @@ const faq = faqAll
   .filter((q) => q.data.models.includes(product.id))
   .sort((a, b) => a.data.order - b.data.order);
 
-const DOC_LABELS: Record<string, string> = {
-  passport: 'Паспорт приладу',
-  declaration: 'Декларація відповідності',
-  'technical-conditions': 'Технічні умови',
-};
-const DOC_NOTES: Record<string, string> = {
-  passport: 'Технічні дані та комплектація',
-  declaration: SITE.declaration,
-  'technical-conditions': SITE.tu,
-};
-
 const trail = [
   { name: 'Головна', href: '/' },
   { name: 'Прилади', href: '/products/' },
@@ -167,33 +156,6 @@ const { Content } = await render(product);
               ))}
             </ul>
           </div>
-        )
-      }
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">Технічна документація</p>
-        <h2>Документація на {d.name}</h2>
-      </div>
-      {
-        d.documents.length > 0 ? (
-          <div class="doc-list">
-            {d.documents.map((t) => (
-              <a class="doc" href={url(`/documents/${product.id}/${t}/`)}>
-                <span class="pdf">PDF</span>
-                <b>{DOC_LABELS[t]}</b>
-                <span class="note">{DOC_NOTES[t]}</span>
-              </a>
-            ))}
-          </div>
-        ) : (
-          <p class="pending">
-            Документи для цієї моделі готуються. Паспорт, декларацію та технічні умови надішлемо
-            на запит — зателефонуйте {SITE.phonePrimaryDisplay}.
-          </p>
         )
       }
     </div>
@@ -378,56 +340,6 @@ const { Content } = await render(product);
     font-family: var(--m);
     font-weight: 500;
     color: var(--steel);
-  }
-
-  .doc-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
-    max-width: 640px;
-  }
-  .doc {
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-    padding: 0.9rem 1.1rem;
-    border: 1px solid var(--rule);
-    border-radius: 9px;
-    background: var(--panel-2);
-    transition:
-      border-color 0.2s,
-      background 0.2s;
-  }
-  .doc:hover {
-    border-color: var(--led);
-    background: var(--panel-3);
-  }
-  .doc .pdf {
-    font-family: var(--m);
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--amber);
-    border: 1px solid rgba(240, 169, 59, 0.45);
-    padding: 0.2rem 0.4rem;
-    border-radius: 3px;
-    flex: none;
-  }
-  .doc b {
-    font-weight: 500;
-    font-size: 0.93rem;
-    flex: 1;
-  }
-  .doc .note {
-    font-family: var(--m);
-    font-size: 0.72rem;
-    color: var(--steel-2);
-    text-align: right;
-  }
-  .pending {
-    max-width: 60ch;
-    color: var(--body-soft);
-    font-size: 0.92rem;
   }
 
   .faq details {

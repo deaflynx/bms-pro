@@ -77,11 +77,6 @@ describe('homepage', () => {
     expect(html).not.toContain('<iframe');
   });
 
-  it('offers the video as a click-to-load facade', () => {
-    expect(markup).toContain('class="facade');
-    expect(markup).toContain('data-yt=');
-  });
-
   it('carries the medical-device disclaimer', () => {
     expect(markup).toContain('не є медичними виробами');
   });

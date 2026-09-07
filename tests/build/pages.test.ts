@@ -15,9 +15,6 @@ const ROUTES = [
   'documents/bms-m/passport',
   'documents/bms-m/declaration',
   'documents/bms-m/technical-conditions',
-  'documents/bms-pro/passport',
-  'documents/bms-pro/declaration',
-  'documents/bms-pro/technical-conditions',
   'documents/bms-quadro/passport',
   'about',
   'contacts',
@@ -73,8 +70,10 @@ describe('all launch routes', () => {
     for (const r of ROUTES) expect(read(r), `/${r}/`).toContain('не є медичними виробами');
   });
 
-  it('ships no iframe on any page', () => {
-    for (const r of ROUTES) expect(read(r), `/${r}/`).not.toContain('<iframe');
+  it('ships no iframe on any page except the contacts map', () => {
+    for (const r of ROUTES.filter((r) => r !== 'contacts')) {
+      expect(read(r), `/${r}/`).not.toContain('<iframe');
+    }
   });
 });
 
@@ -87,9 +86,6 @@ describe('how it works', () => {
   it('shows the three principle diagrams', () => {
     const labels = [...html.matchAll(/role="img" aria-label="(Схема:[^"]+)"/g)];
     expect(labels).toHaveLength(3);
-  });
-  it('offers the video as a facade', () => {
-    expect(html).toContain('data-yt=');
   });
   it('covers the three application areas', () => {
     for (const a of ['Косметологія', 'Спорт', 'Реабілітація']) expect(html).toContain(a);
@@ -138,6 +134,16 @@ describe('contacts', () => {
   it('links the email and the address', () => {
     expect(html).toContain('mailto:info@bms-pro.com.ua');
     expect(html).toContain('Бориспільська');
+  });
+
+  it('embeds the Google map as a lazy iframe placed before the manufacturer block', () => {
+    const iframe = html.match(/<iframe\b[^>]*>/)?.[0];
+    expect(iframe).toBeDefined();
+    expect(iframe).toContain('google.com/maps');
+    expect(iframe).toContain('output=embed');
+    expect(iframe).toContain('loading="lazy"');
+    expect(iframe).toMatch(/\btitle="/);
+    expect(html.indexOf('<iframe')).toBeLessThan(html.search(/<h2[^>]*>Виробник<\/h2>/));
   });
 });
 

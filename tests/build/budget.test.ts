@@ -14,9 +14,6 @@ const ROUTES = [
   'documents/bms-m/passport',
   'documents/bms-m/declaration',
   'documents/bms-m/technical-conditions',
-  'documents/bms-pro/passport',
-  'documents/bms-pro/declaration',
-  'documents/bms-pro/technical-conditions',
   'documents/bms-quadro/passport',
   'about',
   'contacts',
@@ -58,8 +55,14 @@ describe('page weight budget', () => {
 });
 
 describe('no eager third-party embeds', () => {
-  it.each(ROUTES)('/%s/ ships no iframe', (route) => {
+  it.each(ROUTES.filter((r) => r !== 'contacts'))('/%s/ ships no iframe', (route) => {
     expect(read(route)).not.toContain('<iframe');
+  });
+
+  it('/contacts/ loads its only iframe, the map, lazily', () => {
+    const iframes = [...read('contacts').matchAll(/<iframe\b[^>]*>/g)].map((m) => m[0]);
+    expect(iframes).toHaveLength(1);
+    expect(iframes[0]).toContain('loading="lazy"');
   });
 
   // Astro splits CSS into a shared Base chunk plus one per-route chunk. That is a

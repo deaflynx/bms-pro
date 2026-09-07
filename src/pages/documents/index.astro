@@ -8,20 +8,22 @@ import { breadcrumbSchema } from '../../lib/schema';
 import { SITE, url } from '../../lib/site';
 
 const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
-const docs = await getCollection('documents');
+const productName = (id: string) => products.find((p) => p.id === id)?.data.name ?? id;
+const productRank = (id: string) => products.findIndex((p) => p.id === id);
 
-const TYPES = [
-  { key: 'passport' as const, label: 'Паспорт' },
-  { key: 'declaration' as const, label: 'Декларація відповідності' },
-  { key: 'technical-conditions' as const, label: 'Технічні умови' },
-];
+const TYPE_ORDER = ['passport', 'declaration', 'technical-conditions'];
 
-function docFor(model: string, type: string) {
-  return docs.find((d) => d.data.models.includes(model) && d.data.type === type);
-}
-
-const pendingNames = products.filter((p) => p.data.documents.length === 0).map((p) => p.data.name);
-const pendingList = `${pendingNames.slice(0, -1).join(', ')} та ${pendingNames.at(-1)}`;
+// One entry per document, hosted under its first model; the others are named alongside.
+const docs = (await getCollection('documents'))
+  .map((doc) => ({
+    href: `/documents/${doc.data.models[0]}/${doc.data.type}/`,
+    title: `${doc.data.title} ${productName(doc.data.models[0])}`,
+    alsoFor: doc.data.models.slice(1).map(productName),
+    designation: doc.data.designation,
+    hasPdf: Boolean(doc.data.pdf),
+    rank: productRank(doc.data.models[0]) * 10 + TYPE_ORDER.indexOf(doc.data.type),
+  }))
+  .sort((a, b) => a.rank - b.rank);
 
 const trail = [
   { name: 'Головна', href: '/' },
@@ -32,7 +34,7 @@ const abs = (p: string) => new URL(url(p), Astro.site).href;
 
 <Base
   title="Технічна документація на прилади BMS — паспорт, декларація, ТУ | BMS Pro"
-  description="Паспорт, декларація відповідності UA.TR.D.00159-25 та технічні умови ТУ У 27.9-2294811615-001:2025. Повний текст і PDF."
+  description="Паспорт, декларація відповідності UA.TR.D.00159-25 і технічні умови ТУ У 27.9-2294811615-001:2025 для BMS m і BMS pro, паспорт BMS Quadro. Повний текст і PDF."
   canonicalPath="/documents/"
 >
   <Fragment slot="head">
@@ -47,53 +49,34 @@ const abs = (p: string) => new URL(url(p), Astro.site).href;
         <p class="eyebrow">Технічна документація</p>
         <h1>Документація на прилади BMS</h1>
         <p>
-          Повний текст кожного документа опублікований на сайті, PDF доступний для
-          завантаження. Декларацію зареєстровано на {SITE.legalName}, номер {SITE.declaration},
-          дата реєстрації {SITE.declarationDateDisplay}.
+          Повний текст кожного документа опублікований на сайті окремою сторінкою; де є PDF, його
+          можна завантажити. Декларацію зареєстровано на {SITE.legalName}, номер
+          {SITE.declaration}, дата реєстрації {SITE.declarationDateDisplay}.
         </p>
       </div>
 
-      <p class="scroll-hint">← Таблицю можна прокручувати →</p>
-      <div class="matrix-shell">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col"><span class="hcell">Модель</span></th>
-              {TYPES.map((t) => <th scope="col"><span class="hcell">{t.label}</span></th>)}
-            </tr>
-          </thead>
-          <tbody>
-            {
-              products.map((p) => (
-                <tr>
-                  <th scope="row">
-                    <a href={url(`/products/${p.id}/`)}>{p.data.name}</a>
-                  </th>
-                  {TYPES.map((t) => {
-                    const doc = docFor(p.id, t.key);
-                    return (
-                      <td>
-                        {doc ? (
-                          <a class="have" href={url(`/documents/${p.id}/${t.key}/`)}>
-                            Відкрити
-                            <span class="desig">{doc.data.designation}</span>
-                          </a>
-                        ) : (
-                          <span class="pending">готується</span>
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-      </div>
+      <ul class="doc-list">
+        {
+          docs.map((d) => (
+            <li>
+              <a class="doc" href={url(d.href)}>
+                <span class="doc-text">
+                  <b>{d.title}</b>
+                  {d.alsoFor.length > 0 && (
+                    <span class="also">Стосується також {d.alsoFor.join(', ')}</span>
+                  )}
+                  <span class="desig">{d.designation}</span>
+                </span>
+                {d.hasPdf && <span class="pdf">PDF</span>}
+                <span class="open">Відкрити →</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
 
       <p class="note">
-        Документи для {pendingList} готуються. Надішлемо на запит —
-        зателефонуйте {SITE.phonePrimaryDisplay}.
+        Документацію на решту моделей надішлемо на запит — зателефонуйте {SITE.phonePrimaryDisplay}.
       </p>
 
       <Disclaimer />
@@ -106,94 +89,84 @@ const abs = (p: string) => new URL(url(p), Astro.site).href;
     margin-top: 0.9rem;
     font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem);
   }
-  .matrix-shell {
-    overflow-x: auto;
+  .doc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-width: 760px;
+  }
+  .doc {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
     border: 1px solid var(--rule);
-    border-radius: var(--r);
+    border-radius: 9px;
     background: var(--panel-2);
-    -webkit-overflow-scrolling: touch;
+    transition:
+      border-color 0.2s,
+      background 0.2s;
   }
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 700px;
-  }
-  th,
-  td {
-    text-align: left;
-    padding: 0.9rem 1.1rem;
-    border-bottom: 1px solid var(--rule);
-    vertical-align: middle;
-  }
-  thead th {
+  .doc:hover {
+    border-color: var(--led);
     background: var(--panel-3);
   }
-  .hcell {
-    font-family: var(--m);
-    font-size: 0.68rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--steel-2);
+  .doc-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    flex: 1;
+    min-width: 0;
   }
-  tbody th {
+  .doc b {
     font-family: var(--d);
     font-weight: 500;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     color: var(--paper);
-    background: var(--panel-2);
-    position: sticky;
-    left: 0;
-    border-right: 1px solid var(--rule);
-    width: 180px;
   }
-  tbody th a:hover {
-    color: var(--led);
-  }
-  tr:last-child th,
-  tr:last-child td {
-    border-bottom: 0;
-  }
-  .have {
-    display: inline-flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--led);
-  }
-  .have:hover {
-    color: var(--led-glow);
+  .also {
+    font-size: 0.86rem;
+    color: var(--body-soft);
   }
   .desig {
     font-family: var(--m);
     font-size: 0.68rem;
-    font-weight: 400;
     color: var(--steel-2);
   }
-  .pending {
+  .pdf {
     font-family: var(--m);
-    font-size: 0.74rem;
-    letter-spacing: 0.06em;
-    color: var(--steel-2);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--amber);
+    border: 1px solid rgba(240, 169, 59, 0.45);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    flex: none;
+  }
+  .open {
+    flex: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--led);
+    white-space: nowrap;
+  }
+  @media (max-width: 560px) {
+    .doc {
+      flex-wrap: wrap;
+    }
+    .doc-text {
+      flex-basis: 100%;
+    }
   }
   .note {
-    margin-top: 1rem;
+    margin-top: 1.2rem;
     font-size: 0.84rem;
     color: var(--body-soft);
     max-width: 60ch;
-  }
-  .scroll-hint {
-    display: none;
-    font-family: var(--m);
-    font-size: 0.72rem;
-    color: var(--steel-2);
-    margin-bottom: 0.5rem;
-  }
-  @media (max-width: 760px) {
-    .scroll-hint {
-      display: block;
-    }
   }
   section :global(.warn) {
     margin-top: clamp(2rem, 5vw, 3rem);
