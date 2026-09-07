@@ -123,17 +123,34 @@ II клас електробезпеки · гарантія 12 міс · сер
    WordPress описувала коментарі, реєстрацію, розсилку, Google Analytics і
    Facebook Pixel, яких на новому сайті немає, тому ці пункти видалено.
 
-## Перед перенесенням домену
+## Продакшен
 
-- Обрати хостинг для продакшену. **Не GitHub Pages** — він не вміє 301
-  редиректів, а `/services/` → `/products/` потрібен, щоб не втратити позиції.
-  Рекомендація: Cloudflare Pages.
-- Збірка: `SITE_URL=https://bms-pro.com.ua BASE_PATH=/ npm run build`
-- Редиректи 301: `/services/` → `/products/`, `/contact/` → `/contacts/`,
-  `/shop/`, `/cart/`, `/checkout/`, `/my-account/` → `/products/`
-- Оновити `Sitemap:` у `public/robots.txt` (уже вказує на бойовий домен)
-- Подати sitemap у Search Console, перевірити редиректи
-- Тримати WordPress офлайн ще місяць як відкат
+Бойовий сайт https://bms-pro.com.ua/ живе на хостингу HestiaCP, перед ним —
+Cloudflare. Деплой однією командою, потрібен SSH-доступ до акаунта хостингу:
+
+```bash
+npm run deploy   # SITE_URL=https://bms-pro.com.ua BASE_PATH=/ npm run build + rsync dist/ на сервер
+```
+
+Адресу сервера і каталог скрипт бере з `deploy/.env` (не в git):
+`DEPLOY_HOST=user@host` і `DEPLOY_DOCROOT=/home/user/web/bms-pro.com.ua/public_html`.
+
+- **Cloudflare кешує HTML** (Cache Everything, browser TTL 1 місяць), тож після
+  деплою треба зробити *Purge Everything* у панелі Cloudflare, інакше відвідувачі
+  бачать стару версію до місяця.
+- **Редиректи 301** зі старих адрес WordPress (`/services/`, `/contact/`, `/shop/`,
+  `/cart/`, `/checkout/`, `/my-account/`) — два шари. Astro генерує сторінки з
+  миттєвим meta-refresh (працюють одразу після деплою). Додатково
+  `deploy/nginx-redirects.conf` копіюється у `public_html/redirects.conf`: шаблон
+  nginx хостингу підключає `public_html/*.conf` у блок `server`, і після
+  перезавантаження nginx (будь-яка зміна вебдомену в панелі Hestia) це справжні
+  301.
+- `public/mockups/` на бойовий сайт не потрапляє — лише на GitHub Pages.
+- WordPress-версію збережено на сервері поруч із `public_html` як
+  `public_html.wordpress-2026-09-07`, база даних не чіпалась. Відкат — поміняти каталоги місцями. Тримати ще місяць.
+
+Після перенесення: подати `https://bms-pro.com.ua/sitemap-index.xml` у Search
+Console і перевірити редиректи.
 
 ## Документи проєкту
 

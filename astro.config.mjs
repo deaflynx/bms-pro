@@ -12,4 +12,15 @@ export default defineConfig({
   build: { format: 'directory' },
   integrations: [sitemap()],
   devToolbar: { enabled: false },
+  // Old WordPress URLs. Static output emits instant meta-refresh pages, which
+  // Google treats as permanent; deploy/nginx-redirects.conf adds real 301s.
+  // Astro prefixes `base` to the source but not to the destination.
+  redirects: {
+    '/services': `${BASE}products/`,
+    '/shop': `${BASE}products/`,
+    '/cart': `${BASE}products/`,
+    '/checkout': `${BASE}products/`,
+    '/my-account': `${BASE}products/`,
+    '/contact': `${BASE}contacts/`,
+  },
 });
