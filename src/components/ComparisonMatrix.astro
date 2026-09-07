@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { PRICE_NOTE, formatPrice } from '../lib/format';
+import { frequencyLabel } from '../lib/instrument';
 import { SITE, url } from '../lib/site';
 
 interface Props {
@@ -81,7 +82,7 @@ const cols = products.map((p) => ({
         {
           cols.map((c) => (
             <td class:list={[{ current: c.current }]}>
-              <span class="num">20–40 Гц</span>
+              <span class="num">{frequencyLabel(c.data.specs)}</span>
             </td>
           ))
         }

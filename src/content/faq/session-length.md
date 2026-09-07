@@ -1,6 +1,6 @@
 ---
 question: Скільки часу можна працювати приладом без перерви?
-models: ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro']
+models: ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro', 'bms-magnus']
 order: 3
 ---
 

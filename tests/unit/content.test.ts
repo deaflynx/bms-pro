@@ -32,8 +32,8 @@ function parse(file: string): { data: Product; body: string } {
 const products = Object.fromEntries(files.map((f) => [f.replace('.md', ''), parse(f)]));
 
 describe('product collection', () => {
-  it('contains exactly the four devices', () => {
-    expect(files).toEqual(['bms-m.md', 'bms-nexus.md', 'bms-pro.md', 'bms-quadro.md']);
+  it('contains exactly the five devices', () => {
+    expect(files).toEqual(['bms-m.md', 'bms-magnus.md', 'bms-nexus.md', 'bms-pro.md', 'bms-quadro.md']);
   });
 
   it('parses as valid YAML, with every field the expected type', () => {
@@ -54,6 +54,7 @@ describe('product collection', () => {
       'bms-pro': 32000,
       'bms-nexus': 48000,
       'bms-quadro': 83000,
+      'bms-magnus': 130000,
     });
   });
 
@@ -103,15 +104,21 @@ describe('product collection', () => {
       'declaration',
       'technical-conditions',
     ]);
-    for (const slug of ['bms-pro', 'bms-nexus', 'bms-quadro']) {
+    for (const slug of ['bms-pro', 'bms-nexus', 'bms-quadro', 'bms-magnus']) {
       expect(products[slug].data.documents, `${slug} must not claim documents yet`).toEqual([]);
     }
   });
 
-  it('states the 20-40 Hz range in every spec sheet', () => {
+  it('states a frequency range in every spec sheet, so the matrix row is never a guess', () => {
     for (const [slug, { data }] of Object.entries(products)) {
-      const values = Object.values(data.specs).join(' ');
-      expect(values, `${slug} specs`).toContain('20–40 Гц');
+      const key = Object.keys(data.specs).find((k) => k.startsWith('Частота коливань'));
+      expect(key, `${slug} specs`).toBeDefined();
+      expect(data.specs[key!], `${slug} frequency`).toMatch(/^\d+–\d+ Гц$/);
     }
+  });
+
+  it('keeps BMS Magnus, the leg platform, inside the documented platform range', () => {
+    expect(products['bms-magnus'].data.specs['Частота коливань']).toBe('20–35 Гц');
+    expect(products['bms-magnus'].data.zones).toContain('Ноги');
   });
 });

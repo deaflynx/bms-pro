@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-const SLUGS = ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro'] as const;
+const SLUGS = ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro', 'bms-magnus'] as const;
 
 function page(slug: string): string {
   return readFileSync(`dist/products/${slug}/index.html`, 'utf8');
@@ -66,7 +66,7 @@ describe('product pages', () => {
   });
 
   it('gives every device a multi-photo slider with controls', () => {
-    for (const slug of ['bms-pro', 'bms-nexus', 'bms-quadro']) {
+    for (const slug of ['bms-pro', 'bms-nexus', 'bms-quadro', 'bms-magnus']) {
       const m = markup(slug);
       expect(m.match(/class="slide/g), slug).toHaveLength(3);
       expect(m, slug).toContain('data-thumb=');
@@ -140,13 +140,13 @@ describe('product pages', () => {
 describe('products catalogue', () => {
   const html = readFileSync('dist/products/index.html', 'utf8');
 
-  it('emits ItemList schema over the four devices', () => {
+  it('emits ItemList schema over the five devices', () => {
     const list = jsonLd(html).find((b) => b['@type'] === 'ItemList');
     expect(list).toBeDefined();
-    expect(list.itemListElement).toHaveLength(4);
+    expect(list.itemListElement).toHaveLength(5);
   });
 
-  it('links to all four product pages', () => {
+  it('links to all five product pages', () => {
     for (const s of SLUGS) expect(html).toContain(`/bms-pro/products/${s}/`);
   });
 });

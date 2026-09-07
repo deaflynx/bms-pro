@@ -9,7 +9,7 @@ import JsonLd from '../../components/JsonLd.astro';
 import SpecTiles from '../../components/SpecTiles.astro';
 import Base from '../../layouts/Base.astro';
 import { PRICE_NOTE, formatPrice } from '../../lib/format';
-import { instrumentFor } from '../../lib/instrument';
+import { frequencyLabel, instrumentFor } from '../../lib/instrument';
 import { breadcrumbSchema, faqSchema, productSchema } from '../../lib/schema';
 import { SITE, url } from '../../lib/site';
 
@@ -89,7 +89,7 @@ const { Content } = await render(product);
         <ul class="chips">
           <li>{d.channels === '1' || d.channels === '2' ? `${d.channels} канал` : d.channels}</li>
           <li>{panel.label}</li>
-          <li>20–40 Гц</li>
+          <li>{frequencyLabel(d.specs)}</li>
           <li>II клас</li>
         </ul>
 

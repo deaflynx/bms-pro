@@ -50,7 +50,11 @@ const { models } = Astro.props;
     position: relative;
   }
   .tabin {
+    /* zero-sized so the hidden radios never count as tap targets; the labels do */
     position: absolute;
+    width: 0;
+    height: 0;
+    margin: 0;
     opacity: 0;
     pointer-events: none;
   }
@@ -96,16 +100,19 @@ const { models } = Astro.props;
     color: var(--body-soft);
   }
   .detail a {
+    display: inline-block;
+    padding-block: 0.2rem;
     color: var(--led);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
 
-  /* The four homepage models: each checked radio lights its tab and shows its panel. */
+  /* The homepage models: each checked radio lights its tab and shows its panel. */
   #hm-bms-m:checked ~ .tablist .tab[for='hm-bms-m'],
   #hm-bms-pro:checked ~ .tablist .tab[for='hm-bms-pro'],
   #hm-bms-nexus:checked ~ .tablist .tab[for='hm-bms-nexus'],
-  #hm-bms-quadro:checked ~ .tablist .tab[for='hm-bms-quadro'] {
+  #hm-bms-quadro:checked ~ .tablist .tab[for='hm-bms-quadro'],
+  #hm-bms-magnus:checked ~ .tablist .tab[for='hm-bms-magnus'] {
     color: var(--paper);
     border-color: var(--led);
     background: var(--led-dim);
@@ -113,7 +120,8 @@ const { models } = Astro.props;
   #hm-bms-m:checked ~ .panels .panel-bms-m,
   #hm-bms-pro:checked ~ .panels .panel-bms-pro,
   #hm-bms-nexus:checked ~ .panels .panel-bms-nexus,
-  #hm-bms-quadro:checked ~ .panels .panel-bms-quadro {
+  #hm-bms-quadro:checked ~ .panels .panel-bms-quadro,
+  #hm-bms-magnus:checked ~ .panels .panel-bms-magnus {
     display: block;
   }
 </style>

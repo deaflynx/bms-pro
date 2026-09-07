@@ -1,6 +1,6 @@
 ---
 question: Чи зареєстровані прилади BMS?
-models: ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro']
+models: ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro', 'bms-magnus']
 order: 9
 ---
 

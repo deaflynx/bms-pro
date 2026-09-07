@@ -8,6 +8,7 @@ const ROUTES = [
   'products/bms-pro',
   'products/bms-nexus',
   'products/bms-quadro',
+  'products/bms-magnus',
   'how-it-works',
   'documents',
   'documents/bms-m/passport',

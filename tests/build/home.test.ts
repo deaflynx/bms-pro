@@ -18,12 +18,12 @@ describe('homepage', () => {
 
   it('showcases every model with its own slider linking to the product page', () => {
     // one tabbed gallery per model, each with three detail shots
-    expect(markup.match(/data-gallery/g)).toHaveLength(4);
-    expect(markup.match(/class="slide/g)).toHaveLength(12);
-    for (const name of ['BMS m', 'BMS pro', 'BMS Nexus', 'BMS Quadro']) {
+    expect(markup.match(/data-gallery/g)).toHaveLength(5);
+    expect(markup.match(/class="slide/g)).toHaveLength(15);
+    for (const name of ['BMS m', 'BMS pro', 'BMS Nexus', 'BMS Quadro', 'BMS Magnus']) {
       expect(markup, name).toContain(`Детальніше про ${name}`);
     }
-    for (const slug of ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro']) {
+    for (const slug of ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro', 'bms-magnus']) {
       expect(markup, slug).toContain(`href="/bms-pro/products/${slug}/"`);
     }
   });
@@ -41,12 +41,13 @@ describe('homepage', () => {
     expect(markup).not.toContain('id="lineup"');
   });
 
-  it('renders all four product cards linking to their pages', () => {
+  it('renders all five product cards linking to their pages', () => {
     for (const [name, slug] of [
       ['BMS m', 'bms-m'],
       ['BMS pro', 'bms-pro'],
       ['BMS Nexus', 'bms-nexus'],
       ['BMS Quadro', 'bms-quadro'],
+      ['BMS Magnus', 'bms-magnus'],
     ]) {
       expect(markup, name).toContain(name);
       expect(markup, slug).toContain(`/bms-pro/products/${slug}/`);
@@ -58,7 +59,7 @@ describe('homepage', () => {
   });
 
   it('shows every price, labelled approximate', () => {
-    for (const p of ['24 000', '32 000', '48 000', '83 000']) {
+    for (const p of ['24 000', '32 000', '48 000', '83 000', '130 000']) {
       expect(markup.replace(/ /g, ' '), p).toContain(p);
     }
     expect(markup).toContain('орієнтовна ціна');

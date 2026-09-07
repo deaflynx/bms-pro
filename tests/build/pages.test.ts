@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-/** The 15 launch routes from the spec. */
+/** The 15 launch routes from the spec, plus BMS Magnus added in September 2026. */
 const ROUTES = [
   '',
   'products',
@@ -9,6 +9,7 @@ const ROUTES = [
   'products/bms-pro',
   'products/bms-nexus',
   'products/bms-quadro',
+  'products/bms-magnus',
   'how-it-works',
   'documents',
   'documents/bms-m/passport',
@@ -25,7 +26,7 @@ function read(route: string): string {
 }
 
 describe('all launch routes', () => {
-  it('emits exactly the 15 pages in the spec', () => {
+  it('emits every route', () => {
     for (const r of ROUTES) {
       expect(existsSync(`dist/${r ? `${r}/` : ''}index.html`), `missing /${r}/`).toBe(true);
     }

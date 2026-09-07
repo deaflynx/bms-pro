@@ -1,6 +1,6 @@
 ---
 question: Як замовити та отримати прилад?
-models: ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro']
+models: ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro', 'bms-magnus']
 order: 8
 ---
 

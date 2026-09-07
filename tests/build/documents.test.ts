@@ -88,13 +88,13 @@ describe('documents hub', () => {
 
   it('marks the other models as pending rather than linking to empty pages', () => {
     expect(hub).toContain('готується');
-    for (const slug of ['bms-pro', 'bms-nexus', 'bms-quadro']) {
+    for (const slug of ['bms-pro', 'bms-nexus', 'bms-quadro', 'bms-magnus']) {
       expect(hub, slug).not.toContain(`/bms-pro/documents/${slug}/`);
     }
   });
 
-  it('lists all four models in the matrix', () => {
-    for (const n of ['BMS m', 'BMS pro', 'BMS Nexus', 'BMS Quadro']) {
+  it('lists all five models in the matrix', () => {
+    for (const n of ['BMS m', 'BMS pro', 'BMS Nexus', 'BMS Quadro', 'BMS Magnus']) {
       expect(hub).toContain(n);
     }
   });

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { FREQ_MAX, FREQ_MIN, instrumentFor } from '../../src/lib/instrument';
+import { FREQ_MAX, FREQ_MIN, frequencyLabel, instrumentFor } from '../../src/lib/instrument';
 
 describe('instrumentFor', () => {
   it('gives BMS m a single analog channel with no digital readout', () => {
@@ -39,5 +39,16 @@ describe('instrumentFor', () => {
   it('exposes the documented 20-40 Hz working range', () => {
     expect(FREQ_MIN).toBe(20);
     expect(FREQ_MAX).toBe(40);
+  });
+});
+
+describe('frequencyLabel', () => {
+  it('reads the range from the spec sheet, whatever the exact key wording', () => {
+    expect(frequencyLabel({ 'Частота коливань насадки': '20–40 Гц' })).toBe('20–40 Гц');
+    expect(frequencyLabel({ 'Частота коливань': '20–35 Гц' })).toBe('20–35 Гц');
+  });
+
+  it('falls back to the platform range when a spec sheet has none', () => {
+    expect(frequencyLabel({})).toBe('20–40 Гц');
   });
 });

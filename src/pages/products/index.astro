@@ -19,8 +19,8 @@ const abs = (p: string) => new URL(url(p), Astro.site).href;
 ---
 
 <Base
-  title="Прилади BMS — чотири моделі біомеханічної стимуляції | BMS Pro"
-  description="Каталог приладів BMS: m, pro, Nexus, Quadro. Зона впливу, канали, характеристики та орієнтовні ціни від 24 000 до 83 000 ₴."
+  title="Прилади BMS — пʼять моделей біомеханічної стимуляції | BMS Pro"
+  description="Каталог приладів BMS: m, pro, Nexus, Quadro, Magnus. Зона впливу, канали, характеристики та орієнтовні ціни від 24 000 до 130 000 ₴."
   canonicalPath="/products/"
 >
   <Fragment slot="head">
@@ -37,11 +37,11 @@ const abs = (p: string) => new URL(url(p), Astro.site).href;
   <section>
     <div class="wrap">
       <div class="sec-head">
-        <p class="eyebrow">Модельний ряд · 4 прилади</p>
+        <p class="eyebrow">Модельний ряд · 5 приладів</p>
         <h1>Прилади BMS</h1>
         <p>
-          Чотири моделі однієї технології. Відрізняються зоною впливу та кількістю каналів — від
-          однієї насадки для обличчя до роликового вузла для спини.
+          Пʼять моделей однієї технології. Відрізняються зоною впливу та кількістю каналів — від
+          однієї насадки для обличчя до платформи для ніг.
         </p>
       </div>
       <div class="lineup">
@@ -84,10 +84,15 @@ const abs = (p: string) => new URL(url(p), Astro.site).href;
   }
   .lineup {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 1rem;
   }
-  @media (max-width: 1000px) {
+  @media (max-width: 1199px) {
+    .lineup {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (max-width: 760px) {
     .lineup {
       grid-template-columns: repeat(2, 1fr);
     }

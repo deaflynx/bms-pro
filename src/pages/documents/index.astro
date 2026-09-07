@@ -20,6 +20,9 @@ function docFor(model: string, type: string) {
   return docs.find((d) => d.data.model === model && d.data.type === type);
 }
 
+const pendingNames = products.filter((p) => p.data.documents.length === 0).map((p) => p.data.name);
+const pendingList = `${pendingNames.slice(0, -1).join(', ')} та ${pendingNames.at(-1)}`;
+
 const trail = [
   { name: 'Головна', href: '/' },
   { name: 'Технічна документація', href: '/documents/' },
@@ -89,7 +92,7 @@ const abs = (p: string) => new URL(url(p), Astro.site).href;
       </div>
 
       <p class="note">
-        Документи для BMS pro, BMS Nexus та BMS Quadro готуються. Надішлемо на запит —
+        Документи для {pendingList} готуються. Надішлемо на запит —
         зателефонуйте {SITE.phonePrimaryDisplay}.
       </p>
 

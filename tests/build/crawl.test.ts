@@ -45,7 +45,7 @@ describe('sitemap', () => {
   });
 
   it('lists every product page', () => {
-    for (const s of ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro']) {
+    for (const s of ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro', 'bms-magnus']) {
       expect(body).toContain(`/products/${s}/`);
     }
   });
@@ -69,7 +69,7 @@ describe('sitemap', () => {
 
 describe('Open Graph images', () => {
   it('gives every product its own OG image, not the logo', () => {
-    for (const s of ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro']) {
+    for (const s of ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro', 'bms-magnus']) {
       expect(existsSync(`dist/og/${s}.png`), `og/${s}.png`).toBe(true);
       const html = readFileSync(`dist/products/${s}/index.html`, 'utf8');
       expect(html).toContain(`/og/${s}.png`);

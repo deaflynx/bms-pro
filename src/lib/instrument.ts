@@ -22,3 +22,9 @@ export function instrumentFor(indicator: Indicator): InstrumentConfig {
 /** Documented working range of the BMS platform, per the passport. */
 export const FREQ_MIN = 20;
 export const FREQ_MAX = 40;
+
+/** The range a model's own spec sheet states, falling back to the platform range. */
+export function frequencyLabel(specs: Record<string, string>): string {
+  const key = Object.keys(specs).find((k) => k.startsWith('Частота коливань'));
+  return key ? specs[key] : `${FREQ_MIN}–${FREQ_MAX} Гц`;
+}
