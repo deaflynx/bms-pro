@@ -35,6 +35,8 @@ const ROUTES = [
   '/documents/bms-m/passport/',
   '/documents/bms-m/declaration/',
   '/documents/bms-m/technical-conditions/',
+  '/documents/bms-pro/passport/',
+  '/documents/bms-quadro/passport/',
   '/about/',
   '/contacts/',
   '/faq/',

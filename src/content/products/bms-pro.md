@@ -21,7 +21,7 @@ specs:
 included:
   - { item: 'Блок стимуляції', qty: 1 }
   - { item: 'Блок живлення', qty: 1 }
-documents: []
+documents: ['passport', 'declaration', 'technical-conditions']
 order: 2
 ---
 

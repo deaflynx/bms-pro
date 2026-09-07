@@ -29,8 +29,10 @@ const products = defineCollection({
 const documents = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/documents' }),
   schema: z.object({
-    model: z.string(),
+    /** Every model the document covers; the first one hosts the canonical page. */
+    models: z.array(z.string()).min(1),
     type: z.enum(DOC_TYPES),
+    /** Document kind without the model name — the page appends the model it is shown for. */
     title: z.string(),
     designation: z.string(),
     lead: z.string(),

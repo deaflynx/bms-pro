@@ -98,15 +98,24 @@ describe('product collection', () => {
     }
   });
 
-  it('only claims documents for BMS m, the one model whose documents exist', () => {
-    expect(products['bms-m'].data.documents).toEqual([
-      'passport',
-      'declaration',
-      'technical-conditions',
-    ]);
-    for (const slug of ['bms-pro', 'bms-nexus', 'bms-quadro', 'bms-magnus']) {
+  it('claims only the documents that exist: the BMS (m, Pro) set and the Quadro passport', () => {
+    const full = ['passport', 'declaration', 'technical-conditions'];
+    expect(products['bms-m'].data.documents).toEqual(full);
+    expect(products['bms-pro'].data.documents).toEqual(full);
+    expect(products['bms-quadro'].data.documents).toEqual(['passport']);
+    for (const slug of ['bms-nexus', 'bms-magnus']) {
       expect(products[slug].data.documents, `${slug} must not claim documents yet`).toEqual([]);
     }
+  });
+
+  it('carries the power figures the client confirmed on 2026-09-07', () => {
+    const power = (slug: string) => products[slug].data.specs['Споживана потужність'];
+    expect(power('bms-m')).toBe('≤20 Вт');
+    expect(power('bms-pro')).toBe('≤20 Вт');
+    expect(power('bms-nexus')).toBe('36 Вт');
+    expect(power('bms-magnus')).toBe('80 Вт');
+    expect(power('bms-quadro')).toBe('≤15 ВА');
+    expect(products['bms-magnus'].data.specs['Частота в обертах']).toBe('600–1150 об/хв');
   });
 
   it('states a frequency range in every spec sheet, so the matrix row is never a guess', () => {

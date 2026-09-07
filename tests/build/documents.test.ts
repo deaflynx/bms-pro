@@ -86,10 +86,18 @@ describe('documents hub', () => {
     for (const t of TYPES) expect(hub).toContain(`/bms-pro/documents/bms-m/${t}/`);
   });
 
-  it('marks the other models as pending rather than linking to empty pages', () => {
+  it('links BMS pro to the shared BMS (m, Pro) documents and Quadro to its passport', () => {
+    for (const t of TYPES) expect(hub).toContain(`/bms-pro/documents/bms-pro/${t}/`);
+    expect(hub).toContain('/bms-pro/documents/bms-quadro/passport/');
+  });
+
+  it('marks the missing documents as pending rather than linking to empty pages', () => {
     expect(hub).toContain('готується');
-    for (const slug of ['bms-pro', 'bms-nexus', 'bms-quadro', 'bms-magnus']) {
+    for (const slug of ['bms-nexus', 'bms-magnus']) {
       expect(hub, slug).not.toContain(`/bms-pro/documents/${slug}/`);
+    }
+    for (const t of ['declaration', 'technical-conditions']) {
+      expect(hub, t).not.toContain(`/bms-pro/documents/bms-quadro/${t}/`);
     }
   });
 
@@ -97,5 +105,52 @@ describe('documents hub', () => {
     for (const n of ['BMS m', 'BMS pro', 'BMS Nexus', 'BMS Quadro', 'BMS Magnus']) {
       expect(hub).toContain(n);
     }
+  });
+});
+
+describe('BMS pro documents', () => {
+  it('reuse the BMS m documents under the pro model, naming pro in the title', () => {
+    const designation = {
+      passport: 'ТУ У 27.9-2294811615-001:2025',
+      declaration: 'UA.TR.D.00159-25',
+      'technical-conditions': 'ТУ У 27.9-2294811615-001:2025',
+    };
+    for (const t of TYPES) {
+      const html = readFileSync(`dist/documents/bms-pro/${t}/index.html`, 'utf8');
+      expect(html, t).toMatch(/<title>Паспорт приладу BMS pro|<title>Декларація відповідності BMS pro|<title>Технічні умови BMS pro/);
+      expect(html, t).toContain(designation[t]);
+    }
+  });
+
+  it('point their canonical at the BMS m page, so the copies do not compete in search', () => {
+    for (const t of TYPES) {
+      const html = readFileSync(`dist/documents/bms-pro/${t}/index.html`, 'utf8');
+      expect(html.match(/<link rel="canonical" href="([^"]+)"/)![1], t).toContain(
+        `/documents/bms-m/${t}/`,
+      );
+    }
+  });
+});
+
+describe('BMS Quadro passport', () => {
+  const html = readFileSync('dist/documents/bms-quadro/passport/index.html', 'utf8');
+
+  it('transcribes the 2021 passport with its own technical data', () => {
+    expect(html).toMatch(/<title>Паспорт приладу BMS Quadro/);
+    expect(html).toContain('«QUADRO»');
+    expect(html).toContain('20–35 Гц');
+    expect(html).toContain('15 ВА');
+    expect(html).toContain('до 30 хв, пауза 15 хв');
+    expect(html.match(/<h2[^>]*>/g)!.length).toBeGreaterThanOrEqual(9);
+  });
+
+  it('lists the contraindications, since the passport requires supervision', () => {
+    expect(html).toContain('Протипоказання');
+    expect(html).toContain('Гострі гарячкові стани');
+  });
+
+  it('offers no PDF, because the source is a Word file', () => {
+    expect(html).not.toContain('Завантажити PDF');
+    expect(html).not.toContain('PDF для завантаження');
   });
 });

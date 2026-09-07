@@ -1,7 +1,7 @@
 ---
-model: bms-m
+models: ['bms-m', 'bms-pro']
 type: technical-conditions
-title: Технічні умови BMS m
+title: Технічні умови
 designation: 'ТУ У 27.9-2294811615-001:2025'
 lead: 'Стимулятор біомеханічний BMS-м · ТУ У 27.9-2294811615-001:2025 · Введено вперше, без обмеження строку чинності'
 pdf: '/assets/docs/tu-bms-m.pdf'

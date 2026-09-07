@@ -113,12 +113,14 @@ describe('product pages', () => {
     expect(m).toContain('орієнтовна ціна');
   });
 
-  it('links BMS m to its three documents and says the rest are pending', () => {
-    const m = markup('bms-m');
-    for (const t of ['passport', 'declaration', 'technical-conditions']) {
-      expect(m).toContain(`/bms-pro/documents/bms-m/${t}/`);
+  it('links BMS m and BMS pro to their three documents and says the rest are pending', () => {
+    for (const s of ['bms-m', 'bms-pro']) {
+      for (const t of ['passport', 'declaration', 'technical-conditions']) {
+        expect(markup(s), s).toContain(`/bms-pro/documents/${s}/${t}/`);
+      }
     }
-    expect(markup('bms-quadro')).toContain('готуються');
+    expect(markup('bms-quadro')).toContain('/bms-pro/documents/bms-quadro/passport/');
+    for (const s of ['bms-nexus', 'bms-magnus']) expect(markup(s), s).toContain('готуються');
   });
 
   it('lists комплектація from the passport', () => {

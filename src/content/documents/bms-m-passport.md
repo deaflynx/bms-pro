@@ -1,7 +1,7 @@
 ---
-model: bms-m
+models: ['bms-m', 'bms-pro']
 type: passport
-title: Паспорт приладу BMS m
+title: Паспорт приладу
 designation: 'ТУ У 27.9-2294811615-001:2025'
 lead: 'Стимулятор біомеханічний BMS (m, Pro) · ТУ У 27.9-2294811615-001:2025'
 pdf: '/assets/docs/passport-bms-m.pdf'

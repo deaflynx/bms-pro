@@ -1,9 +1,9 @@
 ---
-model: bms-m
+models: ['bms-m', 'bms-pro']
 type: declaration
-title: Декларація відповідності BMS m
+title: Декларація відповідності
 designation: 'UA.TR.D.00159-25'
-lead: 'Підтвердження відповідності приладу BMS m вимогам чинних технічних регламентів'
+lead: 'Підтвердження відповідності приладів BMS m і BMS pro вимогам чинних технічних регламентів'
 image: '/assets/img/declar.png'
 ---
 

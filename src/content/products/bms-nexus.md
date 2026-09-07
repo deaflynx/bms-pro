@@ -10,7 +10,7 @@ usage: Салон, кабінет
 image: '/assets/img/bms-nexus-card.webp'
 gallery: ['/assets/img/bms-nexus-1.webp', '/assets/img/bms-nexus-2.webp', '/assets/img/bms-nexus-3.webp']
 specs:
-  'Споживана потужність': '≤20 Вт'
+  'Споживана потужність': '36 Вт'
   'Частота коливань насадки': '20–40 Гц'
   'Напруга живлення, 50–60 Гц': '110–235 В'
   'Кут повороту головки': '40–44°'

@@ -17,7 +17,7 @@ const TYPES = [
 ];
 
 function docFor(model: string, type: string) {
-  return docs.find((d) => d.data.model === model && d.data.type === type);
+  return docs.find((d) => d.data.models.includes(model) && d.data.type === type);
 }
 
 const pendingNames = products.filter((p) => p.data.documents.length === 0).map((p) => p.data.name);

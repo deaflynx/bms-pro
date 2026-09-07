@@ -9,10 +9,12 @@ import { url } from '../../../lib/site';
 export async function getStaticPaths() {
   const docs = await getCollection('documents');
   const products = await getCollection('products');
-  return docs.map((doc) => ({
-    params: { model: doc.data.model, type: doc.data.type },
-    props: { doc, product: products.find((p) => p.id === doc.data.model)! },
-  }));
+  return docs.flatMap((doc) =>
+    doc.data.models.map((model) => ({
+      params: { model, type: doc.data.type },
+      props: { doc, product: products.find((p) => p.id === model)! },
+    })),
+  );
 }
 
 interface Props {
@@ -22,31 +24,34 @@ interface Props {
 const { doc, product } = Astro.props;
 const d = doc.data;
 
-const path = `/documents/${d.model}/${d.type}/`;
+const title = `${d.title} ${product.data.name}`;
+const path = `/documents/${product.id}/${d.type}/`;
+// One document can cover several models; the copies point search engines at the first.
+const canonicalPath = `/documents/${d.models[0]}/${d.type}/`;
 const abs = (p: string) => new URL(url(p), Astro.site).href;
 
 const trail = [
   { name: 'Головна', href: '/' },
   { name: 'Технічна документація', href: '/documents/' },
   { name: product.data.name, href: `/products/${product.id}/` },
-  { name: d.title, href: path },
+  { name: title, href: path },
 ];
 
 const { Content, headings } = await render(doc);
 ---
 
 <Base
-  title={`${d.title} — ${d.designation} | BMS Pro`}
-  description={`${d.lead}. Повний текст документа та PDF для завантаження. Виробництво у Києві.`}
-  canonicalPath={path}
+  title={`${title} — ${d.designation} | BMS Pro`}
+  description={`${d.lead}. Повний текст документа${d.pdf ? ' та PDF для завантаження' : ''}. Виробництво у Києві.`}
+  canonicalPath={canonicalPath}
 >
   <Fragment slot="head">
-    <JsonLd data={documentSchema({ title: d.title, designation: d.designation }, abs(path))} />
+    <JsonLd data={documentSchema({ title, designation: d.designation }, abs(path))} />
     <JsonLd data={breadcrumbSchema(trail.map((c) => ({ name: c.name, url: abs(c.href) })))} />
   </Fragment>
 
   <DocumentPage
-    title={d.title}
+    title={title}
     lead={d.lead}
     designation={d.designation}
     pdf={d.pdf}
