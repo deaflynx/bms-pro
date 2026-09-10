@@ -21,6 +21,24 @@ describe('product pages', () => {
     for (const s of SLUGS) expect(existsSync(`dist/products/${s}/index.html`), s).toBe(true);
   });
 
+  it('gives Product schema an absolute image — Google discards relative URLs', () => {
+    for (const s of SLUGS) {
+      const product = jsonLd(page(s)).find((b) => b['@type'] === 'Product');
+      expect(product.image, s).toMatch(/^https:\/\//);
+      expect(product.image, s).toContain(`/assets/img/${s}-card.webp`);
+    }
+  });
+
+  it('leaves FAQPage to /faq/ — six copies of one node help nothing', () => {
+    for (const s of SLUGS) {
+      expect(jsonLd(page(s)).find((b) => b['@type'] === 'FAQPage'), s).toBeUndefined();
+    }
+  });
+
+  it('links out to the full FAQ from each device page', () => {
+    for (const s of SLUGS) expect(markup(s), s).toContain('Усі питання про прилади BMS');
+  });
+
   it('carries Product schema with a hryvnia Offer', () => {
     for (const s of SLUGS) {
       const product = jsonLd(page(s)).find((b) => b['@type'] === 'Product');

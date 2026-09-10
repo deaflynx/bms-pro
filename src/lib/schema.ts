@@ -38,16 +38,20 @@ export interface ProductLike {
   name: string;
   tagline: string;
   price: number;
-  image: string;
 }
 
-export function productSchema(p: ProductLike, absUrl: string) {
+/**
+ * `absUrl` and `absImage` must be absolute. Google discards relative URLs in
+ * structured data, so the image is taken as a separate argument rather than
+ * off the frontmatter, where it is a site-relative path.
+ */
+export function productSchema(p: ProductLike, absUrl: string, absImage: string) {
   return {
     '@context': CTX,
     '@type': 'Product',
     name: p.name,
     description: p.tagline,
-    image: p.image,
+    image: absImage,
     brand: { '@type': 'Brand', name: SITE.name },
     manufacturer: { '@type': 'Organization', name: SITE.legalName },
     offers: {

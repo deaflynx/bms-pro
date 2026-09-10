@@ -44,7 +44,7 @@ describe('document pages', () => {
     expect(page('passport')).toContain('/assets/docs/passport-bms-m.pdf');
     expect(page('technical-conditions')).toContain('/assets/docs/tu-bms-m.pdf');
     // the declaration is a scan image, not a PDF
-    expect(page('declaration')).toContain('/assets/img/declar.png');
+    expect(page('declaration')).toContain('/assets/img/declar.webp');
   });
 
   it('carries DigitalDocument and BreadcrumbList schema', () => {

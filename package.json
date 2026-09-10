@@ -16,7 +16,9 @@
     "test:build": "npm run build && vitest run --project build",
     "test:responsive": "node tests/responsive/overflow.mjs",
     "og": "node scripts/generate-og.mjs",
-    "deploy": "bash scripts/deploy.sh"
+    "deploy": "bash scripts/deploy.sh",
+    "icons": "node scripts/generate-icons.mjs",
+    "fonts": "node scripts/fetch-fonts.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.3",

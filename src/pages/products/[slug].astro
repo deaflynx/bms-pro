@@ -10,7 +10,7 @@ import SpecTiles from '../../components/SpecTiles.astro';
 import Base from '../../layouts/Base.astro';
 import { PRICE_NOTE, formatPrice } from '../../lib/format';
 import { frequencyLabel, instrumentFor } from '../../lib/instrument';
-import { breadcrumbSchema, faqSchema, productSchema } from '../../lib/schema';
+import { breadcrumbSchema, productSchema } from '../../lib/schema';
 import { SITE, url } from '../../lib/site';
 
 export async function getStaticPaths() {
@@ -30,6 +30,7 @@ const gallery = d.gallery.length > 0 ? d.gallery : [d.image];
 
 const path = `/products/${product.id}/`;
 const abs = new URL(url(path), Astro.site).href;
+const absImage = new URL(url(d.image), Astro.site).href;
 
 const faqAll = await getCollection('faq');
 const faq = faqAll
@@ -55,9 +56,8 @@ const { Content } = await render(product);
   ogImage={`/og/${product.id}.png`}
 >
   <Fragment slot="head">
-    <JsonLd data={productSchema(d, abs)} />
+    <JsonLd data={productSchema(d, abs, absImage)} />
     <JsonLd data={crumbSchema} />
-    {faq.length > 0 && <JsonLd data={faqSchema(faq.map((q) => ({ question: q.data.question, answer: q.body ?? '' })))} />}
   </Fragment>
 
   <div class="wrap"><Breadcrumbs trail={trail} /></div>
@@ -187,6 +187,9 @@ const { Content } = await render(product);
               </details>
             ))}
           </div>
+          <p class="faq-more">
+            <a href={url('/faq/')}>Усі питання про прилади BMS</a>
+          </p>
         </div>
       </section>
     )
@@ -342,6 +345,13 @@ const { Content } = await render(product);
     color: var(--steel);
   }
 
+  .faq-more {
+    margin-top: 1.2rem;
+    font-size: 0.9rem;
+  }
+  .faq-more a {
+    color: var(--led);
+  }
   .faq details {
     border-bottom: 1px solid var(--rule);
   }

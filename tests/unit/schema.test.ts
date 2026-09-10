@@ -40,11 +40,11 @@ describe('productSchema', () => {
     name: 'BMS Nexus',
     tagline: 'Два незалежні канали',
     price: 48000,
-    image: '/assets/img/bms-nexus-card.webp',
   };
+  const IMG = 'https://bms-pro.com.ua/assets/img/bms-nexus-card.webp';
 
   it('emits an Offer priced in hryvnia', () => {
-    const s = productSchema(p, 'https://bms-pro.com.ua/products/bms-nexus/');
+    const s = productSchema(p, 'https://bms-pro.com.ua/products/bms-nexus/', IMG);
     expect(s['@type']).toBe('Product');
     expect(s.offers.priceCurrency).toBe('UAH');
     expect(s.offers.price).toBe(48000);
@@ -52,13 +52,18 @@ describe('productSchema', () => {
   });
 
   it('attributes manufacture to the canonical entity', () => {
-    const s = productSchema(p, 'https://example.com/');
+    const s = productSchema(p, 'https://example.com/', IMG);
     expect(s.manufacturer.name).toBe('Системи біомеханічної стимуляції');
     expect(s.brand.name).toBe('BMS Pro');
   });
 
   it('uses the tagline as the description', () => {
-    expect(productSchema(p, 'https://x/').description).toBe('Два незалежні канали');
+    expect(productSchema(p, 'https://x/', IMG).description).toBe('Два незалежні канали');
+  });
+
+  it('takes the image as given, so a caller cannot pass a relative path by accident', () => {
+    // Google discards relative URLs in structured data; the frontmatter path is relative.
+    expect(productSchema(p, 'https://x/', IMG).image).toBe(IMG);
   });
 });
 
@@ -124,7 +129,7 @@ describe('every builder', () => {
     const all = [
       organizationSchema(),
       websiteSchema('https://x/'),
-      productSchema({ name: 'a', tagline: 'b', price: 1, image: '/c.webp' }, 'https://x/'),
+      productSchema({ name: 'a', tagline: 'b', price: 1 }, 'https://x/', 'https://x/c.webp'),
       breadcrumbSchema([{ name: 'a', url: 'https://x/' }]),
       faqSchema([{ question: 'q', answer: 'a' }]),
       documentSchema({ title: 't', designation: 'd' }, 'https://x/'),

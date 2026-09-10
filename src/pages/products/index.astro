@@ -45,7 +45,7 @@ const abs = (p: string) => new URL(url(p), Astro.site).href;
         </p>
       </div>
       <div class="lineup">
-        {products.map((product) => <ProductCard product={product} />)}
+        {products.map((product) => <ProductCard product={product} headingLevel={2} />)}
       </div>
     </div>
   </section>

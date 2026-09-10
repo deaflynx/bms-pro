@@ -14,7 +14,8 @@
 |---|---|---|
 | HTML головної | 689 948 Б | ~32 КБ |
 | HTML `/services/` | 1 016 004 Б | — (замінено на 5 сторінок) |
-| CSS + JS на сторінку | 18 + 22 запити | 2 CSS (~10 КБ), 1 JS |
+| CSS + JS на сторінку | 18 + 22 запити | 2 CSS (~14 КБ), 1 JS |
+| Сторонні запити при завантаженні | Google Fonts + плагіни | немає (шрифти локальні) |
 | Вага сторінки, HTML+CSS+JS | ~710 КБ | 18–52 КБ |
 | Структуровані дані JSON-LD | немає | на кожній сторінці |
 | Сторінок з контентом | 3 | 20 |
@@ -38,6 +39,8 @@ npm test                 # 251 тест: юніти + перевірки гот�
 npm run test:unit        # лише чисті функції
 npm run test:build       # збірка + перевірки dist/
 npm run og               # перегенерувати Open Graph зображення
+npm run icons            # перегенерувати favicon.ico / favicon.png / apple-touch-icon
+npm run fonts            # перезавантажити шрифти з Google Fonts у src/styles/fonts/
 
 # адаптивність: 15 маршрутів × 3 ширини, overflow і розміри кнопок
 npm run build
@@ -78,6 +81,7 @@ CI (`.github/workflows/deploy.yml`) виконує `check` → `build` → `vite
 /documents/bms-m/{passport,declaration,technical-conditions}/   (стосуються й BMS pro)
 /documents/bms-quadro/passport/
 /about/  /contacts/  /faq/  /privacy-policy/
+/404                                       Своя сторінка помилки, noindex
 ```
 
 Документи мають схему `/documents/<модель>/<тип>/` — масштабується до 12 сторінок,
@@ -127,7 +131,8 @@ II клас електробезпеки · гарантія 12 міс · сер
    робочому столі. Для приладів за 24 000–83 000 ₴ це головне, що обмежує
    довіру. **BMS Quadro — найтерміновіше**, його фото читається як сірий
    3D-друкований прототип.
-5. **Фото Олександра Бабака у нормальній роздільності** — наявне 147×147 px.
+5. **Фото Олександра Бабака у нормальній роздільності** — наявне було 147×147 px
+   і вилучене з репозиторію 10.09.2026 як невикористане; сторінка «Про нас» зараз без фото.
 6. **Логотип у векторі (SVG)** — наявний растр 512×512, стоїть у шапці всіх
    сторінок.
 7. **Власне відео українською** — за бажанням. Сторонній ролик прибрано з сайту
@@ -162,8 +167,25 @@ npm run deploy   # SITE_URL=https://bms-pro.com.ua BASE_PATH=/ npm run build + r
 - WordPress-версію збережено на сервері поруч із `public_html` як
   `public_html.wordpress-2026-09-07`, база даних не чіпалась. Відкат — поміняти каталоги місцями. Тримати ще місяць.
 
+`deploy/nginx-redirects.conf` також містить `error_page 404 /404.html` (інакше
+nginx показує свою типову сторінку) і `301` з `/sitemap.xml` на `/sitemap-index.xml`.
+Обидва вмикаються тільки після перезавантаження nginx.
+
 Після перенесення: подати `https://bms-pro.com.ua/sitemap-index.xml` у Search
 Console і перевірити редиректи.
+
+## Шрифти й іконки
+
+Шрифти не тягнуться з Google Fonts — `npm run fonts` завантажує 12 файлів woff2
+(Oswald, Onest, JetBrains Mono × latin, latin-ext, cyrillic, cyrillic-ext) у
+`src/styles/fonts/` і генерує `src/styles/fonts.css`. Усі три сімʼї змінні, тому
+на кожну пару «сімʼя + підмножина» припадає один `@font-face` з діапазоном ваги.
+Знак гривні ₴ живе в підмножині `cyrillic-ext`, не в `cyrillic`.
+
+Іконки генерує `npm run icons` із `logo.webp`: Google Search не приймає WebP
+як favicon, тому потрібні `favicon.ico`, `favicon.png` і `apple-touch-icon.png`.
+
+Обидва набори закомічені — це вхідні дані збірки, а не її результат.
 
 ## Документи проєкту
 

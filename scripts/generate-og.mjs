@@ -80,7 +80,10 @@ async function build(slug, name, price, imagePath) {
 
   await sharp({ create: { width: W, height: H, channels: 4, background: PANEL } })
     .composite(layers)
-    .png({ compressionLevel: 9 })
+    // PNG, not WebP: og:image WebP support is still inconsistent across scrapers.
+    // The panel background is flat and the photo is small, so a 128-colour
+    // palette holds up and cuts each file by roughly two thirds.
+    .png({ compressionLevel: 9, palette: true, colours: 128, effort: 10 })
     .toFile(`${OUT}/${slug}.png`);
 
   console.log(`${OUT}/${slug}.png`);

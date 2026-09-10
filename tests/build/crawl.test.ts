@@ -65,6 +65,39 @@ describe('sitemap', () => {
   it('excludes the mockup pages, which are drafts', () => {
     expect(body).not.toContain('/mockups/');
   });
+
+  it('never lists the 404 page', () => {
+    expect(body).not.toContain('/404/');
+  });
+
+  it('dates every URL, so Google has a recrawl signal', () => {
+    const locs = [...body.matchAll(/<loc>/g)].length;
+    const mods = [...body.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)];
+    expect(mods).toHaveLength(locs);
+    for (const [, date] of mods) expect(Number.isNaN(Date.parse(date)), date).toBe(false);
+  });
+
+  it('dates pages from their own history, not from build time', () => {
+    // A single date across every URL means the git lookup silently failed —
+    // which is what a shallow CI clone produces without fetch-depth: 0.
+    const dates = new Set([...body.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((m) => m[1]));
+    expect(dates.size).toBeGreaterThan(1);
+  });
+});
+
+describe('favicon', () => {
+  it('ships a format Google Search accepts — WebP and SVG are not on its list', () => {
+    for (const f of ['favicon.ico', 'favicon.png', 'apple-touch-icon.png']) {
+      expect(existsSync(`dist/${f}`), f).toBe(true);
+    }
+  });
+
+  it('declares the icons on every page', () => {
+    const html = readFileSync('dist/index.html', 'utf8');
+    expect(html).toMatch(/<link rel="icon"[^>]+favicon\.ico/);
+    expect(html).toMatch(/<link rel="apple-touch-icon"[^>]+apple-touch-icon\.png/);
+    expect(html).not.toContain('logo.webp"');
+  });
 });
 
 describe('Open Graph images', () => {

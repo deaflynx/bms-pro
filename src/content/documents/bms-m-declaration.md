@@ -4,7 +4,7 @@ type: declaration
 title: Декларація відповідності
 designation: 'UA.TR.D.00159-25'
 lead: 'Підтвердження відповідності приладів BMS m і BMS pro вимогам чинних технічних регламентів'
-image: '/assets/img/declar.png'
+image: '/assets/img/declar.webp'
 ---
 
 ## Дані реєстрації

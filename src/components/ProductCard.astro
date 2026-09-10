@@ -5,9 +5,12 @@ import { url } from '../lib/site';
 
 interface Props {
   product: CollectionEntry<'products'>;
+  /** 2 in the catalogue, where the cards sit directly under the h1. */
+  headingLevel?: 2 | 3;
 }
-const { product } = Astro.props;
+const { product, headingLevel = 3 } = Astro.props;
 const d = product.data;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
 ---
 
 <article class="card">
@@ -16,7 +19,7 @@ const d = product.data;
       <img src={url(d.image)} alt={`Прилад ${d.name}`} width="900" height="675" loading="lazy" />
     </figure>
     <div class="body">
-      <h3>{d.name}</h3>
+      <Heading class="name">{d.name}</Heading>
       <p class="zone">{d.zones.join(', ')}</p>
       <p class="desc">{d.tagline}</p>
       <p class="price"><b>{formatPrice(d.price)}</b><span>{PRICE_NOTE}</span></p>
@@ -72,7 +75,7 @@ const d = product.data;
     flex-direction: column;
     flex: 1;
   }
-  h3 {
+  .name {
     font-size: 1.32rem;
     letter-spacing: 0.01em;
   }

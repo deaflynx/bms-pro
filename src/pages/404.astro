@@ -1,0 +1,75 @@
+---
+import Base from '../layouts/Base.astro';
+import { NAV, SITE, url } from '../lib/site';
+
+const path = '/404/';
+---
+
+<Base
+  title="Сторінку не знайдено | BMS Pro"
+  description="Такої сторінки на сайті немає. Перейдіть до каталогу приладів BMS або зателефонуйте нам."
+  canonicalPath={path}
+  noindex
+>
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Помилка 404</p>
+        <h1>Такої сторінки немає</h1>
+        <p>
+          Можливо, адресу введено з помилкою або сторінку перенесено під час оновлення сайту.
+          Ось куди можна перейти:
+        </p>
+      </div>
+
+      <nav class="routes" aria-label="Основні розділи">
+        <ul>
+          {
+            NAV.map((item) => (
+              <li>
+                <a href={url(item.href)}>{item.label}</a>
+              </li>
+            ))
+          }
+          <li><a href={url('/faq/')}>Питання та відповіді</a></li>
+        </ul>
+      </nav>
+
+      <div class="cta-row">
+        <a class="btn btn-1" href={`tel:${SITE.phonePrimary}`}>☎ {SITE.phonePrimaryDisplay}</a>
+        <a class="btn btn-2" href={url('/products/')}>Переглянути прилади</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  section {
+    padding: 4rem 0 5rem;
+  }
+  h1 {
+    margin-top: 0.9rem;
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem);
+  }
+  .routes ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.4rem;
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0;
+    font-family: var(--m);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .routes a {
+    color: var(--led);
+  }
+  .routes a:hover {
+    color: var(--led-glow);
+  }
+  .cta-row {
+    margin-top: 2.2rem;
+  }
+</style>

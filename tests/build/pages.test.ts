@@ -70,6 +70,17 @@ describe('all launch routes', () => {
     for (const r of ROUTES) expect(read(r), `/${r}/`).toContain('не є медичними виробами');
   });
 
+  it('links the FAQ from every page, so it is not an orphan', () => {
+    for (const r of ROUTES) expect(read(r), `/${r}/`).toContain('/faq/');
+  });
+
+  it('loads no third-party stylesheet — the fonts are self-hosted', () => {
+    for (const r of ROUTES) {
+      const external = [...read(r).matchAll(/<link[^>]+rel="stylesheet"[^>]*href="(https?:[^"]+)"/g)];
+      expect(external.map((m) => m[1]), `/${r}/`).toEqual([]);
+    }
+  });
+
   it('ships no iframe on any page except the contacts map', () => {
     for (const r of ROUTES.filter((r) => r !== 'contacts')) {
       expect(read(r), `/${r}/`).not.toContain('<iframe');
@@ -155,6 +166,27 @@ describe('about', () => {
   });
   it('states the declaration facts', () => {
     expect(html).toContain('UA.TR.D.00159-25');
+  });
+});
+
+describe('404', () => {
+  const html = readFileSync('dist/404.html', 'utf8');
+
+  it('is emitted at the root, where nginx looks for it', () => {
+    expect(existsSync('dist/404.html')).toBe(true);
+  });
+
+  it('is Ukrainian and carries the site chrome, not the framework default', () => {
+    expect(html).toContain('<html lang="uk"');
+    expect(html).not.toContain('Page Not Found');
+    expect(html).toContain('Такої сторінки немає');
+    expect(html).toContain('<footer');
+  });
+
+  it('is noindex but still routes visitors onward', () => {
+    expect(html).toMatch(/<meta name="robots" content="noindex/);
+    expect(html).toContain('/products/');
+    expect(html).toContain('tel:+380505460077');
   });
 });
 
