@@ -60,17 +60,16 @@ describe('product pages', () => {
     }
   });
 
-  it('gives BMS Nexus two instrument channels', () => {
-    const m = markup('bms-nexus');
-    expect(m.match(/data-channel="/g)).toHaveLength(2);
-    expect(m).toContain('data-digital="true"');
+  it('ships no interactive panel — it lives on /how-it-works/ alone', () => {
+    for (const s of SLUGS) {
+      expect(markup(s), s).not.toContain('data-channel=');
+      expect(markup(s), s).not.toContain('Панель керування');
+    }
   });
 
-  it('gives BMS m a panel with no digital readout, like the real device', () => {
-    const m = markup('bms-m');
-    expect(m).toContain('data-digital="false"');
-    expect(m.match(/data-channel="/g)).toHaveLength(1);
-    expect(m).not.toContain('data-digits=');
+  it('still names the panel type in the hero chips', () => {
+    expect(markup('bms-m')).toContain('Аналоговий регулятор');
+    expect(markup('bms-nexus')).toContain('Два цифрові канали');
   });
 
   it('turns the BMS m photos into a slider with one thumbnail each', () => {

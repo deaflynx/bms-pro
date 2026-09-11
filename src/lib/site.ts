@@ -38,10 +38,11 @@ export const SITE = {
     'чи призначене лікування. Перед застосуванням ознайомтеся з інструкцією користувача.',
 } as const;
 
+/** Top bar. `/about/` and `/privacy-policy/` are footer-only, to keep the bar short. */
 export const NAV = [
   { href: '/products/', label: 'Прилади' },
   { href: '/how-it-works/', label: 'Як це працює' },
   { href: '/documents/', label: 'Технічна документація' },
-  { href: '/about/', label: 'Про нас' },
   { href: '/contacts/', label: 'Контакти' },
+  { href: '/faq/', label: 'Часті питання' },
 ] as const;

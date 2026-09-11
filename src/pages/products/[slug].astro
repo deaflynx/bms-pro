@@ -4,7 +4,6 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import CompareLink from '../../components/CompareLink.astro';
 import Disclaimer from '../../components/Disclaimer.astro';
 import Gallery from '../../components/Gallery.astro';
-import Instrument from '../../components/Instrument.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import SpecTiles from '../../components/SpecTiles.astro';
 import Base from '../../layouts/Base.astro';
@@ -123,27 +122,6 @@ const { Content } = await render(product);
       </section>
     )
   }
-
-  <section class="panel-sec">
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">Панель керування</p>
-        <h2>Як виглядає керування {d.name}</h2>
-        <p>
-          {
-            panel.channels > 1
-              ? 'Два канали налаштовуються незалежно — покрутіть обидва регулятори й порівняйте.'
-              : panel.digital
-                ? 'Цифровий індикатор показує встановлену частоту в герцах.'
-                : 'Частота задається аналоговим регулятором, без цифрового індикатора.'
-          }
-        </p>
-      </div>
-      <div class="panel-wrap">
-        <Instrument indicator={d.indicator} heading={`Панель ${d.name}`} />
-      </div>
-    </div>
-  </section>
 
   <section class="alt">
     <div class="wrap">
@@ -325,9 +303,6 @@ const { Content } = await render(product);
     background: var(--led);
   }
 
-  .panel-wrap {
-    max-width: 620px;
-  }
   .about {
     border-top: 1px solid var(--rule);
   }

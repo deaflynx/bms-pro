@@ -47,7 +47,7 @@ const { path } = Astro.props;
     display: flex;
     align-items: center;
     gap: clamp(1rem, 3vw, 2.5rem);
-    height: 72px;
+    min-height: 72px;
   }
   .brand {
     display: flex;
@@ -64,10 +64,12 @@ const { path } = Astro.props;
   }
   nav ul {
     display: flex;
-    gap: clamp(0.9rem, 2vw, 1.8rem);
+    flex-wrap: wrap;
+    gap: 0.5rem clamp(0.9rem, 2vw, 1.8rem);
   }
   nav a {
     font-size: 0.85rem;
+    white-space: nowrap;
     color: #c7d1d6;
     padding: 0.4rem 0;
     border-bottom: 1px solid transparent;

@@ -53,13 +53,13 @@ describe('NAV', () => {
   it('puts the products first, since selling devices is the point', () => {
     expect(NAV[0]).toEqual({ href: '/products/', label: 'Прилади' });
   });
-  it('covers all five sections', () => {
+  it('covers the five bar sections, with /about/ left to the footer', () => {
     expect(NAV.map((n) => n.label)).toEqual([
       'Прилади',
       'Як це працює',
       'Технічна документація',
-      'Про нас',
       'Контакти',
+      'Часті питання',
     ]);
   });
   it('uses trailing-slash hrefs to match the build config', () => {

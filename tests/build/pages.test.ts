@@ -74,6 +74,10 @@ describe('all launch routes', () => {
     for (const r of ROUTES) expect(read(r), `/${r}/`).toContain('/faq/');
   });
 
+  it('links /about/ from every page too, now that it is footer-only', () => {
+    for (const r of ROUTES) expect(read(r), `/${r}/`).toContain('/about/');
+  });
+
   it('loads no third-party stylesheet — the fonts are self-hosted', () => {
     for (const r of ROUTES) {
       const external = [...read(r).matchAll(/<link[^>]+rel="stylesheet"[^>]*href="(https?:[^"]+)"/g)];
