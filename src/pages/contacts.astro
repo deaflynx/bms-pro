@@ -24,7 +24,7 @@ const mapQuery = encodeURIComponent(
   canonicalPath={path}
 >
   <Fragment slot="head">
-    <JsonLd data={localBusinessSchema()} />
+    <JsonLd data={localBusinessSchema(abs('/'))} />
     <JsonLd data={breadcrumbSchema(trail.map((c) => ({ name: c.name, url: abs(c.href) })))} />
   </Fragment>
 

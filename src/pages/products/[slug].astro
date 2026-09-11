@@ -31,6 +31,7 @@ const gallery = d.gallery.length > 0 ? d.gallery : [d.image];
 const path = `/products/${product.id}/`;
 const abs = new URL(url(path), Astro.site).href;
 const absImage = new URL(url(d.image), Astro.site).href;
+const siteUrl = new URL(url('/'), Astro.site).href;
 
 const faqAll = await getCollection('faq');
 const faq = faqAll
@@ -56,7 +57,7 @@ const { Content } = await render(product);
   ogImage={`/og/${product.id}.png`}
 >
   <Fragment slot="head">
-    <JsonLd data={productSchema(d, abs, absImage)} />
+    <JsonLd data={productSchema(d, abs, absImage, siteUrl)} />
     <JsonLd data={crumbSchema} />
   </Fragment>
 

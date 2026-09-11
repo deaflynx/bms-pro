@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 const html = readFileSync('dist/index.html', 'utf8');
@@ -46,5 +46,17 @@ describe('sitewide JSON-LD', () => {
     const org = blocks.find((b) => b['@type'] === 'Organization');
     expect(org).toBeDefined();
     expect(org.legalName).toBe('Системи біомеханічної стимуляції');
+  });
+
+  it('gives the Organization the identity fields a knowledge panel needs', () => {
+    const blocks = [
+      ...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g),
+    ].map((m) => JSON.parse(m[1]));
+    const org = blocks.find((b) => b['@type'] === 'Organization');
+    expect(org['@id']).toBe('https://deaflynx.github.io/bms-pro/#org');
+    expect(org.url).toBe('https://deaflynx.github.io/bms-pro/');
+    // PNG, not the WebP source — and a real file, not a dangling reference.
+    expect(org.logo).toBe('https://deaflynx.github.io/bms-pro/logo.png');
+    expect(existsSync('dist/logo.png')).toBe(true);
   });
 });

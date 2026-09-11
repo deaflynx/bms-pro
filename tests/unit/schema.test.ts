@@ -5,15 +5,28 @@ import {
   faqSchema,
   itemListSchema,
   localBusinessSchema,
+  organizationId,
   organizationSchema,
   productSchema,
   websiteSchema,
 } from '../../src/lib/schema';
 
 const CTX = 'https://schema.org';
+const SITE_URL = 'https://bms-pro.com.ua/';
+const LOGO = 'https://bms-pro.com.ua/logo.png';
+const ORG = 'https://bms-pro.com.ua/#org';
+
+describe('organizationId', () => {
+  it('hangs the identifier off the site root, so every build agrees on it', () => {
+    expect(organizationId(SITE_URL)).toBe(ORG);
+    expect(organizationId('https://deaflynx.github.io/bms-pro/')).toBe(
+      'https://deaflynx.github.io/bms-pro/#org',
+    );
+  });
+});
 
 describe('organizationSchema', () => {
-  const s = organizationSchema();
+  const s = organizationSchema(SITE_URL, LOGO);
   it('names the configured manufacturer', () => {
     expect(s['@type']).toBe('Organization');
     expect(s.legalName).toBe('Системи біомеханічної стимуляції');
@@ -24,6 +37,16 @@ describe('organizationSchema', () => {
   });
   it('declares the schema.org context', () => {
     expect(s['@context']).toBe(CTX);
+  });
+  it('carries the identity fields a knowledge panel is built from', () => {
+    expect(s['@id']).toBe(ORG);
+    expect(s.url).toBe(SITE_URL);
+    expect(s.logo).toBe(LOGO);
+  });
+  it('omits sameAs while there are no profiles to claim', () => {
+    // A wrong entry merges the brand with someone else's page, so an absent
+    // field beats a guessed one.
+    expect('sameAs' in s).toBe(false);
   });
 });
 
@@ -44,26 +67,30 @@ describe('productSchema', () => {
   const IMG = 'https://bms-pro.com.ua/assets/img/bms-nexus-card.webp';
 
   it('emits an Offer priced in hryvnia', () => {
-    const s = productSchema(p, 'https://bms-pro.com.ua/products/bms-nexus/', IMG);
+    const s = productSchema(p, 'https://bms-pro.com.ua/products/bms-nexus/', IMG, SITE_URL);
     expect(s['@type']).toBe('Product');
     expect(s.offers.priceCurrency).toBe('UAH');
     expect(s.offers.price).toBe(48000);
     expect(s.offers.url).toBe('https://bms-pro.com.ua/products/bms-nexus/');
   });
 
-  it('attributes manufacture to the canonical entity', () => {
-    const s = productSchema(p, 'https://example.com/', IMG);
-    expect(s.manufacturer.name).toBe('Системи біомеханічної стимуляції');
+  it('references the one organisation rather than restating its name', () => {
+    const s = productSchema(p, 'https://example.com/', IMG, SITE_URL);
+    expect(s.manufacturer).toEqual({ '@id': ORG });
+    expect(s.offers.seller).toEqual({ '@id': ORG });
+    // Google reads brand.name directly, so that one keeps its literal name.
     expect(s.brand.name).toBe('BMS Pro');
   });
 
   it('uses the tagline as the description', () => {
-    expect(productSchema(p, 'https://x/', IMG).description).toBe('Два незалежні канали');
+    expect(productSchema(p, 'https://x/', IMG, SITE_URL).description).toBe(
+      'Два незалежні канали',
+    );
   });
 
   it('takes the image as given, so a caller cannot pass a relative path by accident', () => {
     // Google discards relative URLs in structured data; the frontmatter path is relative.
-    expect(productSchema(p, 'https://x/', IMG).image).toBe(IMG);
+    expect(productSchema(p, 'https://x/', IMG, SITE_URL).image).toBe(IMG);
   });
 });
 
@@ -96,18 +123,23 @@ describe('documentSchema', () => {
     const s = documentSchema(
       { title: 'Паспорт приладу BMS m', designation: 'ТУ У 27.9-2294811615-001:2025' },
       'https://x/documents/bms-m/passport/',
+      SITE_URL,
     );
     expect(s['@type']).toBe('DigitalDocument');
     expect(s.identifier).toBe('ТУ У 27.9-2294811615-001:2025');
     expect(s.inLanguage).toBe('uk');
+    expect(s.publisher).toEqual({ '@id': ORG });
   });
 });
 
 describe('localBusinessSchema', () => {
+  const s = localBusinessSchema(SITE_URL);
   it('lists both phone numbers', () => {
-    const s = localBusinessSchema();
     expect(s['@type']).toBe('LocalBusiness');
     expect(s.telephone).toEqual(['+380505460077', '+380685460077']);
+  });
+  it('is the same entity as the Organization node, not a second business', () => {
+    expect(s['@id']).toBe(organizationSchema(SITE_URL, LOGO)['@id']);
   });
 });
 
@@ -127,13 +159,18 @@ describe('itemListSchema', () => {
 describe('every builder', () => {
   it('serialises to JSON without throwing or losing the context', () => {
     const all = [
-      organizationSchema(),
+      organizationSchema('https://x/', 'https://x/logo.png'),
       websiteSchema('https://x/'),
-      productSchema({ name: 'a', tagline: 'b', price: 1 }, 'https://x/', 'https://x/c.webp'),
+      productSchema(
+        { name: 'a', tagline: 'b', price: 1 },
+        'https://x/',
+        'https://x/c.webp',
+        'https://x/',
+      ),
       breadcrumbSchema([{ name: 'a', url: 'https://x/' }]),
       faqSchema([{ question: 'q', answer: 'a' }]),
-      documentSchema({ title: 't', designation: 'd' }, 'https://x/'),
-      localBusinessSchema(),
+      documentSchema({ title: 't', designation: 'd' }, 'https://x/', 'https://x/'),
+      localBusinessSchema('https://x/'),
       itemListSchema([{ name: 'a', url: 'https://x/' }]),
     ];
     for (const s of all) {

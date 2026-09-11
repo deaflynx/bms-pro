@@ -46,7 +46,18 @@ describe('product pages', () => {
       expect(product.offers.priceCurrency).toBe('UAH');
       expect(product.offers.price).toBeGreaterThan(0);
       expect(product.offers.url).toContain(`/products/${s}/`);
-      expect(product.manufacturer.name).toBe('Системи біомеханічної стимуляції');
+    }
+  });
+
+  it('points manufacturer and seller at the Organization node on the same page', () => {
+    for (const s of SLUGS) {
+      const blocks = jsonLd(page(s));
+      const org = blocks.find((b) => b['@type'] === 'Organization');
+      const product = blocks.find((b) => b['@type'] === 'Product');
+      expect(org['@id'], s).toBe('https://deaflynx.github.io/bms-pro/#org');
+      expect(org.legalName, s).toBe('Системи біомеханічної стимуляції');
+      expect(product.manufacturer['@id'], s).toBe(org['@id']);
+      expect(product.offers.seller['@id'], s).toBe(org['@id']);
     }
   });
 

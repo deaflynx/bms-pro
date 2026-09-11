@@ -64,7 +64,7 @@ const WHO = [
 
 <Base title={title} description={description} canonicalPath={path}>
   <Fragment slot="head">
-    <JsonLd data={articleSchema({ title, description }, abs(path))} />
+    <JsonLd data={articleSchema({ title, description }, abs(path), abs('/'))} />
     <JsonLd data={breadcrumbSchema(trail.map((c) => ({ name: c.name, url: abs(c.href) })))} />
   </Fragment>
 

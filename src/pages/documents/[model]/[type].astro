@@ -43,7 +43,7 @@ const { Content, headings } = await render(doc);
   canonicalPath={path}
 >
   <Fragment slot="head">
-    <JsonLd data={documentSchema({ title, designation: d.designation }, abs(path))} />
+    <JsonLd data={documentSchema({ title, designation: d.designation }, abs(path), abs('/'))} />
     <JsonLd data={breadcrumbSchema(trail.map((c) => ({ name: c.name, url: abs(c.href) })))} />
   </Fragment>
 

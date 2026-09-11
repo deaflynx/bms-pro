@@ -17,6 +17,10 @@ interface Props {
   noindex?: boolean;
 }
 const { title, description, canonicalPath, ogImage, noindex = false } = Astro.props;
+
+const siteUrl = new URL(url('/'), Astro.site).href;
+// PNG, not the WebP source: the logo is read by crawlers, not browsers.
+const logoUrl = new URL(url('/logo.png'), Astro.site).href;
 ---
 
 <!doctype html>
@@ -33,7 +37,7 @@ const { title, description, canonicalPath, ogImage, noindex = false } = Astro.pr
       canonicalPath={canonicalPath}
       ogImage={ogImage}
     />
-    <JsonLd data={organizationSchema()} />
+    <JsonLd data={organizationSchema(siteUrl, logoUrl)} />
     <link rel="icon" href={url('/favicon.ico')} sizes="48x48" />
     <link rel="icon" href={url('/favicon.png')} type="image/png" sizes="96x96" />
     <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />

@@ -32,6 +32,12 @@ export const SITE = {
   declarationDate: '2025-07-24',
   declarationDateDisplay: '24 липня 2025',
   tu: 'ТУ У 27.9-2294811615-001:2025',
+  /**
+   * schema.org sameAs is an identity claim — "this URL is this same company" —
+   * not a list of links. It stays empty until there are profiles the company
+   * actually controls; a wrong entry merges the brand with someone else's page.
+   */
+  sameAs: [] as string[],
   disclaimer:
     'Прилади BMS не є медичними виробами. Вони не призначені для діагностики, ' +
     'лікування або профілактики захворювань і не замінюють консультацію лікаря ' +

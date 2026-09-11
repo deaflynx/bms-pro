@@ -1,10 +1,14 @@
 /**
- * Generates the favicon set from the square logo.
+ * Generates the favicon set and the structured-data logo from the square logo.
  *
  * Google Search accepts BMP, GIF, ICO, JPEG, PNG, PPM and TIFF for favicons —
  * not WebP, which is what the source logo is — so the icons are emitted as PNG
  * and wrapped in an ICO for /favicon.ico, which browsers and crawlers request
  * whether or not the page declares one.
+ *
+ * /logo.png is the same source at 512 px, referenced as the Organization
+ * `logo` in JSON-LD. The lockup is not usable there: its wordmark is white and
+ * disappears on the light background a knowledge panel draws.
  *
  * Run with `npm run icons`. Output is committed: it is a build input.
  */
@@ -45,7 +49,8 @@ const favicon = await png(96);
 writeFileSync(`${OUT}/favicon.png`, favicon);
 writeFileSync(`${OUT}/favicon.ico`, ico(await png(48), 48));
 writeFileSync(`${OUT}/apple-touch-icon.png`, await png(180));
+writeFileSync(`${OUT}/logo.png`, await png(512));
 
-for (const f of ['favicon.png', 'favicon.ico', 'apple-touch-icon.png']) {
+for (const f of ['favicon.png', 'favicon.ico', 'apple-touch-icon.png', 'logo.png']) {
   console.log(`${OUT}/${f}`);
 }

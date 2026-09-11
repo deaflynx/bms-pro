@@ -146,6 +146,16 @@ describe('contacts', () => {
     expect(biz.address.postalCode).toBe('02099');
   });
 
+  it('shares one @id with the Organization node, so the two are one business', () => {
+    const blocks = [
+      ...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g),
+    ].map((m) => JSON.parse(m[1]));
+    const biz = blocks.find((b) => b['@type'] === 'LocalBusiness');
+    const org = blocks.find((b) => b['@type'] === 'Organization');
+    expect(org['@id']).toBeDefined();
+    expect(biz['@id']).toBe(org['@id']);
+  });
+
   it('links the email and the address', () => {
     expect(html).toContain('mailto:info@bms-pro.com.ua');
     expect(html).toContain('Бориспільська');
