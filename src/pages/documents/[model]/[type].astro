@@ -38,8 +38,8 @@ const { Content, headings } = await render(doc);
 ---
 
 <Base
-  title={`${title} — ${d.designation} | BMS Pro`}
-  description={`${d.lead}. Повний текст документа${d.pdf ? ' та PDF для завантаження' : ''}. Виробництво у Києві.`}
+  title={`${title} — ${d.designation}`}
+  description={`${d.lead}. Повний текст${d.pdf ? ' і PDF' : ''}. Виробництво у Києві.`}
   canonicalPath={path}
 >
   <Fragment slot="head">

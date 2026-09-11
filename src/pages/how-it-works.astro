@@ -7,11 +7,18 @@ import JsonLd from '../components/JsonLd.astro';
 import Base from '../layouts/Base.astro';
 import { articleSchema, breadcrumbSchema } from '../lib/schema';
 import { SITE, url } from '../lib/site';
+import { lastmodFor, publishedFor } from '../../scripts/lastmod.mjs';
 
-const title = 'Як працює біомеханічна стимуляція мʼязів | BMS Pro';
+const headline = 'Як працює біомеханічна стимуляція мʼязів';
+const title = `${headline} | BMS Pro`;
 const description =
   'Біомеханічна стимуляція — механічний вплив вібраціями 20–40 Гц вздовж мʼязових волокон. Принцип дії, сфери застосування та кому підходить.';
 const path = '/how-it-works/';
+
+// Git commit dates, like the sitemap's lastmod — build time would claim the
+// article was rewritten on every deploy.
+const datePublished = publishedFor(path)?.toISOString();
+const dateModified = lastmodFor(path)?.toISOString();
 
 const trail = [
   { name: 'Головна', href: '/' },
@@ -64,7 +71,13 @@ const WHO = [
 
 <Base title={title} description={description} canonicalPath={path}>
   <Fragment slot="head">
-    <JsonLd data={articleSchema({ title, description }, abs(path), abs('/'))} />
+    <JsonLd
+      data={articleSchema(
+        { headline, description, datePublished, dateModified },
+        abs(path),
+        abs('/'),
+      )}
+    />
     <JsonLd data={breadcrumbSchema(trail.map((c) => ({ name: c.name, url: abs(c.href) })))} />
   </Fragment>
 

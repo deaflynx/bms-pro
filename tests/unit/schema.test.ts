@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  articleSchema,
   breadcrumbSchema,
   documentSchema,
   faqSchema,
@@ -140,6 +141,33 @@ describe('localBusinessSchema', () => {
   });
   it('is the same entity as the Organization node, not a second business', () => {
     expect(s['@id']).toBe(organizationSchema(SITE_URL, LOGO)['@id']);
+  });
+});
+
+describe('articleSchema', () => {
+  const a = { headline: 'Як працює БМС', description: 'Опис' };
+
+  it('attributes the article to the one organisation', () => {
+    const s = articleSchema(a, 'https://x/how-it-works/', SITE_URL);
+    expect(s['@type']).toBe('Article');
+    expect(s.author).toEqual({ '@id': ORG });
+    expect(s.publisher).toEqual({ '@id': ORG });
+  });
+
+  it('carries the dates when given them', () => {
+    const s = articleSchema(
+      { ...a, datePublished: '2026-07-27T16:55:59.000Z', dateModified: '2026-09-11T09:06:06.000Z' },
+      'https://x/',
+      SITE_URL,
+    );
+    expect(s.datePublished).toBe('2026-07-27T16:55:59.000Z');
+    expect(s.dateModified).toBe('2026-09-11T09:06:06.000Z');
+  });
+
+  it('omits the dates rather than guessing when git history is unavailable', () => {
+    const s = articleSchema(a, 'https://x/', SITE_URL);
+    expect('datePublished' in s).toBe(false);
+    expect('dateModified' in s).toBe(false);
   });
 });
 

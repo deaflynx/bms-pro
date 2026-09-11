@@ -157,18 +157,27 @@ export function itemListSchema(items: { name: string; url: string }[]) {
   };
 }
 
-export function articleSchema(
-  a: { title: string; description: string },
-  absUrl: string,
-  siteUrl: string,
-) {
+export interface ArticleLike {
+  /** The article's own headline — not the <title>, which carries the brand suffix. */
+  headline: string;
+  description: string;
+  /** ISO 8601. Omitted rather than guessed when git history is unavailable. */
+  datePublished?: string;
+  dateModified?: string;
+}
+
+export function articleSchema(a: ArticleLike, absUrl: string, siteUrl: string) {
+  const org = { '@id': organizationId(siteUrl) };
   return {
     '@context': CTX,
     '@type': 'Article',
-    headline: a.title,
+    headline: a.headline,
     description: a.description,
     inLanguage: 'uk',
     mainEntityOfPage: absUrl,
-    publisher: { '@id': organizationId(siteUrl) },
+    ...(a.datePublished ? { datePublished: a.datePublished } : {}),
+    ...(a.dateModified ? { dateModified: a.dateModified } : {}),
+    author: org,
+    publisher: org,
   };
 }

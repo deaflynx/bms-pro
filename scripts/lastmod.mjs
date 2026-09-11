@@ -1,9 +1,11 @@
 /**
- * Last commit date per route, for the sitemap's <lastmod>.
+ * Commit dates per route: the newest for the sitemap's <lastmod>, the oldest
+ * for an Article's datePublished.
  *
  * Build time would be a lie — it would tell Google every page changed on every
  * deploy. This maps each route back to the content and page files it is built
- * from and takes the newest commit touching any of them.
+ * from and takes the newest — or, for datePublished, the oldest — commit
+ * touching any of them.
  *
  * Requires full history: a shallow CI clone reports one date for everything,
  * so .github/workflows/deploy.yml sets fetch-depth: 0.
@@ -37,26 +39,42 @@ function sourcesFor(pathname) {
   return [`src/pages/${p}.astro`];
 }
 
-function committedAt(file) {
-  if (!existsSync(file)) return null;
-  try {
-    const out = execFileSync('git', ['log', '-1', '--format=%cI', '--', file], {
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'ignore'],
-    }).trim();
-    return out ? new Date(out) : null;
-  } catch {
-    return null;
+const fileCache = new Map();
+
+/** Every commit touching a file, newest first. Empty when git is unavailable. */
+function commitDates(file) {
+  if (fileCache.has(file)) return fileCache.get(file);
+  let dates = [];
+  if (existsSync(file)) {
+    try {
+      const out = execFileSync('git', ['log', '--format=%cI', '--', file], {
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'ignore'],
+      }).trim();
+      if (out) dates = out.split('\n').map((d) => new Date(d));
+    } catch {
+      dates = [];
+    }
   }
+  fileCache.set(file, dates);
+  return dates;
 }
 
-const cache = new Map();
+function extremeFor(pathname, newest) {
+  const times = sourcesFor(pathname)
+    .map(commitDates)
+    .filter((d) => d.length > 0)
+    .map((d) => (newest ? d[0] : d[d.length - 1]).getTime());
+  if (times.length === 0) return null;
+  return new Date(newest ? Math.max(...times) : Math.min(...times));
+}
 
 /** Newest commit date across a route's sources, or null when git is unavailable. */
 export function lastmodFor(pathname) {
-  if (cache.has(pathname)) return cache.get(pathname);
-  const dates = sourcesFor(pathname).map(committedAt).filter(Boolean);
-  const newest = dates.length > 0 ? new Date(Math.max(...dates.map((d) => d.getTime()))) : null;
-  cache.set(pathname, newest);
-  return newest;
+  return extremeFor(pathname, true);
+}
+
+/** Oldest commit date across a route's sources — when the page first existed. */
+export function publishedFor(pathname) {
+  return extremeFor(pathname, false);
 }

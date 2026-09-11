@@ -49,6 +49,24 @@ describe('all launch routes', () => {
     }
   });
 
+  /**
+   * Google cuts the title around 580 px and the description around 160
+   * characters. Neither is a penalty, but a cut title is a cut promise.
+   */
+  it('keeps every title inside the length Google will show', () => {
+    for (const r of ROUTES) {
+      const title = read(r).match(/<title>(.*?)<\/title>/)![1];
+      expect(title.length, `/${r}/ title is ${title.length}: ${title}`).toBeLessThanOrEqual(60);
+    }
+  });
+
+  it('keeps every meta description inside 160 characters', () => {
+    for (const r of ROUTES) {
+      const d = read(r).match(/<meta name="description" content="(.*?)"/)![1];
+      expect(d.length, `/${r}/ description is ${d.length}`).toBeLessThanOrEqual(160);
+    }
+  });
+
   it('gives every page a unique title', () => {
     const titles = ROUTES.map((r) => read(r).match(/<title>(.*?)<\/title>/)![1]);
     expect(new Set(titles).size).toBe(ROUTES.length);
@@ -97,6 +115,32 @@ describe('how it works', () => {
 
   it('carries Article schema', () => {
     expect(html).toContain('"Article"');
+  });
+
+  it('dates the article from git history and attributes it to the company', () => {
+    const blocks = [
+      ...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g),
+    ].map((m) => JSON.parse(m[1]));
+    const article = blocks.find((b) => b['@type'] === 'Article');
+    const org = blocks.find((b) => b['@type'] === 'Organization');
+
+    expect(article.datePublished).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    expect(article.dateModified).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    // Published before modified, or the dates are build time rather than history.
+    expect(new Date(article.datePublished).getTime()).toBeLessThanOrEqual(
+      new Date(article.dateModified).getTime(),
+    );
+    expect(article.author['@id']).toBe(org['@id']);
+    expect(article.publisher['@id']).toBe(org['@id']);
+  });
+
+  it('keeps the brand suffix out of the headline', () => {
+    const article = [
+      ...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g),
+    ]
+      .map((m) => JSON.parse(m[1]))
+      .find((b) => b['@type'] === 'Article');
+    expect(article.headline).toBe('Як працює біомеханічна стимуляція мʼязів');
   });
   it('shows the three principle diagrams', () => {
     const labels = [...html.matchAll(/role="img" aria-label="(Схема:[^"]+)"/g)];
