@@ -63,10 +63,13 @@ describe('product collection', () => {
     expect(new Set(taglines).size).toBe(files.length);
   });
 
-  it('gives every device distinct body copy', () => {
+  it('gives every device distinct body copy of its own, not a shared blurb', () => {
     const bodies = Object.values(products).map((p) => p.body);
     expect(new Set(bodies).size).toBe(files.length);
-    for (const b of bodies) expect(b.length).toBeGreaterThan(40);
+    for (const [slug, { body }] of Object.entries(products)) {
+      const words = body.replace(/^#+ /gm, '').split(/\s+/).filter(Boolean);
+      expect(words.length, `${slug} body`).toBeGreaterThanOrEqual(200);
+    }
   });
 
   it('uses only the four known indicator types', () => {
@@ -129,5 +132,46 @@ describe('product collection', () => {
   it('keeps BMS Magnus, the leg platform, inside the documented platform range', () => {
     expect(products['bms-magnus'].data.specs['Частота коливань']).toBe('20–35 Гц');
     expect(products['bms-magnus'].data.zones).toContain('Ноги');
+  });
+});
+
+const FAQ_DIR = 'src/content/faq';
+const faq = readdirSync(FAQ_DIR)
+  .filter((f) => f.endsWith('.md'))
+  .map((f) => {
+    const raw = readFileSync(`${FAQ_DIR}/${f}`, 'utf8');
+    const match = raw.match(/^---\n([\s\S]*?)\n---\n/);
+    if (!match) throw new Error(`${f} has no frontmatter`);
+    return {
+      file: f,
+      data: load(match[1]) as { question: string; models: string[]; order: number },
+    };
+  });
+
+describe('faq collection', () => {
+  it('keeps the general questions off the device pages, where they only duplicate', () => {
+    const general = faq.filter((q) => q.data.models.length === 0).map((q) => q.file);
+    expect(general).toContain('medical-device.md');
+    expect(general).toContain('warranty.md');
+    expect(general).toContain('delivery.md');
+    expect(general.length).toBeGreaterThanOrEqual(8);
+  });
+
+  it('gives every device at least two questions of its own', () => {
+    for (const slug of Object.keys(products)) {
+      const mine = faq.filter((q) => q.data.models.includes(slug));
+      expect(mine.length, `${slug} questions`).toBeGreaterThanOrEqual(2);
+    }
+  });
+
+  it('names only devices that exist', () => {
+    for (const q of faq) {
+      for (const m of q.data.models) expect(Object.keys(products), q.file).toContain(m);
+    }
+  });
+
+  it('orders every question distinctly, so /faq/ is stable', () => {
+    const orders = faq.map((q) => q.data.order);
+    expect(new Set(orders).size, orders.join()).toBe(faq.length);
   });
 });

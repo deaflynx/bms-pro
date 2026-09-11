@@ -1,7 +1,7 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import ComparisonMatrix from '../../components/ComparisonMatrix.astro';
+import CompareLink from '../../components/CompareLink.astro';
 import Disclaimer from '../../components/Disclaimer.astro';
 import Gallery from '../../components/Gallery.astro';
 import Instrument from '../../components/Instrument.astro';
@@ -25,6 +25,7 @@ const { product } = Astro.props;
 const d = product.data;
 
 const all = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+const others = all.filter((p) => p.id !== product.id);
 const panel = instrumentFor(d.indicator);
 const gallery = d.gallery.length > 0 ? d.gallery : [d.image];
 
@@ -95,6 +96,16 @@ const { Content } = await render(product);
     </div>
   </div>
 
+  <section class="about">
+    <div class="wrap about-grid">
+      <div class="sec-head">
+        <p class="eyebrow">Опис</p>
+        <h2>Що таке {d.name}</h2>
+      </div>
+      <div class="prose"><Content /></div>
+    </div>
+  </section>
+
   {
     d.benefits.length > 0 && (
       <section class="alt">
@@ -131,7 +142,6 @@ const { Content } = await render(product);
       <div class="panel-wrap">
         <Instrument indicator={d.indicator} heading={`Панель ${d.name}`} />
       </div>
-      <div class="prose"><Content /></div>
     </div>
   </section>
 
@@ -161,16 +171,6 @@ const { Content } = await render(product);
     </div>
   </section>
 
-  <section class="alt">
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">Порівняння</p>
-        <h2>{d.name} поруч з іншими моделями</h2>
-      </div>
-      <ComparisonMatrix products={all} highlight={product.id} />
-    </div>
-  </section>
-
   {
     faq.length > 0 && (
       <section>
@@ -194,6 +194,32 @@ const { Content } = await render(product);
       </section>
     )
   }
+
+  <section class="alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Модельний ряд</p>
+        <h2>{d.name} — не єдина модель</h2>
+        <p>
+          У ряду пʼять приладів. Вони відрізняються зоною впливу, кількістю каналів, частотним
+          діапазоном і потужністю.
+        </p>
+      </div>
+      <ul class="siblings">
+        {
+          others.map((o) => (
+            <li>
+              <a href={url(`/products/${o.id}/`)}>
+                <b>{o.data.name}</b>
+                <span>{o.data.zones.join(' · ')}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <CompareLink note="Ціна, зона впливу, канали, частота та потужність усіх пʼяти приладів в одній таблиці" />
+    </div>
+  </section>
 
   <section class="final">
     <div class="wrap">
@@ -302,10 +328,84 @@ const { Content } = await render(product);
   .panel-wrap {
     max-width: 620px;
   }
+  .about {
+    border-top: 1px solid var(--rule);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: clamp(1.4rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+  @media (max-width: 880px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .about-grid .sec-head {
+    margin-bottom: 0;
+  }
   .prose {
-    margin-top: 1.6rem;
     max-width: 62ch;
     color: var(--body-soft);
+  }
+  /* markdown children — the global reset zeroes every margin */
+  .prose :global(p + p) {
+    margin-top: 1rem;
+  }
+  .prose :global(h3) {
+    margin-top: 1.9rem;
+    font-size: 1.18rem;
+    color: var(--paper);
+  }
+  .prose :global(h3 + p) {
+    margin-top: 0.6rem;
+  }
+
+  .siblings {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.7rem;
+    margin-bottom: 1rem;
+  }
+  @media (max-width: 860px) {
+    .siblings {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 460px) {
+    .siblings {
+      grid-template-columns: 1fr;
+    }
+  }
+  .siblings a {
+    display: block;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--rule);
+    border-radius: 9px;
+    background: var(--panel-2);
+    transition:
+      border-color 0.2s,
+      background 0.2s;
+  }
+  .siblings a:hover {
+    border-color: var(--led);
+    background: var(--panel-3);
+  }
+  .siblings b {
+    display: block;
+    font-family: var(--d);
+    font-weight: 500;
+    font-size: 1.02rem;
+  }
+  .siblings span {
+    display: block;
+    margin-top: 0.25rem;
+    font-family: var(--m);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--steel-2);
   }
   .alt {
     background: #0b1114;

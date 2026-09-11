@@ -45,6 +45,7 @@ const faq = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/faq' }),
   schema: z.object({
     question: z.string(),
+    /** Devices whose page shows this question; empty keeps it on /faq/ alone. */
     models: z.array(z.string()).default([]),
     order: z.number().int(),
   }),

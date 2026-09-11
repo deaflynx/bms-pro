@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import ComparisonMatrix from '../../components/ComparisonMatrix.astro';
+import CompareLink from '../../components/CompareLink.astro';
 import Disclaimer from '../../components/Disclaimer.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import ProductCard from '../../components/ProductCard.astro';
@@ -55,9 +55,15 @@ const abs = (p: string) => new URL(url(p), Astro.site).href;
       <div class="sec-head">
         <p class="eyebrow">Порівняння</p>
         <h2>Який прилад вам потрібен</h2>
-        <p>Одна таблиця — зона впливу, канали, індикатор, застосування та ціна.</p>
+        <p>
+          Одна таблиця на головній сторінці зводить усі пʼять моделей поруч — зона впливу,
+          канали, індикатор, застосування та ціна.
+        </p>
       </div>
-      <ComparisonMatrix products={products} />
+      <CompareLink
+        label="Порівняльна таблиця всіх пʼяти приладів"
+        note="Ціна, зона впливу, канали, частота та потужність — на головній сторінці"
+      />
     </div>
   </section>
 

@@ -1,0 +1,84 @@
+---
+import Icon from './Icon.astro';
+import { url } from '../lib/site';
+
+interface Props {
+  label?: string;
+  note: string;
+}
+const { label = 'Порівняти з іншими моделями', note } = Astro.props;
+---
+
+<a class="compare" href={`${url('/')}#compare`}>
+  <Icon kind="compare" />
+  <span class="txt">
+    <b>{label}</b>
+    <span>{note}</span>
+  </span>
+  <svg
+    class="arrow"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.2"
+    aria-hidden="true"
+  >
+    <path d="M5 12h13M13 6l6 6-6 6" />
+  </svg>
+</a>
+
+<style>
+  .compare {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 1.15rem 1.3rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--r);
+    background: var(--panel-2);
+    --icon-size: 34px;
+    transition:
+      border-color 0.2s,
+      background 0.2s;
+  }
+  .compare:hover {
+    border-color: var(--led);
+    background: var(--panel-3);
+  }
+  .txt {
+    flex: 1;
+    min-width: 0;
+  }
+  .txt b {
+    display: block;
+    font-family: var(--d);
+    font-weight: 500;
+    font-size: 1.12rem;
+  }
+  .txt span {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 0.85rem;
+    color: var(--body-mute);
+  }
+  .arrow {
+    flex: none;
+    color: var(--led);
+    transition: transform 0.2s;
+  }
+  .compare:hover .arrow {
+    transform: translateX(3px);
+  }
+  @media (max-width: 520px) {
+    .compare {
+      gap: 0.9rem;
+      padding: 1rem;
+      --icon-size: 28px;
+    }
+    .txt b {
+      font-size: 1rem;
+    }
+  }
+</style>

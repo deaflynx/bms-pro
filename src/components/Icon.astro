@@ -10,7 +10,8 @@ export type IconKind =
   | 'home'
   | 'senior'
   | 'wave'
-  | 'daily';
+  | 'daily'
+  | 'compare';
 
 interface Props {
   kind: IconKind;
@@ -95,6 +96,16 @@ const { kind } = Astro.props;
     )
   }
   {
+    kind === 'compare' && (
+      <>
+        <rect x="2.8" y="4.4" width="18.4" height="15.2" rx="2.4" />
+        <path d="M2.8 9.2h18.4" />
+        <path d="M9.2 9.2v10.4M14.8 9.2v10.4" />
+        <path class="fillcol" d="M15.4 11.4h4.6v7.6h-4.6z" />
+      </>
+    )
+  }
+  {
     kind === 'daily' && (
       <>
         <circle cx="12" cy="12" r="8.4" />
@@ -124,6 +135,11 @@ const { kind } = Astro.props;
   }
   .icon :global(.spark) {
     fill: currentColor;
+    stroke: none;
+  }
+  .icon :global(.fillcol) {
+    fill: currentColor;
+    opacity: 0.22;
     stroke: none;
   }
 </style>

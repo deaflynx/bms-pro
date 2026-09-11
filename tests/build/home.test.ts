@@ -54,8 +54,13 @@ describe('homepage', () => {
     }
   });
 
-  it('includes the comparison matrix', () => {
+  it('includes the comparison matrix — the only copy on the site', () => {
     expect(markup).toContain('Порівняння моделей');
+  });
+
+  it('compares power consumption per model in the matrix', () => {
+    expect(markup).toContain('Споживана потужність');
+    for (const w of ['≤20 Вт', '36 Вт', '≤15 ВА', '80 Вт']) expect(markup, w).toContain(w);
   });
 
   it('shows every price, labelled approximate', () => {

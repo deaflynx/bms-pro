@@ -111,7 +111,7 @@ describe('product pages', () => {
     expect(descs.size).toBe(SLUGS.length);
   });
 
-  it('links every device to the others through the matrix', () => {
+  it('links every device to the other four, now that the matrix has gone', () => {
     for (const s of SLUGS) {
       const m = markup(s);
       for (const other of SLUGS.filter((x) => x !== s)) {
@@ -120,8 +120,39 @@ describe('product pages', () => {
     }
   });
 
-  it('marks the current model in the matrix', () => {
-    expect(markup('bms-pro')).toContain('Ця модель');
+  it('carries no comparison matrix — the home page holds the only copy', () => {
+    for (const s of SLUGS) {
+      expect(markup(s), s).not.toContain('Порівняння моделей');
+      expect(markup(s), s).not.toContain('Ця модель');
+    }
+  });
+
+  it('points at that matrix instead', () => {
+    for (const s of SLUGS) {
+      expect(markup(s), s).toContain('Порівняти з іншими моделями');
+      expect(markup(s), s).toContain('href="/bms-pro/#compare"');
+    }
+  });
+
+  it('gives each device its own description of at least 200 words', () => {
+    const texts = SLUGS.map((s) => {
+      const prose = markup(s).match(/<div class="prose"[^>]*>([\s\S]*?)<\/div>/)![1];
+      return prose.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    });
+    for (const [i, text] of texts.entries()) {
+      expect(text.split(' ').length, `${SLUGS[i]} description`).toBeGreaterThanOrEqual(200);
+    }
+    expect(new Set(texts).size, 'descriptions must all differ').toBe(SLUGS.length);
+  });
+
+  it('asks only model-specific questions, leaving the general ones to /faq/', () => {
+    for (const s of SLUGS) {
+      const m = markup(s);
+      expect(m, `${s} should keep a question of its own`).toContain('Питання та відповіді');
+      expect(m, s).not.toContain('Чи є прилади BMS медичними виробами');
+      expect(m, s).not.toContain('Яка гарантія на прилад');
+      expect(m, s).not.toContain('Як замовити та отримати прилад');
+    }
   });
 
   it('shows the price with the approximate label', () => {
@@ -167,8 +198,8 @@ describe('products catalogue', () => {
     for (const s of SLUGS) expect(html).toContain(`/bms-pro/products/${s}/`);
   });
 
-  it('compares power consumption per model in the matrix', () => {
-    expect(html).toContain('Споживана потужність');
-    for (const w of ['≤20 Вт', '36 Вт', '≤15 ВА', '80 Вт']) expect(html, w).toContain(w);
+  it('sends comparison to the single matrix rather than repeating it', () => {
+    expect(html).not.toContain('Порівняння моделей');
+    expect(html).toContain('href="/bms-pro/#compare"');
   });
 });

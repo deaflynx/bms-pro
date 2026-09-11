@@ -1,6 +1,6 @@
 ---
 question: Чи є прилади BMS медичними виробами?
-models: ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro', 'bms-magnus']
+models: []
 order: 1
 ---
 

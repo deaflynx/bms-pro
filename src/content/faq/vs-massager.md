@@ -1,6 +1,6 @@
 ---
 question: Чим біомеханічна стимуляція відрізняється від звичайного масажера?
-models: ['bms-m', 'bms-pro', 'bms-nexus', 'bms-quadro', 'bms-magnus']
+models: []
 order: 2
 ---
 
